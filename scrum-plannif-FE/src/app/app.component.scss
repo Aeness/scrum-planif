@@ -1,0 +1,75 @@
+@import "../variables.scss";
+
+.used_part {
+  margin: 0 auto;
+  width: 1024px;
+}
+
+@media screen and (max-width: 1040px) {
+  .used_part {
+      width: 900px; /* 910 max witout margin */
+      margin: 0 auto;
+  }
+}
+
+#top{
+	border : 0px solid	#FFF;
+	background-color: $mainColor;
+  color: white;
+
+  #menu {
+    padding-top: 26px;
+    background-image: url('/assets/logo.png') ;
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    background-position: top 13px left 10px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      height: 53px;
+      padding-left: 70px;
+    }
+
+    li {
+      margin: 0;
+      padding: 0 5px 0 7px; /* padding include border*/
+      float: left; /*display: inline;*/
+      border-radius: 4px 4px 0 0;
+
+      a {
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+        height: 53px;
+        padding: 14.5px;     /* navbar */
+      }
+    }
+
+    li + li:hover {
+      background-color: #FFFFFF;
+      a {
+        color: $mainColor;
+      }
+    }
+  }
+}
+
+#content {
+  margin-top: 30px;
+}
+
+#footer {
+  padding: 70px 0 0 0;
+  font-size: 0.9em;
+  font-style: italic;
+  clear: both;
+}
+
+#footer > p {
+  border-top : 1px solid #B8B8B8;
+  padding-bottom: 5px;
+  color: #6A6A6A;
+  text-align: center;
+}
