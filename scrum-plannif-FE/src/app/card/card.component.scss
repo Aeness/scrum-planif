@@ -1,0 +1,27 @@
+div.card {
+  border: solid 2px black;
+  height: 150px;
+  width: 100px;
+  float: left;
+  margin-right: 20px;
+
+  .top, .bottom {
+    height: 50px;
+    width: 50%;
+    font-size: xx-small;
+    float: left;
+    padding-left: 2px;
+  }
+  .bottom {
+    position: relative;
+    transform: rotate(180deg);
+  }
+  .right {
+    text-align: right;
+    padding-right: 2px;
+  }
+  span.center {
+    text-align: center;
+    font-size: xx-large;
+  }
+}
