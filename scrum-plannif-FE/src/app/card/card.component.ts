@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'app-card',
@@ -7,7 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CardComponent implements OnInit {
   @Input() value: Number;
-  private isSelected: boolean = false;
+  @Output() choosenEvent = new EventEmitter<Boolean>();
+  private isSelected: Boolean = false;
 
   constructor() { }
 
@@ -16,5 +18,13 @@ export class CardComponent implements OnInit {
 
   click() {
     this.isSelected = !this.isSelected;
+    this.choosenEvent.emit(this.isSelected);
+    console.log("click")
+  }
+
+  public unselectedIfNot(choosenValue : Number) {
+    if (this.value != choosenValue) {
+      this.isSelected = false;
+    }
   }
 }

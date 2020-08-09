@@ -1,8 +1,8 @@
 
 <div [className]="'cards'">
-  <app-card [value]="1"></app-card>
-  <app-card [value]="2"></app-card>
-  <app-card [value]="3"></app-card>
-  <app-card [value]="5"></app-card>
-  <app-card [value]="8"></app-card>
-  </div>
+  <app-card [value]="1" (choosenEvent)="changeValue(1,$event)" #card1></app-card>
+  <app-card [value]="2" (choosenEvent)="changeValue(2,$event)" #card2></app-card>
+  <app-card [value]="3" (choosenEvent)="changeValue(3,$event)" #card3></app-card>
+  <app-card [value]="5" (choosenEvent)="changeValue(5,$event)" #card4></app-card>
+  <app-card [value]="8" (choosenEvent)="changeValue(8,$event)" #card5></app-card>
+</div>
