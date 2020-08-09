@@ -7,10 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CardComponent implements OnInit {
   @Input() value: Number;
+  private isSelected: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  click() {
+    this.isSelected = !this.isSelected;
+  }
 }

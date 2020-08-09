@@ -24,4 +24,9 @@ div.card {
     text-align: center;
     font-size: xx-large;
   }
+
+  &.selected {
+    background-color: #000;
+    color: #FFF;
+  }
 }

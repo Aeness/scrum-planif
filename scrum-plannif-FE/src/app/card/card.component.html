@@ -1,5 +1,5 @@
 
-    <div [className]="'card'">
+    <div [className]="'card ' + (isSelected?'selected':'')" (click)="click()">
       <div>
         <div [className]="'top left'">{{value}}</div>
         <div [className]="'top right'">{{value}}</div>
