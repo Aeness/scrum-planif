@@ -7,11 +7,11 @@ import { CardComponent } from '../card/card.component';
   styleUrls: ['./planif.component.scss']
 })
 export class PlanifComponent implements OnInit {
-  @ViewChild('card1') card1: CardComponent;
-  @ViewChild('card2') card2: CardComponent;
-  @ViewChild('card3') card3: CardComponent;
-  @ViewChild('card4') card4: CardComponent;
-  @ViewChild('card5') card5: CardComponent;
+  @ViewChild('card1', { static: true }) card1: CardComponent;
+  @ViewChild('card2', { static: true }) card2: CardComponent;
+  @ViewChild('card3', { static: true }) card3: CardComponent;
+  @ViewChild('card4', { static: true }) card4: CardComponent;
+  @ViewChild('card5', { static: true }) card5: CardComponent;
 
   private choosenValue : Number;
 
