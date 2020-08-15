@@ -12,6 +12,17 @@
   }
 }
 
+#connection {
+  margin: 0;
+  border : 0px solid	#FFF;
+  font-size: 0.9em;
+  float: right;
+
+  p { text-align: right; }
+  a { color: #666; }
+  a:hover { text-decoration: none; }
+}
+
 #top{
 	border : 0px solid	#FFF;
 	background-color: $mainColor;

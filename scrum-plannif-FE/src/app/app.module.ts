@@ -8,6 +8,10 @@ import { AppComponent } from './app.component';
 import { IndexComponent } from './index.page/index.component';
 import { CardComponent } from './card/card.component';
 import { PlanifComponent } from './planif.page/planif.component';
+import { AuthService } from './auth.service/auth.service';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login.page/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,6 +19,11 @@ const appRoutes: Routes = [
   {
     path: '',
     component: IndexComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { title: 'Se connecter' }
   },
   {
     path: 'planif',
@@ -25,18 +34,23 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     IndexComponent,
     CardComponent,
     PlanifComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: environment.routerEnableTracing } // <-- debugging purposes only
-    )
+    ),
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

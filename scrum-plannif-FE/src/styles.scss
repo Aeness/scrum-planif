@@ -2,3 +2,7 @@
 
 $primary: $mainColor;
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+.btn-primary, .btn-primary:disabled {
+  color: #FFF;
+}

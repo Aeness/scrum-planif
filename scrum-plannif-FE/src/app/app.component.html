@@ -1,5 +1,11 @@
 <div id="top">
   <div class="used_part">
+    <div id="connection" *ngIf="userConnected">
+        <p>Vous êtes connecté(e) en tant que <strong>{{player.name}}</strong>.</p>
+    </div>
+    <div id="connection" *ngIf="!userConnected">
+            <p>Vous n'êtes pas connecté(e).</p>
+    </div>
     <nav id="menu" class="">
         <ul class="">
             <li >

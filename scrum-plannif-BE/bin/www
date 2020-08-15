@@ -4,15 +4,28 @@
  * Module dependencies.
  */
 
-var app = require('../app');
 var debug = require('debug')('scrum-planif:server');
 var http = require('http');
+
+/**
+ * Configuration
+ */
+debug("Loading conf...");
+var nconf = require('nconf').file({ file: './conf/config.json' });
+
+if (typeof nconf.get('appConf:tokenSecret') === "undefined" 
+    || typeof nconf.get('appConf:refreshSecret') === "undefined"
+) {
+    console.error("The configuration is incomplete.");
+    process.exit(1);
+}
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var app = require('../app')(nconf.get('appConf'));
 app.set('port', port);
 
 /**
