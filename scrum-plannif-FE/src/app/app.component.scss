@@ -19,8 +19,14 @@
   float: right;
 
   p { text-align: right; }
-  a { color: #666; }
-  a:hover { text-decoration: none; }
+
+  a.logout {
+    color: #FFF;
+  }
+
+  a.logout:hover {
+    color: #EA1717;
+  }
 }
 
 #top{

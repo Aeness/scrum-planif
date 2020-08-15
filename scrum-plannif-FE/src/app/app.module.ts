@@ -14,18 +14,25 @@ import { AuthGuard } from './_guards/auth.guard';
 import { AuthService } from './auth.service/auth.service';
 import { LoginComponent } from './login.page/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LogoutComponent } from './logout/logout.component';
 
 
 
 const appRoutes: Routes = [
   {
     path: '',
-    component: IndexComponent
+    component: IndexComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
     component: LoginComponent,
     data: { title: 'Se connecter' }
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
   },
   {
     path: 'planif',
@@ -38,6 +45,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
+    LogoutComponent,
     IndexComponent,
     CardComponent,
     PlanifComponent
@@ -49,7 +57,8 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: environment.routerEnableTracing } // <-- debugging purposes only
     ),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   providers: [
     {

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Player } from './auth.service/player';
 import { AuthService } from './auth.service/auth.service';
 import { Subscription } from 'rxjs';
-import { StorageTokenTool } from './auth.service/storage-token.tool';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ import { StorageTokenTool } from './auth.service/storage-token.tool';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  faSignOutAlt = faSignOutAlt;
   title = 'scrum-planif';
   player : Player ;
   subscription: Subscription;
