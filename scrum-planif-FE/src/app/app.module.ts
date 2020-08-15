@@ -16,6 +16,7 @@ import { LoginComponent } from './login.page/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LogoutComponent } from './logout/logout.component';
+import { PlanifAdminComponent } from './planif-admin.page/planif-admin.component';
 
 
 
@@ -39,6 +40,11 @@ const appRoutes: Routes = [
     component: PlanifComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'planif/:planif_ref/admin',
+    component: PlanifAdminComponent,
+    canActivate: [AuthGuard]
+  },
 ]
 
 @NgModule({
@@ -48,7 +54,8 @@ const appRoutes: Routes = [
     LogoutComponent,
     IndexComponent,
     CardComponent,
-    PlanifComponent
+    PlanifComponent,
+    PlanifAdminComponent
   ],
   imports: [
     BrowserModule,
