@@ -8,8 +8,10 @@ import { AppComponent } from './app.component';
 import { IndexComponent } from './index.page/index.component';
 import { CardComponent } from './card/card.component';
 import { PlanifComponent } from './planif.page/planif.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './_interceptors/auth.interceptor';
+import { AuthGuard } from './_guards/auth.guard';
 import { AuthService } from './auth.service/auth.service';
-import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login.page/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -27,7 +29,8 @@ const appRoutes: Routes = [
   },
   {
     path: 'planif',
-    component: PlanifComponent
+    component: PlanifComponent,
+    canActivate: [AuthGuard]
   },
 ]
 
@@ -49,6 +52,12 @@ const appRoutes: Routes = [
     ReactiveFormsModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    AuthGuard,
     AuthService
   ],
   bootstrap: [AppComponent]
