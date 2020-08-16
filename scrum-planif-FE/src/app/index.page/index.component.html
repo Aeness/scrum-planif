@@ -1,1 +1,15 @@
-<a  class="btn btn-primary btn-lg btn-block" [routerLink]="['/planif', ref_link,'admin']">Commencer un nouveau poker planing.</a>
+
+<div class="jumbotron">
+  <h1 class="display-4">Scrum Planif</h1>
+  <p class="lead">Facilitez-vous la planification à distance.</p>
+  <hr class="my-4">
+  <p>Créer une nouvelle scéance et invitez les personnes à vous rejoindre. <a  class="btn btn-primary" [routerLink]="['/planif', ref_link,'admin']">Commencer un nouveau poker planing.</a></p>
+  <hr class="my-4">
+  <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onSubmit()">
+    <label class="mb-2 mr-2" for="ref_planif">Scéance à rejoindre </label>
+    <input type="text" class="form-control mb-2 mr-sm-2" id="ref_planif"
+           formControlName="ref_planif">
+
+    <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
+  </form>
+</div>

@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CardComponent } from '../card/card.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-planif',
   templateUrl: './planif.component.html',
   styleUrls: ['./planif.component.scss']
 })
-export class PlanifComponent implements OnInit {
+export class PlanifComponent {
+  private planif_ref;
+
   @ViewChild('card1', { static: true }) card1: CardComponent;
   @ViewChild('card2', { static: true }) card2: CardComponent;
   @ViewChild('card3', { static: true }) card3: CardComponent;
@@ -15,9 +18,12 @@ export class PlanifComponent implements OnInit {
 
   private choosenValue : Number;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private route: ActivatedRoute) {
+    this.route.params.subscribe(
+      params => {
+        this.planif_ref = params.planif_ref;
+      }
+    )
   }
 
   changeValue(value: Number, active: Boolean) {

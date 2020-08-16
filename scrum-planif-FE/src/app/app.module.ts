@@ -36,7 +36,7 @@ const appRoutes: Routes = [
     component: LogoutComponent
   },
   {
-    path: 'planif',
+    path: 'planif/:planif_ref',
     component: PlanifComponent,
     canActivate: [AuthGuard]
   },
