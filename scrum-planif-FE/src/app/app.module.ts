@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LogoutComponent } from './logout/logout.component';
 import { PlanifAdminComponent } from './planif-admin.page/planif-admin.component';
+import { VoteComponent } from './vote/vote.component';
 
 
 
@@ -55,7 +56,8 @@ const appRoutes: Routes = [
     IndexComponent,
     CardComponent,
     PlanifComponent,
-    PlanifAdminComponent
+    PlanifAdminComponent,
+    VoteComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-planif-admin',
-  template: '{{planif_ref}}'
+  template: '{{planif_ref}} <app-vote></app-vote>'
 })
 export class PlanifAdminComponent {
 
