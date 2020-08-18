@@ -1,0 +1,6 @@
+<div *ngIf="players$ | async as players;">
+  Liste des participants :
+  <div *ngFor="let player of players | keyvalue">
+    {{player.value.name}}
+  </div>
+</div>

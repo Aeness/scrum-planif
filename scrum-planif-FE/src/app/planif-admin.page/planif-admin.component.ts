@@ -1,20 +1,10 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { PlanifComponent } from '../planif.page/planif.component';
+import { PlanifRoom } from '../planif.room/planif.room';
 
 @Component({
   selector: 'app-planif-admin',
-  template: '{{planif_ref}} <app-vote></app-vote>'
+  templateUrl: 'planif-admin.component.html',
+  providers:  [ PlanifRoom ]
 })
-export class PlanifAdminComponent {
-
-  planif_ref;
-
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe(
-      params => {
-        this.planif_ref = params.planif_ref;
-      }
-    )
-  }
-
-}
+export class PlanifAdminComponent extends PlanifComponent { }
