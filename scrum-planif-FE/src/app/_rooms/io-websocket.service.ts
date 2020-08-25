@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class IowebsocketService implements OnDestroy {
+export class IoWebsocketService implements OnDestroy {
 
   protected socket; // Socket
   protected nameRoom: String

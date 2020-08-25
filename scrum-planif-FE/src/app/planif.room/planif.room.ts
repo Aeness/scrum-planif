@@ -1,9 +1,9 @@
-import { IowebsocketService } from '../_rooms/io-websocket.service';
+import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from '../auth.service/player';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-export class PlanifRoom extends IowebsocketService {
+export class PlanifRoom extends IoWebsocketService {
   private planif_ref: String;
 
     /**
