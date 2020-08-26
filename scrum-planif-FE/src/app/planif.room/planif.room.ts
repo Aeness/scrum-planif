@@ -1,7 +1,5 @@
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from '../auth.service/player';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 export class PlanifRoom extends IoWebsocketService {
   private planif_ref: String;
@@ -14,6 +12,8 @@ export class PlanifRoom extends IoWebsocketService {
      * @param planif_ref
      */
     public init(planif_ref : String) {
+      // TODO : you can connect without init (lost connexion with server)
+      // you have re ask to join when happen
       this.planif_ref = planif_ref;
       super.connect("planif=" + planif_ref);
     }
@@ -31,6 +31,7 @@ export class PlanifRoom extends IoWebsocketService {
     }
 
     private listenPlayers() {
+      // TODO : a soket have only one room : planif_ref is not necessary
       return this.getMessages('players_' + this.planif_ref);
     }
 

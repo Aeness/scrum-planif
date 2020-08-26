@@ -23,7 +23,7 @@ module.exports = function(app, server){
     });
 
     // List of rooms
-    require('./rooms/planif').launchTheRoom(app,io);
+    require('./rooms/planif').launchTheRooms(app,io);
 
     return io;
 
