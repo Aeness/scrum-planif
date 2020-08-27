@@ -31,8 +31,7 @@ export class PlanifRoom extends IoWebsocketService {
     }
 
     private listenPlayers() {
-      // TODO : a soket have only one room : planif_ref is not necessary
-      return this.getMessages('players_' + this.planif_ref);
+      return this.getMessages('players');
     }
 
     // TODO : Listen only once

@@ -42,11 +42,8 @@ module.exports = {
                 socket.on('ask_players', () => {
 
                     // Send just for this new client
-                    // TODO : a soket have only one room : planif_ref in the msg is not necessary
-                    socket.emit('players_' + planif_ref, this.playersByRoom[planif_ref]);
+                    socket.emit('players', this.playersByRoom[planif_ref]);
                 });
-
-
             }
         });
     },
