@@ -11,24 +11,14 @@ import { Observable, of } from 'rxjs';
 export class PlayersListComponent implements OnInit {
 
   @Input() planifRoom: PlanifRoom;
+  @Input() players: Map<String, Player> ;
 
   players$: Observable<Map<String, Player>> ;
-  players: Map<String, Player> ;
 
   constructor() { }
 
   ngOnInit() {
-    this.players = new Map<String, Player>();
     this.players$ = of(this.players);
-
-
-    this.planifRoom.askPlayers().subscribe(
-      (data) => {
-        for (var ref_player in data) {
-          this.players.set(ref_player, data[ref_player]);
-        }
-      }
-    );
 
     this.planifRoom.listenPlayerJoinPlanif().subscribe(
       (data: { player: Player; }) => {

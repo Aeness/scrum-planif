@@ -28,7 +28,7 @@ module.exports = {
                 ///////
                 // list of "messages" which can be emit by a client
 
-                socket.on('ask_to_join_planif', (player) => {
+                socket.on('ask_to_join_planif', (player, acknowledgement) => {
                     if (this.playersByRoom[planif_ref] === undefined) {
                         this.playersByRoom[planif_ref] = {};
                     }
@@ -37,12 +37,8 @@ module.exports = {
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
                     this.sendPlayerJoinPlanif(planif_ref,player);
-                });
 
-                socket.on('ask_players', () => {
-
-                    // Send just for this new client
-                    socket.emit('players', this.playersByRoom[planif_ref]);
+                    acknowledgement(null, this.playersByRoom[planif_ref]);
                 });
             }
         });

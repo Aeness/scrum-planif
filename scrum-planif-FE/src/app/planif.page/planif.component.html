@@ -1,2 +1,4 @@
 <p>{{planif_ref}}</p>
-<app-vote></app-vote>
+<ng-container *ngIf="joined">
+  <app-vote (players)="players"></app-vote>
+</ng-container>
