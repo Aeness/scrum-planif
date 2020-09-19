@@ -9,10 +9,9 @@ import { Player } from '../auth.service/player';
   templateUrl: './planif.component.html',
   providers:  [ PlanifRoom ]
 })
-export class PlanifComponent implements OnInit {
+export class PlanifComponent {
   protected planif_ref : String;
   protected joined: boolean = false;
-  protected players: Map<String, Player> = new Map<String, Player>();
 
   constructor(
     private route: ActivatedRoute,
@@ -22,21 +21,10 @@ export class PlanifComponent implements OnInit {
     this.route.params.subscribe(
       params => {
         this.planif_ref = params.planif_ref;
-        this.planifRoom.init(this.planif_ref);
+        this.planifRoom.init(this.planif_ref, this.authService.playerConnected, () => {
+          this.joined = true;
+        });
       }
     )
   }
-
-  ngOnInit() {
-    // TODO : use only when the connexion is OK
-    this.planifRoom.sendJoinThePlanif(this.authService.playerConnected).then(
-      (data: Map<String, Player>) => {
-        this.joined = true;
-        for (var ref_player in data) {
-          this.players.set(ref_player, data[ref_player]);
-        }
-      }
-    );
-  }
-
 }

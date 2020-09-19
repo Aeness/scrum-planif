@@ -11,28 +11,37 @@ import { Observable, of } from 'rxjs';
 export class PlayersListComponent implements OnInit {
 
   @Input() planifRoom: PlanifRoom;
-  @Input() players: Map<String, Player> ;
 
   players$: Observable<Map<String, Player>> ;
+  protected players: Map<String, Player> = new Map<String, Player>();
 
   constructor() { }
 
   ngOnInit() {
-    this.players$ = of(this.players);
 
-    this.planifRoom.listenPlayerJoinPlanif().subscribe(
-      (data: { player: Player; }) => {
-        console.log("getNewPlayer");
-        console.log(data.player);
-        this.players.set(data.player.ref, data.player);
-      }
-    );
+    this.planifRoom.askPlayersList().then(
+      (data: Map<String, Player>) => {
+        for (var ref_player in data) {
+          this.players.set(ref_player, data[ref_player]);
+        }
 
-    this.planifRoom.listenPlayerQuitPlanif().subscribe(
-      (data: { player_ref: String; }) => {
-        console.log("deletePlayer");
-        console.log(data.player_ref);
-        this.players.delete(data.player_ref);
+        this.players$ = of(this.players);
+
+        this.planifRoom.listenPlayerJoinPlanif().subscribe(
+          (data: { player: Player; }) => {
+            console.log("getNewPlayer");
+            console.log(data.player);
+            this.players.set(data.player.ref, data.player);
+          }
+        );
+
+        this.planifRoom.listenPlayerQuitPlanif().subscribe(
+          (data: { player_ref: String; }) => {
+            console.log("deletePlayer");
+            console.log(data.player_ref);
+            this.players.delete(data.player_ref);
+          }
+        );
       }
     );
   }

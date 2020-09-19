@@ -13,10 +13,15 @@ export class IoWebsocketService implements OnDestroy {
 
   constructor() { }
 
-  protected connect(nameRoom : String) {
+  protected connect(nameRoom : String, jsonName? : String, jsonData? : any, onConnect? : () => void) {
     if (!this.socket) {
       this.nameRoom = nameRoom
       var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom;
+
+
+      if (jsonName !== undefined && jsonData !== undefined) {
+        url = url + "&" + jsonName + "=" + JSON.stringify(jsonData);
+      }
 
       this.socket = io(url);
 
@@ -29,6 +34,9 @@ export class IoWebsocketService implements OnDestroy {
       this.socket.on('connect',  () => {
         debug('#[Io]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
         debug('#[Io]# transport ' + this.socket.io.engine.transport.name);
+        if (onConnect !== undefined) {
+          onConnect();
+        }
       });
       this.socket.on('disconnect',  (reason) => {
         debug('#[Io]# Disconnected ' + this.nameRoom + ' ' + reason);

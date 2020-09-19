@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CardComponent } from '../card/card.component';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vote',

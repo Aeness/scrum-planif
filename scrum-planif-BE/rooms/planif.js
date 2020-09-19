@@ -19,6 +19,19 @@ module.exports = {
                     if (err == null) {
                         
                         debug("%s open planif room %s.", socket.id, planif_ref);
+                        var player = JSON.parse(socket.handshake.query.player);
+
+                        let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                        if (room.players === undefined) {
+                            room.players = {};
+                        }
+                        room.players[player.ref] = player;
+    
+                        socket.player = player;
+                        
+                        // Send the information to all client
+                        // socket io docs emit-cheatsheet
+                        this.sendPlayerJoinPlanif(planif_ref,player);
                         
                     }
                 });
@@ -26,22 +39,11 @@ module.exports = {
                 ///////
                 // list of "messages" which can be emit by a client
 
-                socket.on('ask_to_join_planif', (player, acknowledgement) => {
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
-                    if (room.players === undefined) {
-                        room.players = {};
-                    }
-                    room.players[player.ref] = player;
+                socket.on('ask_players_list', (acknowledgement) => {
+                  let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
 
-                    socket.player = player;
-                    
-                    // Send the information to all client
-                    // socket io docs emit-cheatsheet
-                    this.sendPlayerJoinPlanif(planif_ref,player);
-
-                    acknowledgement(null, room.players);
+                  acknowledgement(null, room.players);
                 });
-
                 socket.on('disconnecting', () => {
                     debug("%s disconnecting", socket.id);
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
