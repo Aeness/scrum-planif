@@ -2,6 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import * as   io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import Debug from "debug";
+const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
 export class IoWebsocketService implements OnDestroy {
@@ -18,23 +20,23 @@ export class IoWebsocketService implements OnDestroy {
 
       this.socket = io(url);
 
-      console.log("#[Io]# Try to connected: " + url);
+      debug("#[Io]# Try to connected: " + url);
 
       // Global events are bound against socket
       this.socket.on('connect_failed', () => {
-        console.log('#[Io]# Connection Failed ' + this.nameRoom);
+        debug('#[Io]# Connection Failed ' + this.nameRoom);
       });
       this.socket.on('connect',  () => {
-        console.log('#[Io]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
-        console.log('#[Io]# transport ' + this.socket.io.engine.transport.name);
+        debug('#[Io]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
+        debug('#[Io]# transport ' + this.socket.io.engine.transport.name);
       });
       this.socket.on('disconnect',  (reason) => {
-        console.log('#[Io]# Disconnected ' + this.nameRoom + ' ' + reason);
+        debug('#[Io]# Disconnected ' + this.nameRoom + ' ' + reason);
       });
 
       // this.socket.io: Manager
       this.socket.io.engine.on('upgrade', function(transport) {
-        console.log('#[Io]# transport changed to ' + transport.name);
+        debug('#[Io]# transport changed to ' + transport.name);
       });
 
     }

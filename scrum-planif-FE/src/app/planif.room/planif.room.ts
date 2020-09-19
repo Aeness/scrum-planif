@@ -1,5 +1,6 @@
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from '../auth.service/player';
+import { Observable } from 'rxjs';
 
 export class PlanifRoom extends IoWebsocketService {
 
@@ -16,12 +17,13 @@ export class PlanifRoom extends IoWebsocketService {
     super.connect("planif=" + planif_ref);
   }
 
-  public listenPlayerJoinPlanif() {
+  public listenPlayerJoinPlanif() : Observable<{player: Player}> {
       return this.getMessages('player_join_planif');
   }
 
-
-  // TODO if connexion close delete the players list
+  public listenPlayerQuitPlanif() : Observable<{player_ref: String}> {
+      return this.getMessages('player_quit_planif');
+  }
 
 
   public sendJoinThePlanif(data: Player) : Promise<Map<String, Player>> {

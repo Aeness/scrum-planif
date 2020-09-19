@@ -1,4 +1,4 @@
-module.exports = function(app, server){
+module.exports = function(app, server) {
 
     this.debug = require('debug')('scrum-planif:serverIo');
     
@@ -12,16 +12,19 @@ module.exports = function(app, server){
     io.on('authorization', (/*socket*/) => {
         this.debug("authorization pour io");
     });
-
+/*
     io.on('connection', (socket) => {
         this.debug("Someone wants to join a room " + JSON.stringify(socket.handshake.query));
+        
         socket.on('disconnect', () => {
 
-            this.debug("Someone disconnect from the " + socket.id);
-            // TODO : socket.leaveAll(): void;
+            this.debug("%s disconnect", socket.id);
+            this.debug("%j", socket.rooms);
+            //this.debug("Someone disconnect from the " + JSON.stringify(socket.rooms));
+            socket.leaveAll();
         });
     });
-
+*/
     // List of rooms
     require('./rooms/planif').launchTheRooms(app,io);
 

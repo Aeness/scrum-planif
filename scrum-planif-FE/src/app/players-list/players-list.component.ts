@@ -27,5 +27,13 @@ export class PlayersListComponent implements OnInit {
         this.players.set(data.player.ref, data.player);
       }
     );
+
+    this.planifRoom.listenPlayerQuitPlanif().subscribe(
+      (data: { player_ref: String; }) => {
+        console.log("deletePlayer");
+        console.log(data.player_ref);
+        this.players.delete(data.player_ref);
+      }
+    );
   }
 }
