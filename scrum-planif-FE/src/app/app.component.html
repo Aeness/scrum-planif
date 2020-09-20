@@ -1,5 +1,5 @@
 <div id="top">
-  <div class="used_part">
+  <div class="container">
     <div id="connection" *ngIf="userConnected">
         <p>Vous êtes connecté(e) en tant que <strong>{{player.name}}</strong>.
           <a class="logout" [routerLink]="['/logout']"><fa-icon [icon]="faSignOutAlt"></fa-icon></a>
@@ -19,7 +19,9 @@
     </nav>
   </div>
 </div>
-<div id="content"  class="used_part">
+<div id="content"  class="container">
     <router-outlet></router-outlet>
 </div>
-<div id="footer"  class="used_part"><p class="content">ScrumPlanif - 2020</p></div>
+<div id="footer" class="container">
+  <p>ScrumPlanif - 2020</p>
+</div>

@@ -1,5 +1,15 @@
-<p>Vous êtes dans le poker planning {{planif_ref}}</p>
+<div>
+  <p>Vous êtes dans le poker planning {{planif_ref}}</p>
+</div>
 <ng-container *ngIf="joined">
-  <app-players-list [planifRoom]="planifRoom"></app-players-list>
-  <app-vote></app-vote>
+  <div class="row">
+    <div class="col-lg-3 col-xxl-3 part">
+      <app-players-list [planifRoom]="planifRoom"></app-players-list>
+    </div>
+    <div class="col-lg-9 col-xxl-6 part">Contenu administrateur : <br/><br/></div>
+    <div class="col-lg-12 col-xxl-3 my-vote part">
+      Votre vote :
+      <app-vote></app-vote>
+    </div>
+  </div>
 </ng-container>

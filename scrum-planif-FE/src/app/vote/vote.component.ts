@@ -3,8 +3,7 @@ import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.scss']
+  templateUrl: './vote.component.html'
 })
 export class VoteComponent {
   @ViewChild('card1', { static: true }) card1: CardComponent;

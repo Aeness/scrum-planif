@@ -1,4 +1,9 @@
-<p>{{planif_ref}}</p>
-<ng-container *ngIf="joined">
-  <app-vote></app-vote>
-</ng-container>
+
+<div class="row">
+  <div class="col-xl-12">
+    <p>Vous êtes dans le poker planning {{planif_ref}}</p>
+    <ng-container *ngIf="joined">
+      <app-vote></app-vote>
+    </ng-container>
+  </div>
+</div>

@@ -6,3 +6,77 @@ $primary: $mainColor;
 .btn-primary, .btn-primary:disabled {
   color: #FFF;
 }
+
+
+/*
+.container {
+  background-color: green;
+}
+/*
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .container {
+    background-color: red;
+  }
+ }
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .container {
+    background-color: blue;
+  }
+ }
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .container {
+    background-color: blueviolet;
+  }
+ }
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .container {
+    background-color: yellow;
+  }
+
+}
+*/
+// Mega extra large devices (large desktops, 2560px and up)
+@media (min-width: 2560px) {
+  .container {
+    max-width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .col-xxl-6 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .col-xxl-3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .col-xl-12 {
+    max-width: 1140px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

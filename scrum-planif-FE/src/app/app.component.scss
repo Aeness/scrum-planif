@@ -1,17 +1,5 @@
 @import "../variables.scss";
 
-.used_part {
-  margin: 0 auto;
-  width: 1024px;
-}
-
-@media screen and (max-width: 1040px) {
-  .used_part {
-      width: 900px; /* 910 max witout margin */
-      margin: 0 auto;
-  }
-}
-
 #connection {
   margin: 0;
   border : 0px solid	#FFF;
@@ -82,11 +70,11 @@
   font-size: 0.9em;
   font-style: italic;
   clear: both;
-}
 
-#footer > p {
-  border-top : 1px solid #B8B8B8;
-  padding-bottom: 5px;
-  color: #6A6A6A;
-  text-align: center;
+  p {
+    border-top : 1px solid #B8B8B8;
+    padding-bottom: 5px;
+    color: #6A6A6A;
+    text-align: center;
+  }
 }
