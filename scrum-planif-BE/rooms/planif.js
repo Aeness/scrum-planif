@@ -83,6 +83,15 @@ module.exports = {
                     debug("%s choose %s", socket.id, data.choosenValue);
                     this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue)
                 });
+
+                socket.on('send_planif_name', (name) => {
+
+                    // TODO : write the name for future join
+                    
+                    // Send the information to all client
+                    // socket io docs emit-cheatsheet
+                    this.sendPlanifName(planif_ref,name);
+                });
             }
         });
     },
@@ -106,5 +115,9 @@ module.exports = {
     sendPlayerChoose: function(planif_ref, player_ref, choosenValue) {
         debug('sendPlayerChoose to planif %s : %s', planif_ref, choosenValue);
         this.app.io.to(this.getRoomName(planif_ref)).emit('player_choose', { player_ref: player_ref, choosenValue: choosenValue});
+    },
+    sendPlanifName: function (planif_ref, name) {
+        debug('sendPlanifName to planif:' + planif_ref + " " + name);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('planif_name', {name: name});
     },
 }

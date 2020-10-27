@@ -4,6 +4,9 @@ import { PlanifRoom } from '../planif.room/planif.room';
 import { FormControl } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../auth.service/auth.service';
 
 @Component({
   selector: 'app-planif-admin',
@@ -12,9 +15,24 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
   providers:  [ PlanifRoom ]
 })
 export class PlanifAdminComponent extends PlanifComponent {
+  planifForm: FormGroup;
+
   iVote = new FormControl(false);
   urlLink = environment.linkUrl;
   faCopy = faCopy;
+
+  constructor(
+    protected route: ActivatedRoute,
+    protected planifRoom: PlanifRoom,
+    protected authService: AuthService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+      super(route, planifRoom, authService)
+      this.planifForm = fb.group({
+        name: ['', Validators.required]
+      });
+    }
 
   protected afterInit() {
     // An admin doesn't play
@@ -44,4 +62,11 @@ export class PlanifAdminComponent extends PlanifComponent {
         console.error(err);
     }
   }
+  
+  onSubmit() {
+    if(this.planifForm.valid) {
+      this.planifRoom.sendPlanifName(this.planifForm.controls.name.value)
+    }
+  }
+
 }

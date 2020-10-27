@@ -11,19 +11,22 @@ import { AuthService } from '../auth.service/auth.service';
 })
 export class PlanifComponent {
 
-  public planif_ref : String;
+  public planif : {ref: String, name: String};
   public takePartIn: boolean = false;
 
 
   constructor(
-    private route: ActivatedRoute,
+    protected route: ActivatedRoute,
     protected planifRoom: PlanifRoom,
-    private authService: AuthService
+    protected authService: AuthService
   ) {
     this.route.params.subscribe(
       params => {
-        this.planif_ref = params.planif_ref;
-        this.planifRoom.init(this.planif_ref, this.authService.playerConnected, () => {
+        this.planif = {
+          ref: params.planif_ref,
+          name : ''
+        };
+        this.planifRoom.init(this.planif.ref, this.authService.playerConnected, () => {
           this.takePartIn = true;
           this.afterInit();
         });
@@ -31,6 +34,13 @@ export class PlanifComponent {
     )
   }
 
+  ngOnInit() {
+    this.planifRoom.listenPlanifName().subscribe(
+      (data) => {
+        this.planif.name = data.name;
+      }
+    );
+  }
   protected afterInit() {
     this.planifRoom.askToPlay();
   }

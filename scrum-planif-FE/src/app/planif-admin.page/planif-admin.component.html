@@ -1,7 +1,7 @@
 <div class="row title">
   <div class="col-12">
-    Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif_ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
-    ou via le lien <span id="link" class="toCopy">{{urlLink}}/planif/{{planif_ref}}</span> <button class="copy" (click)="copyElement('link')"><fa-icon [icon]="faCopy"></fa-icon></button>.
+    Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif.ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
+    ou via le lien <span id="link" class="toCopy">{{urlLink}}/planif/{{planif.ref}}</span> <button class="copy" (click)="copyElement('link')"><fa-icon [icon]="faCopy"></fa-icon></button>.
   </div>
 </div>
 
@@ -15,6 +15,13 @@
             <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
             <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
           </div>
+          <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onSubmit()">
+          <label class="mb-2 mr-2" for="name">Nom du poker planning </label>
+          <input type="text" class="form-control mb-2 mr-sm-2" id="name"
+                 formControlName="name">
+        
+          <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
+        </form>
           <div  *ngIf="votes$ | async as votes;">
             <div *ngFor="let vote of votes | keyvalue">
               {{vote.value.player.name}} {{vote.value.vote}}

@@ -64,4 +64,12 @@ export class PlanifRoom extends IoWebsocketService {
   public sendPlanifChoise(choosenValue : String) {
     this.socket.emit("player_choose", {choosenValue : choosenValue});
   }
+  
+  public sendPlanifName(name: String) {
+    this.sendMessage("send_planif_name", name);
+  }
+
+  public listenPlanifName() : Observable<{name: String}> {
+    return this.getMessages('planif_name');
+  }
 }
