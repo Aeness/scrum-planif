@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
-import { Player } from '../auth.service/player';
 
 @Component({
   selector: 'app-planif',

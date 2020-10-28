@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  @Input() value: Number;
+  @Input() value: String;
   @Output() choosenEvent = new EventEmitter<Boolean>();
   private isSelected: Boolean = false;
 
@@ -22,7 +22,7 @@ export class CardComponent implements OnInit {
     console.log("click")
   }
 
-  public unselectedIfNot(choosenValue : Number) {
+  public unselectedIfNot(choosenValue : String) {
     if (this.value != choosenValue) {
       this.isSelected = false;
     }

@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 @Component({
   selector: 'app-players-list',
   templateUrl: 'players-list.component.html',
-  providers:  [ PlanifRoom ]
+  providers:  [ PlanifRoom ] // TODO to keep ?
 })
 export class PlayersListComponent implements OnInit {
 

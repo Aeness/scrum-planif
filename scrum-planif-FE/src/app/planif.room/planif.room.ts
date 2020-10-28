@@ -5,11 +5,14 @@ import { Observable } from 'rxjs';
 export class PlanifRoom extends IoWebsocketService {
 
   /**
-   * Must be use only once.
    * Each main component must have is own PlanifRoom.
    * (Provider on the component)
    *
+   * But sub component must have the same PlanifRoom than the main component.
+   *
    * @param planif_ref
+   * @param data
+   * @param onConnect
    */
   public init(planif_ref : String, data: Player, onConnect : () => void) {
     super.connect("planif=" + planif_ref, "player", data, onConnect);
@@ -38,5 +41,13 @@ export class PlanifRoom extends IoWebsocketService {
             });
         }
     });
+  }
+
+  public listenPlanifChoise() : Observable<{player_ref: String, choosenValue : String}> {
+      return this.getMessages('player_choose');
+  }
+
+  public sendPlanifChoise(choosenValue : String) {
+    this.socket.emit("player_choose", {choosenValue : choosenValue});
   }
 }

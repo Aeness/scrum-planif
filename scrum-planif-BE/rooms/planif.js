@@ -6,6 +6,10 @@ module.exports = {
     launchTheRooms: function(app, io){
         this.app = app;
 
+        /**
+         * One socket <=> One player
+         * One socket  => One planif
+         */
         io.on('connection', (socket) => {
             
             // Check if the connection is for this kind of room
@@ -53,6 +57,11 @@ module.exports = {
                     }
                     this.sendPlayerQuitPlanif(planif_ref, socket.player.ref)
                 });
+
+                socket.on('player_choose', (choosenValue) => {
+                    debug("%s choose", socket.id);
+                    this.sendPlayerChoose(planif_ref, socket.player.ref, choosenValue)
+                });
             }
         });
     },
@@ -71,5 +80,10 @@ module.exports = {
     sendPlayerQuitPlanif: function(planif_ref, player_ref) {
         debug('sendUserQuitPlanif to planif %s : %s', planif_ref, player_ref);
         this.app.io.to(this.getRoomName(planif_ref)).emit('player_quit_planif', { player_ref: player_ref });
+    },
+
+    sendPlayerChoose: function(planif_ref, player_ref, choosenValue) {
+        debug('sendPlayerChoose to planif %s : %s', planif_ref, choosenValue);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('player_choose', { player_ref: player_ref, choosenValue: choosenValue});
     },
 }

@@ -3,7 +3,7 @@
   <div class="col-xl-12">
     <p>Vous êtes dans le poker planning {{planif_ref}}</p>
     <ng-container *ngIf="joined">
-      <app-vote></app-vote>
+      <app-vote [planifRoom]="planifRoom"></app-vote>
     </ng-container>
   </div>
 </div>
