@@ -27,7 +27,7 @@ module.exports = {
 
                         let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
                         if (room.players === undefined) {
-                            room.players = {};
+                            room.players = new Map();
                         }
                         room.players[player.ref] = player;
     
@@ -58,9 +58,9 @@ module.exports = {
                     this.sendPlayerQuitPlanif(planif_ref, socket.player.ref)
                 });
 
-                socket.on('player_choose', (choosenValue) => {
-                    debug("%s choose", socket.id);
-                    this.sendPlayerChoose(planif_ref, socket.player.ref, choosenValue)
+                socket.on('player_choose', (data) => {
+                    debug("%s choose %s", socket.id, data.choosenValue);
+                    this.sendPlayerChoose(planif_ref, socket.player.ref, data.choosenValue)
                 });
             }
         });

@@ -33,10 +33,12 @@ export class PlanifRoom extends IoWebsocketService {
         } else {
             this.socket.emit("ask_players_list", (error, response : Map<String, Player>) => {
                 if (error) {
-                    console.error(error);
-                    reject(error);
+                  console.error(error);
+                  reject(error);
                 } else {
-                    resolve(response);
+                  // Object to Map
+                  // TODO realy usefull ?
+                  resolve(new Map<String, Player>(Object.entries(response)));
                 }
             });
         }

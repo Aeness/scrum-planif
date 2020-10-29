@@ -21,16 +21,14 @@ export class PlayersListComponent implements OnInit {
 
     this.planifRoom.askPlayersList().then(
       (data: Map<String, Player>) => {
-        for (var ref_player in data) {
-          this.players.set(ref_player, data[ref_player]);
-        }
+        data.forEach((player, ref_player) => {
+          this.players.set(ref_player, player);
+        })
 
         this.players$ = of(this.players);
 
         this.planifRoom.listenPlayerJoinPlanif().subscribe(
           (data: { player: Player; }) => {
-            console.log("getNewPlayer");
-            console.log(data.player);
             this.players.set(data.player.ref, data.player);
           }
         );

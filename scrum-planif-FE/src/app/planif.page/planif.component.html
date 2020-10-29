@@ -1,9 +1,16 @@
 
 <div class="row">
-  <div class="col-xl-12">
+  <div class="col-lg-12 col-xl-6">
     <p>Vous êtes dans le poker planning {{planif_ref}}</p>
     <ng-container *ngIf="joined">
       <app-vote [planifRoom]="planifRoom"></app-vote>
     </ng-container>
+  </div>
+  <div class="col-lg-12 col-xl-6" *ngIf="joined">
+    <div  *ngIf="votes$ | async as votes;">
+      <div *ngFor="let vote of votes | keyvalue">
+        {{vote.value.player.name}} {{vote.value.vote}}
+      </div>
+    </div>
   </div>
 </div>

@@ -6,7 +6,13 @@
     <div class="col-lg-3 col-xxl-3 part">
       <app-players-list [planifRoom]="planifRoom"></app-players-list>
     </div>
-    <div class="col-lg-9 col-xxl-6 part">Contenu administrateur : <br/><br/></div>
+    <div class="col-lg-9 col-xxl-6 part">Contenu administrateur :
+      <div  *ngIf="votes$ | async as votes;">
+        <div *ngFor="let vote of votes | keyvalue">
+          {{vote.value.player.name}} {{vote.value.vote}}
+        </div>
+      </div>
+    </div>
     <div class="col-lg-12 col-xxl-3 my-vote part">
       Votre vote :
       <app-vote [planifRoom]="planifRoom"></app-vote>
