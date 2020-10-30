@@ -42,6 +42,13 @@ $primary: $mainColor;
 
 }
 */
+.col-xxl-3, .col-xxl-6 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 // Mega extra large devices (large desktops, 2560px and up)
 @media (min-width: 2560px) {
   .container {

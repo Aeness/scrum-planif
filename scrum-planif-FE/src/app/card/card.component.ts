@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class CardComponent implements OnInit {
   @Input() value: String;
+  @Input() rank: String;
   @Output() choosenEvent = new EventEmitter<Boolean>();
   private isSelected: Boolean = false;
 
