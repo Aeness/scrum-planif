@@ -1,0 +1,39 @@
+::ng-deep {
+  .svg-inline--fa.fa-smile, .svg-inline--fa.fa-cog {
+    width: 2.25em !important;
+    height: 2.25em;
+    margin: auto;display: block;
+  }
+}
+
+.player {
+  text-align: center;
+  display: inline-block;
+  width: 20%;
+
+  &.player1 {
+    width: 100%;
+
+  }
+
+  &.player2 {
+    width: 50%;
+
+  }
+
+  &.player3 {
+    width: 33%;
+
+  }
+
+  &.player4 {
+    width: 25%;
+
+  }
+
+  .avatar {
+    width: 5em;
+    margin: auto;
+    display: block;
+  }
+}

@@ -4,13 +4,18 @@ import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
 import { Observable, of } from 'rxjs';
 import { Player } from '../auth.service/player';
+import { faCog, faSmile } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-planif',
   templateUrl: './planif.component.html',
+  styleUrls: ['./planif.component.scss'],
   providers:  [ PlanifRoom ]
 })
 export class PlanifComponent {
+  faCog = faCog;
+  faSmile = faSmile;
+
   protected planif_ref : String;
   protected joined: boolean = false;
 

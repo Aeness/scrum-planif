@@ -1,0 +1,11 @@
+div.cards {
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  div.cards {
+    width: 582px;
+    margin: auto;
+    margin-top: 20px;
+  }
+}

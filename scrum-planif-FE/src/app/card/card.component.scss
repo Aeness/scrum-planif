@@ -30,23 +30,33 @@ div.card {
     color: #FFF;
   }
 
-  &.card1of5 {
-    transform: rotate(-15deg) translateY(35px) translateX(40px);
-  }
-
-  &.card2of5 {
-    transform: rotate(-7deg) translateY(7px) translateX(20px);
-  }
-
-  &.card3of5 {
-    transform: translateY(-4px);
-  }
-
-  &.card4of5 {
-    transform: rotate(8deg) translateY(7px) translateX(-20px);
-  }
-
   &.card5of5 {
-    transform: rotate(15deg) translateY(35px) translateX(-40px);
+    margin-right: 0px;
+  }
+
+  @media (min-width: 768px) {
+    &.card1of5 {
+      transform: rotate(-15deg) translateY(35px) translateX(40px);
+    }
+
+    &.card2of5 {
+      transform: rotate(-7deg) translateY(7px) translateX(20px);
+    }
+
+    &.card3of5 {
+      transform: translateY(-4px);
+    }
+
+    &.card4of5 {
+      transform: rotate(8deg) translateY(7px) translateX(-20px);
+    }
+
+    &.card5of5 {
+      transform: rotate(15deg) translateY(35px) translateX(-40px);
+    }
+  }
+
+  @media (max-width: 767px) {
+    margin-bottom: 20px;
   }
 }
