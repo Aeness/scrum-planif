@@ -9,26 +9,7 @@
 <div class="row">
   <div class="col-12 col-xxl-3"></div>
   <div class="col-12 col-xxl-6" *ngIf="joined">
-    <div  *ngIf="votes$ | async as votes;" style="margin: auto;display: block;">
-      <ng-container  *ngFor="let vote of votes | keyvalue">
-
-          <div  *ngIf="vote.key != authService.playerConnected.ref"   [className]="'player ' + ' player'+(votes.size-1)">
-            <div class="avatar">
-              <div style="height: 2.25em;" *ngIf="vote.value.vote!=null">
-                <fa-icon [icon]="faSmile"></fa-icon>
-              </div>
-              <div style="height: 2.25em;"  *ngIf="vote.value.vote==null">
-                <fa-icon [icon]="faCog" [spin]="true"></fa-icon>
-              </div>
-              <svg viewBox="0 0 450 226"  style="margin-top: 3px;">
-                <path id="svg_1" d="m314.6,1l-16.7,0c-22.2,10.2 -46.9,16 -72.9,16s-50.6,-5.8 -72.9,-16l-16.7,0c-74.2,0 -134.4,60.2 -134.4,134.4l0,41.6c0,26.5 21.5,48 48,48l352,0c26.5,0 48,-21.5 48,-48l0,-41.6c0,-74.2 -60.2,-134.4 -134.4,-134.4z" fill="currentColor"/>
-              </svg>
-            </div>
-            {{vote.value.player.name}}
-          </div>
-
-      </ng-container >
-    </div>
+    <app-players [planifRoom]="planifRoom"></app-players>
   </div>
   <div class="col-12 col-xl-3"></div>
 </div>

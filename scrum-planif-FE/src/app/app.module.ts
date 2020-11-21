@@ -19,6 +19,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { PlanifAdminComponent } from './planif-admin.page/planif-admin.component';
 import { VoteComponent } from './vote/vote.component';
 import { PlayersListComponent } from './players-list/players-list.component';
+import { PlayersComponent } from './players/players.component';
 
 
 
@@ -59,7 +60,8 @@ const appRoutes: Routes = [
     PlanifComponent,
     PlanifAdminComponent,
     VoteComponent,
-    PlayersListComponent
+    PlayersListComponent,
+    PlayersComponent
   ],
   imports: [
     BrowserModule,
