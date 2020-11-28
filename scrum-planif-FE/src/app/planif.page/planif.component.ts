@@ -12,7 +12,7 @@ import { AuthService } from '../auth.service/auth.service';
 export class PlanifComponent {
 
   protected planif_ref : String;
-  protected joined: boolean = false;
+  protected takePartIn: boolean = false;
 
 
   constructor(
@@ -24,9 +24,14 @@ export class PlanifComponent {
       params => {
         this.planif_ref = params.planif_ref;
         this.planifRoom.init(this.planif_ref, this.authService.playerConnected, () => {
-          this.joined = true;
+          this.takePartIn = true;
+          this.afterInit();
         });
       }
     )
+  }
+
+  protected afterInit() {
+    this.planifRoom.askToPlay();
   }
 }

@@ -45,8 +45,6 @@ export class PlayersComponent implements OnInit {
 
         this.planifRoom.listenPlanifChoise().subscribe(
           (dataChoise: {player_ref: String, choosenValue : String}) => {
-            console.log(dataChoise)
-            console.log(dataChoise.choosenValue)
             this.votes.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
           }
         );

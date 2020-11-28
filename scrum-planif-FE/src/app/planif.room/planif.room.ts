@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export class PlanifRoom extends IoWebsocketService {
 
   /**
-   * Each main component must have is own PlanifRoom.
+   * Each MAIN component must have is own PlanifRoom.
    * (Provider on the component)
    *
    * But sub component must have the same PlanifRoom than the main component.
@@ -18,12 +18,20 @@ export class PlanifRoom extends IoWebsocketService {
     super.connect("planif=" + planif_ref, "player", data, onConnect);
   }
 
+  public askToPlay() {
+    this.socket.emit("join_planif");
+  }
+
+  public askToNotPlay() {
+    this.socket.emit("leave_planif");
+  }
+
   public listenPlayerJoinPlanif() : Observable<{player: Player}> {
       return this.getMessages('player_join_planif');
   }
 
   public listenPlayerQuitPlanif() : Observable<{player_ref: String}> {
-      return this.getMessages('player_quit_planif');
+      return this.getMessages('player_leave_planif');
   }
 
   public askPlayersList() : Promise<Map<String, Player>> {
@@ -31,14 +39,18 @@ export class PlanifRoom extends IoWebsocketService {
         if (!this.socket) {
             reject('No socket connection.');
         } else {
-            this.socket.emit("ask_players_list", (error, response : Map<String, Player>) => {
+            this.socket.emit("ask_players_list", (error, response : any) => {
                 if (error) {
                   console.error(error);
                   reject(error);
                 } else {
                   // Object to Map
-                  // TODO realy usefull ?
-                  resolve(new Map<String, Player>(Object.entries(response)));
+                  let resMap = new Map<String, Player>()
+                  let entry : [string, any];
+                  for ( entry of Object.entries(response)) {
+                    resMap.set(entry[0],entry[1])
+                  }
+                  resolve(resMap);
                 }
             });
         }

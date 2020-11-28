@@ -10,6 +10,7 @@ import { PlanifRoom } from '../planif.room/planif.room';
 export class VoteComponent {
 
   @Input() planifRoom: PlanifRoom;
+  @Input() isAdmin: Boolean = false;
 
   @ViewChild('card1', { static: true }) card1: CardComponent;
   @ViewChild('card2', { static: true }) card2: CardComponent;

@@ -2,7 +2,7 @@
   <div class="col-12">Vous êtes dans le poker planning {{planif_ref}}</div>
 </div>
 
-<ng-container *ngIf="joined">
+<ng-container *ngIf="takePartIn">
   <div class="row">
     <div class="col-12 col-xxl-6 part">
       <div class="row">
@@ -11,6 +11,10 @@
         </div>
         <div class="col-12 col-xl-6">
           Contenu administrateur :
+          <div class="form-group form-check">
+            <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
+            <label class="form-check-label" for="iVote">Je suis un votant</label>
+          </div>
           <div  *ngIf="votes$ | async as votes;">
             <div *ngFor="let vote of votes | keyvalue">
               {{vote.value.player.name}} {{vote.value.vote}}
@@ -20,8 +24,10 @@
       </div>
     </div>
     <div class="col-xxl-6 part">
-      Votre vote :
-      <app-vote [planifRoom]="planifRoom"></app-vote>
+      <ng-container *ngIf="iVote.value">
+        Votre vote :
+        <app-vote [planifRoom]="planifRoom" [isAdmin]="true"></app-vote>
+    </ng-container>
     </div>
   </div>
 </ng-container>

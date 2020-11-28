@@ -23,44 +23,65 @@ module.exports = {
                     if (err == null) {
                         
                         debug("%s open planif room %s.", socket.id, planif_ref);
-                        var player = JSON.parse(socket.handshake.query.player);
 
                         let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
                         if (room.players === undefined) {
                             room.players = new Map();
                         }
-                        room.players[player.ref] = player;
     
-                        socket.player = player;
-                        
-                        // Send the information to all client
-                        // socket io docs emit-cheatsheet
-                        this.sendPlayerJoinPlanif(planif_ref,player);
-                        
+                        var participant = JSON.parse(socket.handshake.query.player);
+                        socket.participant = participant;
                     }
                 });
 
                 ///////
                 // list of "messages" which can be emit by a client
 
-                socket.on('ask_players_list', (acknowledgement) => {
-                  let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                socket.on('join_planif', () => {
+                    debug("%s plays in planif room %s.", socket.id, planif_ref);
+                    // TODO what happen if the room not exists ?
+                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    var player = JSON.parse(socket.handshake.query.player);
+                    
+                    room.players.set(player.ref, player);
+  
+                        
+                    // Send the information to all client
+                    // socket io docs emit-cheatsheet
+                    this.sendPlayerJoinPlanif(planif_ref,player);
+                });
 
-                  acknowledgement(null, room.players);
+                socket.on('leave_planif', () => {
+                      debug("%s does not play in planif room %s.", socket.id, planif_ref);
+                      // TODO what happen if the room not exists ?
+                      let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                      if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
+                          this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
+                      }
+                });
+
+                socket.on('ask_players_list', (acknowledgement) => {
+                    debug("%s %s ask_players_list for room %s.", socket.id, socket.participant.ref, planif_ref);
+                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+
+                    let reponseTS = {};
+                    for (let entry of room.players.entries()) {
+                        reponseTS[entry[0]] = entry[1];
+                    }
+
+                  acknowledgement(null, reponseTS);
                 });
                 socket.on('disconnecting', () => {
                     debug("%s disconnecting", socket.id);
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
-                    
-                    if (room.players !== undefined) {
-                        delete room.players[socket.player.ref];
+                    if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
+                        this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
                     }
-                    this.sendPlayerQuitPlanif(planif_ref, socket.player.ref)
                 });
 
                 socket.on('player_choose', (data) => {
                     debug("%s choose %s", socket.id, data.choosenValue);
-                    this.sendPlayerChoose(planif_ref, socket.player.ref, data.choosenValue)
+                    this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue)
                 });
             }
         });
@@ -77,9 +98,9 @@ module.exports = {
         this.app.io.to(this.getRoomName(planif_ref)).emit('player_join_planif', {player: player});
     },
 
-    sendPlayerQuitPlanif: function(planif_ref, player_ref) {
-        debug('sendUserQuitPlanif to planif %s : %s', planif_ref, player_ref);
-        this.app.io.to(this.getRoomName(planif_ref)).emit('player_quit_planif', { player_ref: player_ref });
+    sendPlayerLeavePlanif: function(planif_ref, player_ref) {
+        debug('sendPlayerLeavePlanif to planif %s : %s', planif_ref, player_ref);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('player_leave_planif', { player_ref: player_ref });
     },
 
     sendPlayerChoose: function(planif_ref, player_ref, choosenValue) {

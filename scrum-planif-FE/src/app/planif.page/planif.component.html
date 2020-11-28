@@ -8,7 +8,7 @@
 </div>
 <div class="row">
   <div class="col-12 col-xxl-3"></div>
-  <div class="col-12 col-xxl-6" *ngIf="joined">
+  <div class="col-12 col-xxl-6" *ngIf="takePartIn">
     <app-players [planifRoom]="planifRoom"></app-players>
   </div>
   <div class="col-12 col-xl-3"></div>
@@ -16,7 +16,7 @@
 
 <div class="row">
   <div class="col-12 col-xxl-3"></div>
-  <div class="col-12 col-xxl-6" *ngIf="joined">
+  <div class="col-12 col-xxl-6" *ngIf="takePartIn">
     <app-vote [planifRoom]="planifRoom"></app-vote>
   </div>
   <div class="col-12 col-xxl-3"></div>
