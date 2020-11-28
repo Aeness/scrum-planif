@@ -1,6 +1,6 @@
-<div *ngIf="players$ | async as players;">
+<div *ngIf="votes$ | async as votes;">
   Liste des participants :
-  <div *ngFor="let player of players | keyvalue">
-    {{player.value.name}}
+  <div *ngFor="let vote of votes | keyvalue">
+    {{vote.value.player.name}}     {{vote.value.vote}}
   </div>
 </div>
