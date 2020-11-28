@@ -7,10 +7,10 @@ import { AuthService } from '../auth.service/auth.service';
 
 @Component({
   selector: 'app-players',
-  templateUrl: './players.component.html',
-  styleUrls: ['./players.component.scss']
+  templateUrl: './players-list.component.html',
+  styleUrls: ['./players-list.component.scss']
 })
-export class PlayersComponent implements OnInit {
+export class PlayersListComponent implements OnInit {
   faCog = faCog;
   faSmile = faSmile;
 
