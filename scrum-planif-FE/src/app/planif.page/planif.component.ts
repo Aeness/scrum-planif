@@ -11,8 +11,8 @@ import { AuthService } from '../auth.service/auth.service';
 })
 export class PlanifComponent {
 
-  protected planif_ref : String;
-  protected takePartIn: boolean = false;
+  public planif_ref : String;
+  public takePartIn: boolean = false;
 
 
   constructor(

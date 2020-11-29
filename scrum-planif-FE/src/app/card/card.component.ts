@@ -10,7 +10,7 @@ export class CardComponent implements OnInit {
   @Input() value: String;
   @Input() rank: String;
   @Output() choosenEvent = new EventEmitter<Boolean>();
-  private isSelected: Boolean = false;
+  public isSelected: Boolean = false;
 
   constructor() { }
 
