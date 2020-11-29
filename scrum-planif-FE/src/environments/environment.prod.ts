@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   routerEnableTracing: false,
-  restAndIoBackEndUrl: ""
+  restAndIoBackEndUrl: "https://io.scrumplanif.aeness.net"
 };
