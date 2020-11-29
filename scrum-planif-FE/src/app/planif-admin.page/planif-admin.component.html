@@ -6,14 +6,11 @@
   <div class="row">
     <div class="col-12 col-xxl-6 part">
       <div class="row">
-        <div class="col-12 col-xl-6">
-          <app-players-list-admin [planifRoom]="planifRoom"></app-players-list-admin>
-        </div>
-        <div class="col-12 col-xl-6">
+        <div class="col-12 col-xl-5">
           Contenu administrateur :
           <div class="form-group form-check">
             <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
-            <label class="form-check-label" for="iVote">Je suis un votant</label>
+            <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
           </div>
           <div  *ngIf="votes$ | async as votes;">
             <div *ngFor="let vote of votes | keyvalue">
@@ -21,11 +18,13 @@
             </div>
           </div>
         </div>
+        <div class="col-12 col-xl-7">
+          <app-players-list-admin [planifRoom]="planifRoom"></app-players-list-admin>
+        </div>
       </div>
     </div>
     <div class="col-xxl-6 part">
       <ng-container *ngIf="iVote.value">
-        Votre vote :
         <app-vote [planifRoom]="planifRoom" [isAdmin]="true"></app-vote>
     </ng-container>
     </div>

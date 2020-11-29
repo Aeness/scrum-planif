@@ -1,3 +1,4 @@
+<div class='top-help'>Selectionner une carte pour voter.</div>
 <div [className]="'cards'">
   <app-card [value]="1" [rank]="'1of5'" (choosenEvent)="changeValue(1,$event)" #card1></app-card>
   <app-card [value]="2" [rank]="'2of5'" (choosenEvent)="changeValue(2,$event)" #card2></app-card>
@@ -5,3 +6,4 @@
   <app-card [value]="5" [rank]="'4of5'" (choosenEvent)="changeValue(5,$event)" #card4></app-card>
   <app-card [value]="8" [rank]="'5of5'" (choosenEvent)="changeValue(8,$event)" #card5></app-card>
 </div>
+<div class='bottom-help'>Selectionner une carte pour voter.</div>

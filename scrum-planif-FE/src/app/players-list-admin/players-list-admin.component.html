@@ -1,6 +1,16 @@
 <div *ngIf="votes$ | async as votes;">
-  Liste des participants :
-  <div *ngFor="let vote of votes | keyvalue">
-    {{vote.value.player.name}}     {{vote.value.vote}}
-  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Votant</th>
+        <th scope="col">Vote</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vote of votes | keyvalue">
+        <td>{{vote.value.player.name}} </td>
+        <td>{{vote.value.vote}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

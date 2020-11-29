@@ -1,11 +1,27 @@
-div.cards {
+div.cards, div.top-help {
   margin-top: 20px;
+}
+div.bottom-help {
+  text-align: center;
 }
 
 @media (min-width: 768px) {
-  div.cards {
+  div.cards, div.bottom-help {
     width: 582px;
     margin: auto;
     margin-top: 20px;
+  }
+  div.cards {
+    height: 145px;
+  }
+  div.top-help {
+    display: none;
+  }
+}
+
+
+@media (max-width: 765px) {
+  div.bottom-help {
+    display: none;
   }
 }
