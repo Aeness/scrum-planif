@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   routerEnableTracing: true,
-  restAndIoBackEndUrl: "http://127.0.0.1:3000"
+  restAndIoBackEndUrl: "http://127.0.0.1:3000",
+  linkUrl: "http://127.0.0.1:4200"
 };
 
 /*

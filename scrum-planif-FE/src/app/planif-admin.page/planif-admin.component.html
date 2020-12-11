@@ -1,5 +1,8 @@
 <div class="row title">
-  <div class="col-12">Vous êtes dans le poker planning {{planif_ref}}</div>
+  <div class="col-12">
+    Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif_ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
+    ou via le lien <span id="link" class="toCopy">{{urlLink}}/planif/{{planif_ref}}</span> <button class="copy" (click)="copyElement('link')"><fa-icon [icon]="faCopy"></fa-icon></button>.
+  </div>
 </div>
 
 <ng-container *ngIf="takePartIn">
