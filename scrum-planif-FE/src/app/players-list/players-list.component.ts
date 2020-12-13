@@ -23,13 +23,14 @@ export class PlayersListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.planifRoom.askPlayersList().then(
+    this.planifRoom.playersList$.subscribe(
       (data: Map<String, Player>) => {
         data.forEach((player, ref_player) => {
           this.votes.set(ref_player, {player: player, vote : null});
         })
         this.votes$ = of(this.votes);
 
+        // TODO if a player arrives beetwen playersList$.subscribe and this.planifRoom.listenPlayerJoinPlanif()
         // TODO if get vote before player
         this.planifRoom.listenPlayerJoinPlanif().subscribe(
           (dataJoin: { player: Player; }) => {

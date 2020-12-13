@@ -35,6 +35,22 @@ module.exports = {
                     }
                 });
 
+                socket.on('ask_planif_informations', (acknowledgement) => {
+                    debug("%s %s ask_planif_informations for room %s.", socket.id, socket.participant.ref, planif_ref);
+                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    
+                    let reponsePlayerTS = {};
+                    for (let entry of room.players.entries()) {
+                        reponsePlayerTS[entry[0]] = entry[1];
+                    }
+                    let reponse = {
+                        ref : planif_ref,
+                        name : room.name,
+                        players : reponsePlayerTS
+                    };
+                    acknowledgement(null, reponse);
+                });
+
                 ///////
                 // list of "messages" which can be emit by a client
 
@@ -59,34 +75,6 @@ module.exports = {
                       if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
                           this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
                       }
-                });
-
-                socket.on('ask_planif_informations', (acknowledgement) => {
-                    debug("%s %s ask_planif_informations for room %s.", socket.id, socket.participant.ref, planif_ref);
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
-                    /*
-                    let reponsePlayerTS = {};
-                    for (let entry of room.players.entries()) {
-                        reponsePlayerTS[entry[0]] = entry[1];
-                    }*/
-                    let reponse = {
-                        ref : planif_ref,
-                        name : room.name//,
-                        //players : reponsePlayerTS
-                    };
-                    acknowledgement(null, reponse);
-                });
-
-                socket.on('ask_players_list', (acknowledgement) => {
-                    debug("%s %s ask_players_list for room %s.", socket.id, socket.participant.ref, planif_ref);
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
-
-                    let reponseTS = {};
-                    for (let entry of room.players.entries()) {
-                        reponseTS[entry[0]] = entry[1];
-                    }
-
-                    acknowledgement(null, reponseTS);
                 });
 
                 socket.on('disconnecting', () => {

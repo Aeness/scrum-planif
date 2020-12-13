@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
-import { Planif } from '../planif.room/planif';
 
 @Component({
   selector: 'app-planif',
