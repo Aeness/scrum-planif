@@ -1,4 +1,4 @@
-<div *ngIf="votes$ | async as votes;">
+<div *ngIf="players.size > 0">
   <table class="table">
     <thead>
       <tr>
@@ -7,9 +7,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let vote of votes | keyvalue">
-        <td>{{vote.value.player.name}} </td>
-        <td>{{vote.value.vote}}</td>
+      <tr *ngFor="let player of players | keyvalue">
+        <td>{{player.value.name}} </td>
+        <td>{{player.value.vote}}</td>
       </tr>
     </tbody>
   </table>

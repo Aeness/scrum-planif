@@ -30,8 +30,8 @@ export class PlanifRoom extends IoWebsocketService {
 
           // Object to Map
           let entry : [string, any];
-          for ( entry of Object.entries(response.players)) {
-          this.playersList$.value.set(entry[0],entry[1]);
+          for (entry of Object.entries(response.players)) {
+            this.playersList$.value.set(entry[0],entry[1]);
           }
 
           this.listenPlanifName().subscribe(
@@ -43,6 +43,19 @@ export class PlanifRoom extends IoWebsocketService {
           this.listenPlayerJoinPlanif().subscribe(
             (dataJoin: { player: Player; }) => {
               this.playersList$.value.set(dataJoin.player.ref, dataJoin.player);
+            }
+          );
+
+          this.listenPlayerQuitPlanif().subscribe(
+            (dataQuit: { player_ref: String; }) => {
+              this.playersList$.value.delete(dataQuit.player_ref);
+            }
+          );
+
+          this.listenPlanifChoise().subscribe(
+            (dataChoise: {player_ref: String, choosenValue : String}) => {
+              //this.votes.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
+              this.playersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
             }
           );
 

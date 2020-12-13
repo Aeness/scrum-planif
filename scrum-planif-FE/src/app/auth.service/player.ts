@@ -1,5 +1,6 @@
 export class Player {
 
-  public ref: string;
-  public name: string;
+  public ref: String;
+  public name: String;
+  public vote: String;
 }

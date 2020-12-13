@@ -59,6 +59,7 @@ module.exports = {
                     // TODO what happen if the room not exists ?
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
                     var player = JSON.parse(socket.handshake.query.player);
+                    player.vote = null;
                     
                     room.players.set(player.ref, player);
   
@@ -87,6 +88,10 @@ module.exports = {
 
                 socket.on('player_choose', (data) => {
                     debug("%s choose %s", socket.id, data.choosenValue);
+                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    if (room.players !== undefined && room.players.has(socket.participant.ref)) {
+                        room.players.get(socket.participant.ref).vote = data.choosenValue;
+                    }
                     this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue)
                 });
 
