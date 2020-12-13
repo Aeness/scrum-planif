@@ -28,6 +28,7 @@ module.exports = {
                         if (room.players === undefined) {
                             room.players = new Map();
                             room.name = null;
+                            room.resultsVisibility = false;
                         }
     
                         var participant = JSON.parse(socket.handshake.query.user);
@@ -46,7 +47,8 @@ module.exports = {
                     let reponse = {
                         ref : planif_ref,
                         name : room.name,
-                        players : reponsePlayerTS
+                        players : reponsePlayerTS,
+                        resultsVisibility : room.resultsVisibility
                     };
                     acknowledgement(null, reponse);
                 });
@@ -102,6 +104,12 @@ module.exports = {
                     // socket io docs emit-cheatsheet
                     this.sendPlanifName(planif_ref,name);
                 });
+
+                socket.on('change_results_visibility', (data) => {
+                    debug("%s choose result visibility to %s", socket.id, data.choosenVisibility);
+                    socket.adapter.rooms[this.getRoomName(planif_ref)].resultsVisibility = data.choosenVisibility;
+                    this.sendVisibilityChanged(planif_ref, data.choosenVisibility)
+                });
             }
         });
     },
@@ -129,5 +137,9 @@ module.exports = {
     sendPlanifName: function (planif_ref, name) {
         debug('sendPlanifName to planif:' + planif_ref + " " + name);
         this.app.io.to(this.getRoomName(planif_ref)).emit('planif_name', {name: name});
+	},
+    sendVisibilityChanged: function(planif_ref, choosenValue) {
+        debug('sendVisibilityChanged to planif %s : %s', planif_ref, choosenValue);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('results_visibility_changed', { choosenVisibility: choosenValue});
     },
 }

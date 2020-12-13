@@ -9,6 +9,7 @@ export class PlanifRoom extends IoWebsocketService {
   // Send the last name knew by the room.
   public name$ : BehaviorSubject<String> = new BehaviorSubject("");
   public playersList$ : BehaviorSubject<Map<String, Player>> = new BehaviorSubject(new Map<String, Player>());
+  public resultsVisibility$ : BehaviorSubject<Boolean> = new BehaviorSubject(true);
 
   /**
    * Each MAIN component must have is own PlanifRoom.
@@ -60,6 +61,13 @@ export class PlanifRoom extends IoWebsocketService {
             }
           );
 
+          this.resultsVisibility$.next(response.resultsVisibility);
+
+          this.listenResultsVisibility().subscribe(
+            (dataChoise: {choosenVisibility : Boolean}) => {
+              this.resultsVisibility$.next(dataChoise.choosenVisibility);
+            }
+          );
           // TODO use AsyncSubject<boolean> ???
           onChildrenConnect();
         }
@@ -98,5 +106,13 @@ export class PlanifRoom extends IoWebsocketService {
 
   public listenPlanifName() : Observable<{name: String}> {
     return this.getMessages('planif_name');
+  }
+
+  public listenResultsVisibility() : Observable<{choosenVisibility : Boolean}> {
+      return this.getMessages('results_visibility_changed');
+  }
+
+  public sendResultsVisibility(choosenValue : Boolean) {
+    this.socket.emit("change_results_visibility", {choosenVisibility : choosenValue});
   }
 }

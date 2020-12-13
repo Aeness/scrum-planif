@@ -14,6 +14,7 @@ export class PlanifComponent {
   public init: boolean = false;
   public planif : {ref: String, name: String};
   public takePartIn: boolean = false;
+  public resultsVisibility: Boolean = false;
 
 
   constructor(
@@ -44,5 +45,11 @@ export class PlanifComponent {
       }
     );
     this.planifRoom.askToPlay();
+
+    this.planifRoom.resultsVisibility$.subscribe(
+      (data: Boolean) => {
+        this.resultsVisibility = data;
+      }
+    );
   }
 }

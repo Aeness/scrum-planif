@@ -16,9 +16,13 @@
             <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
             <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
           </div>
+          <div class="form-group form-check">
+            <input id="visibilityChoosen" type="checkbox" class="form-check-input" [formControl]="resultsVisibilityChoosen" (ngModelChange)="resultsVisibilityChoosenChange()">
+            <label class="form-check-label" for="visibilityChoosen">Afficher les résultats aux autres participants</label>
+          </div>
           <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onSubmit()">
-          <label class="mb-2 mr-2" for="name">Nom du poker planning </label>
-          <input type="text" class="form-control mb-2 mr-sm-2" id="name"
+            <label class="mb-2 mr-2" for="name">Nom du poker planning </label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="name"
                  formControlName="name">
 
           <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
@@ -30,7 +34,7 @@
           </div>
         </div>
         <div class="col-12 col-xl-7">
-          <app-players-list-admin [planifRoom]="planifRoom"></app-players-list-admin>
+          <app-results-list [planifRoom]="planifRoom"></app-results-list>
         </div>
       </div>
     </div>

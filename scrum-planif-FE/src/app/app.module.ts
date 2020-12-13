@@ -18,8 +18,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LogoutComponent } from './logout/logout.component';
 import { PlanifAdminComponent } from './planif-admin.page/planif-admin.component';
 import { VoteComponent } from './vote/vote.component';
-import { PlayersListAdminComponent } from './players-list-admin/players-list-admin.component';
 import { PlayersListComponent } from './players-list/players-list.component';
+import { ResultsListComponent } from './results-list/results-list.component';
 
 
 
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
     PlanifComponent,
     PlanifAdminComponent,
     VoteComponent,
-    PlayersListAdminComponent,
+    ResultsListComponent,
     PlayersListComponent
   ],
   imports: [

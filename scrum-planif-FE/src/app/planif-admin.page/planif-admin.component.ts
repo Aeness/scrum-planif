@@ -21,6 +21,8 @@ export class PlanifAdminComponent extends PlanifComponent {
   urlLink = environment.linkUrl;
   faCopy = faCopy;
 
+  resultsVisibilityChoosen = new FormControl(false);
+
   constructor(
     protected route: ActivatedRoute,
     protected planifRoom: PlanifRoom,
@@ -37,9 +39,20 @@ export class PlanifAdminComponent extends PlanifComponent {
   protected afterInit() {
     this.planifRoom.name$.subscribe(
       (data) => {
-        this.planifForm.patchValue({
-          name: data
-        });
+        // TODO use the value of planifRoom ?
+        if (this.planifForm.controls.name.value != data) {
+          this.planifForm.patchValue({
+            name: data
+          });
+        }
+      }
+    );
+    this.planifRoom.resultsVisibility$.subscribe(
+      (data) => {
+        // TODO use the value of planifRoom ?
+        if (this.resultsVisibilityChoosen.value != data) {
+          this.resultsVisibilityChoosen.setValue(data);
+        }
       }
     );
     // An admin doesn't play
@@ -51,6 +64,10 @@ export class PlanifAdminComponent extends PlanifComponent {
     } else {
       this.planifRoom.askToNotPlay();
     }
+  }
+
+  public resultsVisibilityChoosenChange() {
+    this.planifRoom.sendResultsVisibility(this.resultsVisibilityChoosen.value);
   }
 
   public copyElement(idElement) {
