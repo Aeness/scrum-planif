@@ -1,12 +1,13 @@
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from '../auth.service/player';
-import { AsyncSubject, Observable } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, Observable } from 'rxjs';
 import { Planif } from './planif';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class PlanifRoom extends IoWebsocketService {
-  public planif$ : AsyncSubject<Planif> = new AsyncSubject()
+  // Send the last name knew by the room.
+  public name$ : BehaviorSubject<String> = new BehaviorSubject("");
 
   /**
    * Each MAIN component must have is own PlanifRoom.
@@ -18,19 +19,23 @@ export class PlanifRoom extends IoWebsocketService {
    * @param data
    * @param onConnect
    */
-  public init(planif_ref : String, data: Player, onConnect : () => void) {
-    super.connect("planif=" + planif_ref, "player", data, onConnect);
-  }
-  public init2(planif_ref : String, data: Player) {
+  public init(planif_ref : String, data: Player, onChildrenConnect : () => void) {
     super.connect("planif=" + planif_ref, "player", data, () => {
       this.askPlanifRoom().then(
         (data: Planif) => {
-          this.planif$.next(data);
-          this.planif$.complete();
+          this.name$.next(data.name);
+
+          this.listenPlanifName().subscribe(
+            (data) => {
+              this.name$.next(data.name);
+            }
+          );
+
+          // TODO use AsyncSubject<boolean> ???
+          onChildrenConnect();
         }
       )
     });
-    return this.planif$;
   }
 
   private askPlanifRoom() : Promise<Planif> {

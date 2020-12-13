@@ -35,10 +35,17 @@ export class PlanifAdminComponent extends PlanifComponent {
     }
 
   protected afterInit() {
+    this.planifRoom.name$.subscribe(
+      (data) => {
+        this.planifForm.patchValue({
+          name: data
+        });
+      }
+    );
     // An admin doesn't play
   }
 
-  private iVoteChange() {
+  public iVoteChange() {
     if (this.iVote.value == true) {
       this.planifRoom.askToPlay();
     } else {
@@ -62,9 +69,10 @@ export class PlanifAdminComponent extends PlanifComponent {
         console.error(err);
     }
   }
-  
+
   onSubmit() {
     if(this.planifForm.valid) {
+      // Send also to itself
       this.planifRoom.sendPlanifName(this.planifForm.controls.name.value)
     }
   }
