@@ -27,6 +27,7 @@ module.exports = {
                         let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
                         if (room.players === undefined) {
                             room.players = new Map();
+                            room.name = null;
                         }
     
                         var participant = JSON.parse(socket.handshake.query.player);
@@ -60,6 +61,22 @@ module.exports = {
                       }
                 });
 
+                socket.on('ask_planif_informations', (acknowledgement) => {
+                    debug("%s %s ask_planif_informations for room %s.", socket.id, socket.participant.ref, planif_ref);
+                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    /*
+                    let reponsePlayerTS = {};
+                    for (let entry of room.players.entries()) {
+                        reponsePlayerTS[entry[0]] = entry[1];
+                    }*/
+                    let reponse = {
+                        ref : planif_ref,
+                        name : room.name//,
+                        //players : reponsePlayerTS
+                    };
+                    acknowledgement(null, reponse);
+                });
+
                 socket.on('ask_players_list', (acknowledgement) => {
                     debug("%s %s ask_players_list for room %s.", socket.id, socket.participant.ref, planif_ref);
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
@@ -69,8 +86,9 @@ module.exports = {
                         reponseTS[entry[0]] = entry[1];
                     }
 
-                  acknowledgement(null, reponseTS);
+                    acknowledgement(null, reponseTS);
                 });
+
                 socket.on('disconnecting', () => {
                     debug("%s disconnecting", socket.id);
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
@@ -85,8 +103,7 @@ module.exports = {
                 });
 
                 socket.on('send_planif_name', (name) => {
-
-                    // TODO : write the name for future join
+                    socket.adapter.rooms[this.getRoomName(planif_ref)].name = name;
                     
                     // Send the information to all client
                     // socket io docs emit-cheatsheet

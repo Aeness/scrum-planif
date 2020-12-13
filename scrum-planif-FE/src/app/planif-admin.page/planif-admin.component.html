@@ -1,3 +1,4 @@
+<ng-container *ngIf="init">
 <div class="row title">
   <div class="col-12">
     Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif.ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
@@ -19,7 +20,7 @@
           <label class="mb-2 mr-2" for="name">Nom du poker planning </label>
           <input type="text" class="form-control mb-2 mr-sm-2" id="name"
                  formControlName="name">
-        
+
           <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
         </form>
           <div  *ngIf="votes$ | async as votes;">
@@ -39,4 +40,5 @@
     </ng-container>
     </div>
   </div>
+</ng-container>
 </ng-container>

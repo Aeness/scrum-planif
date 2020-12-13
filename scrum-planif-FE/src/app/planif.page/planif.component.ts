@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
+import { Planif } from '../planif.room/planif';
 
 @Component({
   selector: 'app-planif',
@@ -11,7 +12,8 @@ import { AuthService } from '../auth.service/auth.service';
 })
 export class PlanifComponent {
 
-  public planif : {ref: String, name: String};
+  public planif : Planif = new Planif();
+  public init: boolean = false;
   public takePartIn: boolean = false;
 
 
@@ -22,25 +24,28 @@ export class PlanifComponent {
   ) {
     this.route.params.subscribe(
       params => {
-        this.planif = {
-          ref: params.planif_ref,
-          name : ''
-        };
-        this.planifRoom.init(this.planif.ref, this.authService.playerConnected, () => {
-          this.takePartIn = true;
-          this.afterInit();
-        });
+        var routePlanifRef = params.planif_ref;
+        this.planifRoom.init2(routePlanifRef, this.authService.playerConnected).subscribe(
+          (data : Planif) => {
+            this.planif = data;
+            this.init = true;
+            this.takePartIn = true;
+            this.afterInit();
+        })
       }
     )
   }
 
   ngOnInit() {
+    // TODO move it in the the planif room with a BehaviorSubject
     this.planifRoom.listenPlanifName().subscribe(
       (data) => {
         this.planif.name = data.name;
       }
     );
   }
+
+  // TODO rename to afterPlanifRoomInit
   protected afterInit() {
     this.planifRoom.askToPlay();
   }

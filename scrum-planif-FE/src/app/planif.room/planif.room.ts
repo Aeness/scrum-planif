@@ -1,8 +1,12 @@
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from '../auth.service/player';
-import { Observable } from 'rxjs';
+import { AsyncSubject, Observable } from 'rxjs';
+import { Planif } from './planif';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class PlanifRoom extends IoWebsocketService {
+  public planif$ : AsyncSubject<Planif> = new AsyncSubject()
 
   /**
    * Each MAIN component must have is own PlanifRoom.
@@ -17,11 +21,52 @@ export class PlanifRoom extends IoWebsocketService {
   public init(planif_ref : String, data: Player, onConnect : () => void) {
     super.connect("planif=" + planif_ref, "player", data, onConnect);
   }
+  public init2(planif_ref : String, data: Player) {
+    super.connect("planif=" + planif_ref, "player", data, () => {
+      this.askPlanifRoom().then(
+        (data: Planif) => {
+          this.planif$.next(data);
+          this.planif$.complete();
+        }
+      )
+    });
+    return this.planif$;
+  }
 
+  private askPlanifRoom() : Promise<Planif> {
+    return new Promise<Planif>((resolve, reject) => {
+      if (!this.socket) {
+          reject('No socket connection.');
+      } else {
+        this.socket.emit("ask_planif_informations", (error, response : any) => {
+            if (error) {
+              console.error(error);
+              reject(error);
+            } else {
+              var reponseTS : Planif  = new Planif();
+              reponseTS.ref = response.ref;
+              reponseTS.name = response.name;
+              /*
+              // Object to Map
+              let resPlayersMap = new Map<String, Player>()
+              let entry : [string, any];
+              for ( entry of Object.entries(response.players)) {
+                resPlayersMap.set(entry[0],entry[1])
+              }
+              reponseTS.players = resPlayersMap;
+              */
+              resolve(reponseTS);
+            }
+        });
+      }
+    });
+  }
+
+  // TODO rename without ask
   public askToPlay() {
     this.socket.emit("join_planif");
   }
-
+  // TODO rename without ask
   public askToNotPlay() {
     this.socket.emit("leave_planif");
   }
@@ -64,7 +109,7 @@ export class PlanifRoom extends IoWebsocketService {
   public sendPlanifChoise(choosenValue : String) {
     this.socket.emit("player_choose", {choosenValue : choosenValue});
   }
-  
+
   public sendPlanifName(name: String) {
     this.sendMessage("send_planif_name", name);
   }
