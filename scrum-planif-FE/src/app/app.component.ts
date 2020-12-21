@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Player } from './auth.service/player';
+import { User } from './auth.service/user';
 import { AuthService } from './auth.service/auth.service';
 import { Subscription } from 'rxjs';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -12,22 +12,22 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 export class AppComponent {
   faSignOutAlt = faSignOutAlt;
   title = 'scrum-planif';
-  player : Player ;
+  user : User ;
   subscription: Subscription;
 
   constructor(private authService: AuthService) {
-    this.subscription = authService.playerAnnounced$.subscribe(
-      (player : Player) => {
-        this.player = player;
+    this.subscription = authService.userAnnounced$.subscribe(
+      (user : User) => {
+        this.user = user;
       }
     );
 
-    if (authService.hasPlayerConnected) {
-      this.player = authService.playerConnected;
+    if (authService.hasUserConnected) {
+      this.user = authService.userConnected;
     }
   }
 
   get userConnected() : boolean {
-    return this.player != null;
+    return this.user != null;
   }
 }

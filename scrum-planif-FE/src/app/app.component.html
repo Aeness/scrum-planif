@@ -1,7 +1,7 @@
 <div id="top">
   <div class="container">
     <div id="connection" *ngIf="userConnected">
-        <p>Vous êtes connecté(e) en tant que <strong>{{player.name}}</strong>.
+        <p>Vous êtes connecté(e) en tant que <strong>{{user.name}}</strong>.
           <a class="logout" [routerLink]="['/logout']"><fa-icon [icon]="faSignOutAlt"></fa-icon></a>
         </p>
     </div>

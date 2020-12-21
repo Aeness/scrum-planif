@@ -27,7 +27,7 @@ export class PlanifComponent {
           ref: params.planif_ref,
           name : ''
         };
-        this.planifRoom.init(this.planif.ref, this.authService.playerConnected, () => {
+        this.planifRoom.init(this.planif.ref, this.authService.userConnected, () => {
           this.init = true;
           this.takePartIn = true;
           this.afterInit();

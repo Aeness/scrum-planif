@@ -2,7 +2,7 @@
     <div  *ngIf="players.size > 0" style="margin: auto;display: block;">
       <ng-container  *ngFor="let player of players | keyvalue">
 
-          <div  *ngIf="player.key != authService.playerConnected.ref"   [className]="'player ' + ' player'+(players.size-1)">
+          <div  *ngIf="player.key != authService.userConnected.ref"   [className]="'player ' + ' player'+(players.size-1)">
             <div class="avatar">
               <div style="height: 2.25em;" *ngIf="player.value.vote!=null">
                 <fa-icon [icon]="faSmile"></fa-icon>

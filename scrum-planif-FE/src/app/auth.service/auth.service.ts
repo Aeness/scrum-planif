@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { StorageTokenTool } from './storage-token.tool';
 import { Observable, Subject } from 'rxjs';
 import { Payload } from './payload';
-import { Player } from './player';
+import { User } from './user';
 
 @Injectable()
 export class AuthService {
@@ -31,27 +31,27 @@ export class AuthService {
     //.shareReplay();
   }
 
-  private playerConnectedSource = new Subject<Player>();
+  private userConnectedSource = new Subject<User>();
 
-  get hasPlayerConnected() : boolean {
+  get hasUserConnected() : boolean {
     return StorageTokenTool.hasToken();
   }
 
-  get playerConnected() : Player {
+  get userConnected() : User {
     let token_decoded : Payload = StorageTokenTool.decodedToken();
     return {ref: token_decoded.ref, name: token_decoded.name};
   }
 
   // Observable player streams
-  playerAnnounced$ = this.playerConnectedSource.asObservable();
+  userAnnounced$ = this.userConnectedSource.asObservable();
 
   // Service message commands
   announcePlayer(token_decoded: Payload) {
-    this.playerConnectedSource.next({ref: token_decoded.ref, name: token_decoded.name});
+    this.userConnectedSource.next({ref: token_decoded.ref, name: token_decoded.name});
   }
 
   revokePlayer() {
-    this.playerConnectedSource.next(null);
+    this.userConnectedSource.next(null);
   }
 
 }

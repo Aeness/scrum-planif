@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Player } from '../auth.service/player';
+import { Player } from '../planif.room/player';
 import { faCog, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';

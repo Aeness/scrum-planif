@@ -1,7 +1,8 @@
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
-import { Player } from '../auth.service/player';
+import { Player } from './player';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { User } from '../auth.service/user';
 
 @Injectable()
 export class PlanifRoom extends IoWebsocketService {
@@ -19,8 +20,8 @@ export class PlanifRoom extends IoWebsocketService {
    * @param data
    * @param onConnect
    */
-  public init(planif_ref : String, data: Player, onChildrenConnect : () => void) {
-    super.connect("planif=" + planif_ref, "player", data, () => {
+  public init(planif_ref : String, data: User, onChildrenConnect : () => void) {
+    super.connect("planif=" + planif_ref, "user", data, () => {
 
       this.socket.emit("ask_planif_informations", (error, response : any) => {
         if (error) {

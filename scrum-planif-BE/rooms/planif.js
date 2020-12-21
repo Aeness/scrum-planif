@@ -30,7 +30,7 @@ module.exports = {
                             room.name = null;
                         }
     
-                        var participant = JSON.parse(socket.handshake.query.player);
+                        var participant = JSON.parse(socket.handshake.query.user);
                         socket.participant = participant;
                     }
                 });
@@ -58,7 +58,7 @@ module.exports = {
                     debug("%s plays in planif room %s.", socket.id, planif_ref);
                     // TODO what happen if the room not exists ?
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
-                    var player = JSON.parse(socket.handshake.query.player);
+                    var player = JSON.parse(socket.handshake.query.user);
                     player.vote = null;
                     
                     room.players.set(player.ref, player);
