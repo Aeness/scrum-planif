@@ -1,22 +1,26 @@
 
-<div class="container-xl">
-            <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-              <div class="form-group">
-                  <label  for="name" class="control-label"
-                          [class.is-invalid]="authForm.controls.name.touched && authForm.controls.name.errors">Nom
-                  </label>
-                  <input  name="name" size="30" type="text" class="form-control input-group-addon"
-                          formControlName="name"
-                          [class.is-invalid]="authForm.controls.name.touched && authForm.controls.name.errors"/>
-                  <div *ngIf="authForm.controls.name.invalid && (authForm.controls.name.dirty || authForm.controls.name.touched)">
-                    <span *ngIf="authForm.controls.name.errors.required === true" class="invalid-feedback">Le nom est obligatoire.</span>
-                    <span *ngIf="authForm.controls.name.errors.required !== true && authForm.controls.name.errors.minLength !== null" class="invalid-feedback">Le nom doit faire 3 caratères minimum.</span>
-                    <span *ngIf="authForm.controls.name.errors.server" class="invalid-label-feedback">{{authForm.controls.name.errors.server}}</span>
-                  </div>
-              </div>
-              <div>
-                  <input class="btn btn-primary" name="commit" type="submit" value="{{submitLabel}}"
-                          [disabled]="!authForm.valid"/>
-              </div>
-          </form>
+<div class="scrumplanif" *ngIf="!userConnected">
+  <h1><img src="/assets/logo.png" height="50 px;" style="padding-bottom: 10px;"/> ScrumPlanif</h1>
+  <p>Vous n'êtes pas connecté(e).</p>
+</div>
+<div class="p-3 bg-white rounded shadow-sm" style="max-width: 600px; margin: 3px auto;">
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label  for="name" class="control-label"
+                [class.is-invalid]="authForm.controls.name.touched && authForm.controls.name.errors">Nom
+        </label>
+        <input  name="name" size="30" type="text" class="form-control input-group-addon"
+                formControlName="name"
+                [class.is-invalid]="authForm.controls.name.touched && authForm.controls.name.errors"/>
+        <div *ngIf="authForm.controls.name.invalid && (authForm.controls.name.dirty || authForm.controls.name.touched)">
+          <span *ngIf="authForm.controls.name.errors.required === true" class="invalid-feedback">Le nom est obligatoire.</span>
+          <span *ngIf="authForm.controls.name.errors.required !== true && authForm.controls.name.errors.minLength !== null" class="invalid-feedback">Le nom doit faire 3 caratères minimum.</span>
+          <span *ngIf="authForm.controls.name.errors.server" class="invalid-label-feedback">{{authForm.controls.name.errors.server}}</span>
+        </div>
+    </div>
+    <div>
+        <input class="btn btn-primary" name="commit" type="submit" value="{{submitLabel}}"
+                [disabled]="!authForm.valid"/>
+    </div>
+</form>
 </div>

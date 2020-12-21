@@ -1,3 +1,21 @@
+@import "../../variables.scss";
+
 .invalid-feedback {
   display: inline;
+}
+
+body.no-user {
+  background-color: $mainColor;
+}
+
+.scrumplanif {
+  text-align: center;
+  color: #FFF;
+  padding-top: 50px;
+
+  h1, p {
+    padding-top: 25px;
+    padding-bottom: 20px;
+  }
+
 }

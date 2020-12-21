@@ -38,6 +38,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    const body = document.getElementsByTagName('body')[0];
+    body.classList.add('no-user');
+
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -70,5 +73,10 @@ export class LoginComponent implements OnInit {
         }
       );
     }
+  }
+
+  ngOnDestroy() {
+    const body = document.getElementsByTagName('body')[0];
+    body.classList.remove('no-user');
   }
 }

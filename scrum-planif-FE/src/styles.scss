@@ -87,3 +87,7 @@ $primary: $mainColor;
     margin-left: auto;
   }
 }
+
+body.no-user {
+  background-color: $mainColor;
+}

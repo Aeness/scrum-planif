@@ -1,27 +1,27 @@
-<div id="top">
-  <div class="container">
-    <div id="connection" *ngIf="userConnected">
-        <p>Vous êtes connecté(e) en tant que <strong>{{user.name}}</strong>.
-          <a class="logout" [routerLink]="['/logout']"><fa-icon [icon]="faSignOutAlt"></fa-icon></a>
-        </p>
-    </div>
-    <div id="connection" *ngIf="!userConnected">
-            <p>Vous n'êtes pas connecté(e).</p>
-    </div>
-    <nav id="menu" class="">
-        <ul class="">
-            <li >
-            </li>
-              <li>
-                  <a routerLink="/">Accueil</a>
+  <div id="top" *ngIf="userConnected">
+    <div class="container" *ngIf="userConnected">
+      <div id="connection" *ngIf="userConnected">
+          <p>Vous êtes connecté(e) en tant que <strong>{{user.name}}</strong>.
+            <a class="logout" [routerLink]="['/logout']"><fa-icon [icon]="faSignOutAlt"></fa-icon></a>
+          </p>
+      </div>
+      <div id="connection" *ngIf="!userConnected">
+              <p>Vous n'êtes pas connecté(e).</p>
+      </div>
+      <nav id="menu" class="">
+          <ul class="">
+              <li >
               </li>
-        </ul>
-    </nav>
+                <li>
+                    <a routerLink="/">Accueil</a>
+                </li>
+          </ul>
+      </nav>
+    </div>
   </div>
-</div>
-<div id="content"  class="container">
-    <router-outlet></router-outlet>
-</div>
-<div id="footer" class="container">
-  <p>ScrumPlanif - 2020</p>
-</div>
+  <div id="content" class="container">
+      <router-outlet></router-outlet>
+  </div>
+  <div id="footer" class="container" *ngIf="userConnected">
+    <p>ScrumPlanif - 2020</p>
+  </div>
