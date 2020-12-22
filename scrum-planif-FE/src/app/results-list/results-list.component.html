@@ -2,7 +2,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Votant</th>
+        <th scope="col">Participant</th>
         <th scope="col">Vote</th>
       </tr>
     </thead>
@@ -14,3 +14,4 @@
     </tbody>
   </table>
 </div>
+<p *ngIf="players.size == 0">Pas de participant pour l'instant.</p>
