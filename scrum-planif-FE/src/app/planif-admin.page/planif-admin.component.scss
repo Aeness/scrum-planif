@@ -31,3 +31,13 @@
 #content {
   background-color: rosybrown;
 }
+
+.no-padding-r {
+  padding-right: 0 !important;
+}
+
+@media (max-width: 1199.98px) {
+  .before-xl-no-padding {
+    padding: 0 !important;
+  }
+}
