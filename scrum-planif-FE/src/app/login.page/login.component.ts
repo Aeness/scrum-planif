@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit {
       name: ['', Validators.compose([Validators.required, Validators.minLength(3)]) ]
     });
     this.authFormSubmiting(false);
+
+    // TODO : what happen if connected in this page
   }
 
   authFormSubmiting(authFormSubmiting: boolean) {
