@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { IndexComponent } from './index.component';
 
@@ -8,7 +10,10 @@ describe('IndexComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IndexComponent ]
+      imports: [RouterTestingModule, ReactiveFormsModule, FormsModule],
+      declarations: [ IndexComponent ],
+      providers: [FormBuilder]
+
     })
     .compileComponents();
   }));
