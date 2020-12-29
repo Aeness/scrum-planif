@@ -10,13 +10,18 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "style": "scss"
         }
       },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+               "jwt-decode",
+               "debug",
+               "socket.io-client"
+            ],
             "outputPath": "dist/scrum-planif",
             "index": "src/index.html",
             "main": "src/main.ts",
