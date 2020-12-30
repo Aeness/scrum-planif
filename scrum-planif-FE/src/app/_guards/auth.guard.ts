@@ -29,7 +29,8 @@ export class AuthGuard implements CanActivate {
                     }),
                     catchError((err, caught) => {
                         StorageTokenTool.deleteTokens();
-                        // refresh fails so redirect to login page
+                        // refresh fails so revoke the user and redirect to login page
+                        this.authService.revokePlayer();
                         router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
                         return observableOf(false);
                     }
@@ -41,7 +42,8 @@ export class AuthGuard implements CanActivate {
                 return true;
             }
         } else {
-            // not logged in so redirect to login page
+            // not logged in so revoke the user and redirect to login page
+            this.authService.revokePlayer();
             router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
             return false;
         }
