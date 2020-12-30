@@ -14,7 +14,7 @@ export class LogoutComponent {
   ) {
 
     StorageTokenTool.deleteTokens();
-    this.authService.revokePlayer();
+    this.authService.revokeUser();
     this.router.navigate(['/'])
   }
 }

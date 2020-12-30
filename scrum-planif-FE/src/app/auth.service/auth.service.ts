@@ -46,11 +46,11 @@ export class AuthService {
   userAnnounced$ = this.userConnectedSource.asObservable();
 
   // Service message commands
-  announcePlayer(token_decoded: Payload) {
+  announceUser(token_decoded: Payload) {
     this.userConnectedSource.next({ref: token_decoded.ref, name: token_decoded.name});
   }
 
-  revokePlayer() {
+  revokeUser() {
     this.userConnectedSource.next(null);
   }
 
