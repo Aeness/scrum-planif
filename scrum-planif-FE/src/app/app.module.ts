@@ -20,6 +20,7 @@ import { PlanifAdminComponent } from './planif-admin.page/planif-admin.component
 import { VoteComponent } from './vote/vote.component';
 import { PlayersListComponent } from './players-list/players-list.component';
 import { ResultsListComponent } from './results-list/results-list.component';
+import { ResultsListAdminComponent } from './results-list-admin/results-list-admin.component';
 
 
 
@@ -61,7 +62,8 @@ const appRoutes: Routes = [
     PlanifAdminComponent,
     VoteComponent,
     ResultsListComponent,
-    PlayersListComponent
+    PlayersListComponent,
+    ResultsListAdminComponent
   ],
   imports: [
     BrowserModule,

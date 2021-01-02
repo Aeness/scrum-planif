@@ -17,7 +17,7 @@
 
 
     <div class="col-12 col-xl-5 col-xxl-3 rounded bg-light p-3 mb-3">
-      <h5>Contenu animateur</h5>
+      <h5>Contenu Scrum Master</h5>
       <div class="form-group form-check">
         <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
         <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="col-12 col-xl-7 col-xxl-4 before-xl-no-padding no-padding-r">
-      <app-results-list [planifRoom]="planifRoom"></app-results-list>
+      <app-results-list-admin [planifRoom]="planifRoom" [iVoteValue]="iVote.value" [resultsVisibilityValue]="resultsVisibilityChoosen.value"></app-results-list-admin>
     </div>
 
 
