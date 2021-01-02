@@ -31,7 +31,7 @@ export class AuthService {
     //.shareReplay();
   }
 
-  private userConnectedSource = new Subject<User>();
+  protected userConnectedSource = new Subject<User>();
 
   get hasUserConnected() : boolean {
     return StorageTokenTool.hasToken();

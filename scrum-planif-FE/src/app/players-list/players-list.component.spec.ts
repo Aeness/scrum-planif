@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthServiceMock } from '../auth.service/auth.mock.service';
 import { AuthService } from '../auth.service/auth.service';
-import { User } from '../auth.service/user';
 import { PlanifRoom } from '../planif.room/planif.room';
 
 import { PlayersListComponent } from './players-list.component';
@@ -15,7 +15,7 @@ describe('PlayersListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ PlayersListComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [{provide: AuthService, useValue: new AuthServiceMock()}]
+      providers: [{provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}]
     })
     .compileComponents();
   });
@@ -28,7 +28,9 @@ describe('PlayersListComponent', () => {
     // Update the input planifRoom
     var pr : PlanifRoom = new PlanifRoom();
     component.planifRoom = pr;
-    pr.init("init", {ref: "ref", name: "Toto"}, () => {
+
+    var authService : AuthService = (component as any).authService
+    pr.init("init", authService.userConnected, () => {
       fixture.detectChanges();
       done();
     })
@@ -43,15 +45,3 @@ describe('PlayersListComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-class AuthServiceMock extends AuthService {
-
-  constructor() {
-    super(null);
-  }
-
-  get userConnected() : User {
-    return {ref: "ref", name: "Toto"};
-  }
-
-}
