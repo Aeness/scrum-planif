@@ -10,14 +10,14 @@ describe('PlanifComponent', () => {
   let component: PlanifComponent;
   let fixture: ComponentFixture<PlanifComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ PlanifComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [AuthService, PlanifRoom]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PlanifComponent);

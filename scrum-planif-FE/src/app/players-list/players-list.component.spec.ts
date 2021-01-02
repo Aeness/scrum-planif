@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../auth.service/auth.service';
 import { User } from '../auth.service/user';
@@ -11,14 +11,14 @@ describe('PlayersListComponent', () => {
   let component: PlayersListComponent;
   let fixture: ComponentFixture<PlayersListComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ PlayersListComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [{provide: AuthService, useValue: new AuthServiceMock()}]
     })
     .compileComponents();
-  }));
+  });
 
   // done : https://jasmine.github.io/tutorials/async#callbacks
   beforeEach((done) => {

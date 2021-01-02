@@ -1,21 +1,21 @@
 import { RouterTestingModule } from "@angular/router/testing";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth.service/auth.service';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule],
       declarations: [
         AppComponent
       ],
       providers: [AuthService],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
