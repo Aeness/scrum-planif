@@ -1,31 +1,51 @@
 <ng-container *ngIf="init">
 <div class="row">
   <div class="col-12 rounded bg-light p-3 mb-3">
+    <h5>Le poker planning</h5>
     Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif.ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
     ou via le lien <span id="link" class="toCopy">{{urlLink}}/planif/{{planif.ref}}</span> <button class="copy" (click)="copyElement('link')"><fa-icon [icon]="faCopy"></fa-icon></button>.
-
-    <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onSubmit()">
+    <!--
+    <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onPlanifSubmit()">
       <label class="mb-2 mr-2" for="name">Vous pouvez préciser un nom pour ce pocker planning :</label>
       <input type="text" class="form-control mb-2 mr-sm-2" id="name"
           formControlName="name">
     <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
-    </form>
+    </form>-->
+    <div class="form-group form-check">
+      <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
+      <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
+    </div>
   </div>
 </div>
 <ng-container *ngIf="takePartIn">
   <div class="row">
-
-
     <div class="col-12 col-xl-5 col-xxl-3 rounded bg-light p-3 mb-3">
-      <h5>Contenu Scrum Master</h5>
-      <div class="form-group form-check">
-        <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
-        <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
-      </div>
-      <div class="form-group form-check">
-        <input id="visibilityChoosen" type="checkbox" class="form-check-input" [formControl]="resultsVisibilityChoosen" (ngModelChange)="resultsVisibilityChoosenChange()">
-        <label class="form-check-label" for="visibilityChoosen">Afficher les résultats aux autres participants</label>
-      </div>
+      <h5>L'estimation</h5>
+      <ol>
+        <li>
+          <label class="mb-2 mr-2" for="subject_edit">Editer le sujet de l'estimation actuelle</label>
+          <form [formGroup]="subjectForm" class="form-inline" (ngSubmit)="onSubjectSubmit()">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="subject_edit"
+              formControlName="subject" placeholder="sujet facultatif">
+          <button type="submit" class="btn btn-secondary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon></button>
+        </form>
+        </li>
+        <li>Laisser les participants faire leur choix.</li>
+        <li>
+          Rendre visible les résultats à tous les participants.&nbsp;<label class="switch">
+            <input id="visibilityChoosen2" type="checkbox" [formControl]="resultsVisibilityChoosen" (ngModelChange)="resultsVisibilityChoosenChange()">
+            <span class="slider round"></span>
+          </label>
+        </li>
+        <li>
+          <form [formGroup]="gameForm" class="form-inline" (ngSubmit)="onGameSubmit()">
+            <label class="mb-2 mr-2" for="subject">Une fois les échanges terminés, lancer un nouveau sujet </label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
+                formControlName="subject" placeholder="sujet facultatif">
+            <button type="submit" class="btn btn-primary mb-2" [disabled]="!gameForm.valid">Go !</button>
+          </form>
+        </li>
+      </ol>
       <div  *ngIf="votes$ | async as votes;">
         <div *ngFor="let vote of votes | keyvalue">
           {{vote.value.player.name}} {{vote.value.vote}}

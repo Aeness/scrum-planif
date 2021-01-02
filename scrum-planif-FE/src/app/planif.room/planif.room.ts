@@ -8,6 +8,7 @@ import { User } from '../auth.service/user';
 export class PlanifRoom extends IoWebsocketService {
   // Send the last name knew by the room.
   public name$ : BehaviorSubject<String> = new BehaviorSubject("");
+  public subject$ : BehaviorSubject<String> = new BehaviorSubject("");
   public playersList$ : BehaviorSubject<Map<String, Player>> = new BehaviorSubject(new Map<String, Player>());
   public resultsVisibility$ : BehaviorSubject<Boolean> = new BehaviorSubject(true);
 
@@ -29,6 +30,7 @@ export class PlanifRoom extends IoWebsocketService {
           console.error(error);
         } else {
           this.name$.next(response.name);
+          this.subject$.next(response.subject);
 
           // Object to Map
           let entry : [string, any];
@@ -39,6 +41,12 @@ export class PlanifRoom extends IoWebsocketService {
           this.listenPlanifName().subscribe(
             (data) => {
               this.name$.next(data.name);
+            }
+          );
+
+          this.listenGameSubject().subscribe(
+            (data) => {
+              this.subject$.next(data.subject);
             }
           );
 
@@ -84,35 +92,53 @@ export class PlanifRoom extends IoWebsocketService {
     this.socket.emit("leave_planif");
   }
 
-  public listenPlayerJoinPlanif() : Observable<{player: Player}> {
+  private listenPlayerJoinPlanif() : Observable<{player: Player}> {
       return this.getMessages('player_join_planif');
   }
 
-  public listenPlayerQuitPlanif() : Observable<{player_ref: String}> {
+  private listenPlayerQuitPlanif() : Observable<{player_ref: String}> {
       return this.getMessages('player_leave_planif');
   }
 
-  public listenPlanifChoise() : Observable<{player_ref: String, choosenValue : String}> {
+  public sendPlanifChoise(choosenValue : String) {
+    this.sendMessage("player_choose", {choosenValue : choosenValue});
+  }
+
+  private listenPlanifChoise() : Observable<{player_ref: String, choosenValue : String}> {
       return this.getMessages('player_choose');
   }
 
-  public sendPlanifChoise(choosenValue : String) {
-    this.socket.emit("player_choose", {choosenValue : choosenValue});
+  public listenRestartMyChoise() : Observable<any> {
+      return this.getMessages('restart_choose');
   }
 
   public sendPlanifName(name: String) {
     this.sendMessage("send_planif_name", name);
   }
 
-  public listenPlanifName() : Observable<{name: String}> {
+  private listenPlanifName() : Observable<{name: String}> {
     return this.getMessages('planif_name');
   }
 
-  public listenResultsVisibility() : Observable<{choosenVisibility : Boolean}> {
-      return this.getMessages('results_visibility_changed');
+  public sendGameSubject(subject: String) {
+    this.sendMessage("send_game_subject", subject);
+  }
+
+  private listenGameSubject() : Observable<{subject: String}> {
+    return this.getMessages('game_subject');
   }
 
   public sendResultsVisibility(choosenValue : Boolean) {
-    this.socket.emit("change_results_visibility", {choosenVisibility : choosenValue});
+    this.sendMessage("change_results_visibility", {choosenVisibility : choosenValue});
+  }
+
+  private listenResultsVisibility() : Observable<{choosenVisibility : Boolean}> {
+      return this.getMessages('results_visibility_changed');
+  }
+
+  public sendRestartGameSubject(subject: String) {
+    this.sendMessage("send_game_subject", subject);
+    this.sendMessage("change_results_visibility", {choosenVisibility : false});
+    this.socket.emit("restart_choose");
   }
 }

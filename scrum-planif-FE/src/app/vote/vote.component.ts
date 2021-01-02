@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 
@@ -7,7 +7,7 @@ import { PlanifRoom } from '../planif.room/planif.room';
   templateUrl: './vote.component.html',
   styleUrls: ['./vote.component.scss']
 })
-export class VoteComponent {
+export class VoteComponent implements OnInit{
 
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: Boolean = false;
@@ -19,6 +19,21 @@ export class VoteComponent {
   @ViewChild('card5', { static: true }) card5: CardComponent;
 
   private choosenValue : String;
+
+  ngOnInit() {
+    this.planifRoom.listenRestartMyChoise().subscribe(
+      () => {
+        this.choosenValue = null;
+        this.planifRoom.sendPlanifChoise(null);
+
+        this.card1.unselectedIfNot(null);
+        this.card2.unselectedIfNot(null);
+        this.card3.unselectedIfNot(null);
+        this.card4.unselectedIfNot(null);
+        this.card5.unselectedIfNot(null);
+      }
+    );
+  }
 
   changeValue(value: String, active: Boolean) {
     if (value == this.choosenValue && active == false) {

@@ -12,7 +12,7 @@ import { AuthService } from '../auth.service/auth.service';
 export class PlanifComponent {
 
   public init: boolean = false;
-  public planif : {ref: String, name: String};
+  public planif : {ref: String, name: String, subject: String};
   public takePartIn: boolean = false;
   public resultsVisibility: Boolean = false;
 
@@ -26,7 +26,8 @@ export class PlanifComponent {
       params => {
         this.planif = {
           ref: params.planif_ref,
-          name : ''
+          name : '',
+          subject : ''
         };
         this.planifRoom.init(this.planif.ref, this.authService.userConnected, () => {
           this.init = true;
@@ -42,6 +43,11 @@ export class PlanifComponent {
     this.planifRoom.name$.subscribe(
       (data) => {
         this.planif.name = data;
+      }
+    );
+    this.planifRoom.subject$.subscribe(
+      (data) => {
+        this.planif.subject = data;
       }
     );
     this.planifRoom.askToPlay();

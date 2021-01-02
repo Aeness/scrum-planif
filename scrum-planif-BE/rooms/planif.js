@@ -28,6 +28,7 @@ module.exports = {
                         if (room.players === undefined) {
                             room.players = new Map();
                             room.name = null;
+                            room.subject = null;
                             room.resultsVisibility = false;
                         }
     
@@ -47,6 +48,7 @@ module.exports = {
                     let reponse = {
                         ref : planif_ref,
                         name : room.name,
+                        subject: room.subject,
                         players : reponsePlayerTS,
                         resultsVisibility : room.resultsVisibility
                     };
@@ -62,6 +64,7 @@ module.exports = {
                     let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
                     var player = JSON.parse(socket.handshake.query.user);
                     player.vote = null;
+                    player.socked_id = socket.id;
                     
                     room.players.set(player.ref, player);
   
@@ -97,12 +100,31 @@ module.exports = {
                     this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue)
                 });
 
+                socket.on('restart_choose', () => {
+                    debug("%s restart_choose", socket.id);
+                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    if (room.players !== undefined) {
+                      for (let entry of room.players.entries()) {
+                        entry[1].vote = null;
+                        this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                      }
+                    }
+                });
+
                 socket.on('send_planif_name', (name) => {
                     socket.adapter.rooms[this.getRoomName(planif_ref)].name = name;
                     
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
                     this.sendPlanifName(planif_ref,name);
+                });
+
+                socket.on('send_game_subject', (subject) => {
+                    socket.adapter.rooms[this.getRoomName(planif_ref)].subject = subject;
+                    
+                    // Send the information to all client
+                    // socket io docs emit-cheatsheet
+                    this.sendGameSubject(planif_ref,subject);
                 });
 
                 socket.on('change_results_visibility', (data) => {
@@ -134,10 +156,19 @@ module.exports = {
         debug('sendPlayerChoose to planif %s : %s', planif_ref, choosenValue);
         this.app.io.to(this.getRoomName(planif_ref)).emit('player_choose', { player_ref: player_ref, choosenValue: choosenValue});
     },
+    sendPlayerRestart: function(planif_ref, player_ref, socket_id) {
+        debug('sendPlayerRestart player %s for planif %s to %s', player_ref, planif_ref, socket_id);
+        // sending to individual socketid (private message)
+        this.app.io.to(socket_id).emit("restart_choose");
+    },
     sendPlanifName: function (planif_ref, name) {
         debug('sendPlanifName to planif:' + planif_ref + " " + name);
         this.app.io.to(this.getRoomName(planif_ref)).emit('planif_name', {name: name});
-	},
+    },
+    sendGameSubject: function (planif_ref, subject) {
+        debug('sendGameSubject to planif:' + planif_ref + " " + subject);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('game_subject', {subject: subject});
+    },
     sendVisibilityChanged: function(planif_ref, choosenValue) {
         debug('sendVisibilityChanged to planif %s : %s', planif_ref, choosenValue);
         this.app.io.to(this.getRoomName(planif_ref)).emit('results_visibility_changed', { choosenVisibility: choosenValue});
