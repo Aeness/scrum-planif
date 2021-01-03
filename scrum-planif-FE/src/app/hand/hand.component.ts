@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Directive, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 
@@ -7,30 +7,26 @@ import { PlanifRoom } from '../planif.room/planif.room';
   templateUrl: './hand.component.html',
   styleUrls: ['./hand.component.scss']
 })
-export class HandComponent implements OnInit{
+export class HandComponent implements AfterViewInit {
 
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: Boolean = false;
 
-  @ViewChild('card1', { static: true }) card1: CardComponent;
-  @ViewChild('card2', { static: true }) card2: CardComponent;
-  @ViewChild('card3', { static: true }) card3: CardComponent;
-  @ViewChild('card4', { static: true }) card4: CardComponent;
-  @ViewChild('card5', { static: true }) card5: CardComponent;
+  public values = ["1","2","3","5","8"];
+
+  @ViewChildren('card') cards!: QueryList<CardComponent>;
 
   private choosenValue : String;
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.planifRoom.listenRestartMyChoise().subscribe(
       () => {
         this.choosenValue = null;
         this.planifRoom.sendPlanifChoise(null);
 
-        this.card1.unselectedIfNot(null);
-        this.card2.unselectedIfNot(null);
-        this.card3.unselectedIfNot(null);
-        this.card4.unselectedIfNot(null);
-        this.card5.unselectedIfNot(null);
+        this.cards.forEach(card => {
+          card.unselectedIfNot(null);
+        });
       }
     );
   }
@@ -43,11 +39,9 @@ export class HandComponent implements OnInit{
       // do nothing
     } else if (value != this.choosenValue && active == true) {
 
-      this.card1.unselectedIfNot(value);
-      this.card2.unselectedIfNot(value);
-      this.card3.unselectedIfNot(value);
-      this.card4.unselectedIfNot(value);
-      this.card5.unselectedIfNot(value);
+      this.cards.forEach(card => {
+        card.unselectedIfNot(value);
+      });
 
       this.choosenValue = value;
       this.planifRoom.sendPlanifChoise(value);
