@@ -3,11 +3,11 @@ import { CardComponent } from '../card/card.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 
 @Component({
-  selector: 'app-vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.scss']
+  selector: 'app-hand',
+  templateUrl: './hand.component.html',
+  styleUrls: ['./hand.component.scss']
 })
-export class VoteComponent implements OnInit{
+export class HandComponent implements OnInit{
 
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: Boolean = false;

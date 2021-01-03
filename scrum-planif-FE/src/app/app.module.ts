@@ -17,7 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LogoutComponent } from './logout/logout.component';
 import { PlanifAdminComponent } from './planif-admin.page/planif-admin.component';
-import { VoteComponent } from './vote/vote.component';
+import { HandComponent } from './hand/hand.component';
 import { PlayersListComponent } from './players-list/players-list.component';
 import { ResultsListComponent } from './results-list/results-list.component';
 import { ResultsListAdminComponent } from './results-list-admin/results-list-admin.component';
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
     CardComponent,
     PlanifComponent,
     PlanifAdminComponent,
-    VoteComponent,
+    HandComponent,
     ResultsListComponent,
     PlayersListComponent,
     ResultsListAdminComponent
