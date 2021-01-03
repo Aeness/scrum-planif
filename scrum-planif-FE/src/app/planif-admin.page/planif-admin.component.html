@@ -26,7 +26,7 @@
           <label class="mb-2 mr-2" for="subject_edit">Editer le sujet de l'estimation actuelle</label>
           <form [formGroup]="subjectForm" class="form-inline" (ngSubmit)="onSubjectSubmit()">
             <input type="text" class="form-control mb-2 mr-sm-2" id="subject_edit"
-              formControlName="subject" placeholder="sujet facultatif">
+              formControlName="subject" placeholder="titre facultatif">
           <button type="submit" class="btn btn-secondary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon></button>
         </form>
         </li>
@@ -41,9 +41,10 @@
           <form [formGroup]="gameForm" class="form-inline" (ngSubmit)="onGameSubmit()">
             <label class="mb-2 mr-2" for="subject">Une fois les échanges terminés, lancer un nouveau sujet </label>
             <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
-                formControlName="subject" placeholder="sujet facultatif">
+                formControlName="subject" placeholder="titre facultatif">
             <button type="submit" class="btn btn-primary mb-2" [disabled]="!gameForm.valid">Go !</button>
           </form>
+          <p class="text-secondary small-text">Réinitialise les votes et cache les résultats.</p>
         </li>
       </ol>
       <div  *ngIf="votes$ | async as votes;">
