@@ -44,7 +44,7 @@
                 formControlName="subject" placeholder="titre facultatif">
             <button type="submit" class="btn btn-primary mb-2" [disabled]="!gameForm.valid">Go !</button>
           </form>
-          <p class="text-secondary small-text">Réinitialise les votes et cache les résultats.</p>
+          <p class="text-secondary small-text">Efface le titre, réinitialise les votes et cache les résultats.</p>
         </li>
       </ol>
       <div  *ngIf="votes$ | async as votes;">
