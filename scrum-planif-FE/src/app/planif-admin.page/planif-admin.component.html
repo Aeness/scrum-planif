@@ -11,7 +11,7 @@
           formControlName="name">
     <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
     </form>-->
-    <div class="form-group form-check">
+    <div class="form-group form-check mt-2">
       <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
       <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
     </div>
