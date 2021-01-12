@@ -1,13 +1,13 @@
 
-    <div [className]="'card ' + (isSelected?'selected':'') + ' card'+rank" (click)="click()">
+    <div [className]="'card ' + (isSelected?'selected':'') + ' card'+rank + (value.startsWith('&')?' fa':'')" (click)="click()">
       <div>
-        <div [className]="'top left'">{{value}}</div>
-        <div [className]="'top right'">{{value}}</div>
+        <div [className]="'top left'" [innerHTML]="value"></div>
+        <div [className]="'top right'" [innerHTML]="value"></div>
       </div>
-      <span  [className]="'center'">{{value}}</span>
+      <span  [className]="'center'" [innerHTML]="value"></span>
 
       <div>
-        <div [className]="'bottom right'">{{value}}</div>
-        <div [className]="'bottom left'">{{value}}</div>
+        <div [className]="'bottom right'" [innerHTML]="value"></div>
+        <div [className]="'bottom left'" [innerHTML]="value"></div>
       </div>
     </div>

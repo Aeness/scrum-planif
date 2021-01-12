@@ -9,7 +9,7 @@
     <tbody>
       <tr *ngFor="let player of players | keyvalue">
         <td>{{player.value.name}} </td>
-        <td *ngIf="!iVoteValue || resultsVisibilityValue">{{player.value.vote}}</td>
+        <td [className]="(player.value.vote!=null && player.value.vote.startsWith('&')?'fa':'')" *ngIf="!iVoteValue || resultsVisibilityValue" [innerHTML]="player.value.vote"></td>
         <td *ngIf="iVoteValue && !resultsVisibilityValue">
           <fa-icon [icon]="faSmile" *ngIf="player.value.vote!=null"></fa-icon>
           <fa-icon [icon]="faCog" [spin]="true" *ngIf="player.value.vote==null"></fa-icon>

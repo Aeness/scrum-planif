@@ -11,6 +11,7 @@ div.card {
     font-size: xx-small;
     float: left;
     padding-left: 2px;
+    line-height: 13.5px;
   }
   .bottom {
     position: relative;
@@ -23,6 +24,7 @@ div.card {
   span.center {
     text-align: center;
     font-size: xx-large;
+    line-height: 48px;
   }
 
   &.selected {
@@ -53,6 +55,48 @@ div.card {
 
     &.card5of5 {
       transform: rotate(15deg) translateY(35px) translateX(-40px);
+    }
+
+    $translateGX: -35;
+    $translateX: 80;
+    $rotate: 7;
+    &.card1of8 {
+      position: absolute;
+      transform: translateX($translateGX *1px) rotate($rotate * -3.5deg) translateY(60px);
+    }
+    &.card2of8 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *1) *1px) rotate($rotate * -2.5deg) translateY(30px);
+    }
+
+    &.card3of8 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *2) *1px) rotate($rotate * -1.5deg) translateY(12px);
+    }
+
+    &.card4of8 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *3) *1px) rotate($rotate * -0.5deg);
+    }
+
+    &.card5of8 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *4) *1px) rotate($rotate * 0.5deg);
+    }
+
+    &.card6of8 {
+      position: absolute;
+     transform: translateX(($translateGX + $translateX *5) *1px) rotate($rotate * 1.5deg)  translateY(12px);
+    }
+
+    &.card7of8 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *6) *1px) rotate($rotate * 2.5deg) translateY(30px);
+    }
+
+    &.card8of8 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *7) *1px) rotate($rotate * 3.5deg) translateY(60px);
     }
   }
 

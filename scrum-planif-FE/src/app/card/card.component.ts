@@ -1,18 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  styleUrls: ['./font-icon.scss', './card.component.scss']
 })
 export class CardComponent implements OnInit {
-  @Input() value: String;
-  @Input() rank: String;
+  @Input() value: string;
+  @Input() rank: string;
   @Output() choosenEvent = new EventEmitter<Boolean>();
   public isSelected: Boolean = false;
-
-  constructor() { }
 
   ngOnInit() {
   }
@@ -23,7 +22,7 @@ export class CardComponent implements OnInit {
     console.log("click")
   }
 
-  public unselectedIfNot(choosenValue : String) {
+  public unselectedIfNot(choosenValue : string) {
     if (this.value != choosenValue) {
       this.isSelected = false;
     }

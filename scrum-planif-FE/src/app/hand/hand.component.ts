@@ -12,11 +12,11 @@ export class HandComponent implements AfterViewInit {
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: Boolean = false;
 
-  public values = ["1","2","3","5","8"];
+  public values = ["0","1/2","1","2","3","5","8","&#xf534;"];
 
   @ViewChildren('card') cards!: QueryList<CardComponent>;
 
-  private choosenValue : String;
+  private choosenValue : string;
 
   ngAfterViewInit() {
     this.planifRoom.listenRestartMyChoise().subscribe(
@@ -31,7 +31,7 @@ export class HandComponent implements AfterViewInit {
     );
   }
 
-  changeValue(value: String, active: Boolean) {
+  changeValue(value: string, active: Boolean) {
     if (value == this.choosenValue && active == false) {
       this.choosenValue = null;
       this.planifRoom.sendPlanifChoise(null);
