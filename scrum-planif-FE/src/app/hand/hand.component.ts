@@ -12,7 +12,7 @@ export class HandComponent implements AfterViewInit {
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: Boolean = false;
 
-  public values = ["0","1/2","1","2","3","5","8","&#xf534;"];
+  public values = ["0","1/2","1","2","3","5","8","13","&#xf534;","&#xf0f4;"];
 
   @ViewChildren('card') cards!: QueryList<CardComponent>;
 

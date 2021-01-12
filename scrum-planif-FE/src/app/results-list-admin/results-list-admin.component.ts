@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ResultsListComponent } from '../results-list/results-list.component';
 
 @Component({

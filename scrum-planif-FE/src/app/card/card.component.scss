@@ -60,43 +60,52 @@ div.card {
     $translateGX: -35;
     $translateX: 80;
     $rotate: 7;
-    &.card1of8 {
+    &.card1of10 {
       position: absolute;
-      transform: translateX($translateGX *1px) rotate($rotate * -3.5deg) translateY(60px);
+      transform: translateX(($translateGX + $translateX *-1) *1px) rotate($rotate * -4.5deg) translateY(97px);
     }
-    &.card2of8 {
+    &.card1of8, &.card2of10 {
       position: absolute;
-      transform: translateX(($translateGX + $translateX *1) *1px) rotate($rotate * -2.5deg) translateY(30px);
+      transform: translateX($translateGX *1px) rotate($rotate * -3.5deg) translateY(62px);
+    }
+    &.card2of8, &.card3of10 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *1) *1px) rotate($rotate * -2.5deg) translateY(32px);
     }
 
-    &.card3of8 {
+    &.card3of8, &.card4of10 {
       position: absolute;
       transform: translateX(($translateGX + $translateX *2) *1px) rotate($rotate * -1.5deg) translateY(12px);
     }
 
-    &.card4of8 {
+    &.card4of8, &.card5of10 {
       position: absolute;
       transform: translateX(($translateGX + $translateX *3) *1px) rotate($rotate * -0.5deg);
     }
 
-    &.card5of8 {
+    &.card5of8, &.card6of10 {
       position: absolute;
       transform: translateX(($translateGX + $translateX *4) *1px) rotate($rotate * 0.5deg);
     }
 
-    &.card6of8 {
+    &.card6of8, &.card7of10 {
       position: absolute;
      transform: translateX(($translateGX + $translateX *5) *1px) rotate($rotate * 1.5deg)  translateY(12px);
     }
 
-    &.card7of8 {
+    &.card7of8, &.card8of10 {
       position: absolute;
-      transform: translateX(($translateGX + $translateX *6) *1px) rotate($rotate * 2.5deg) translateY(30px);
+      transform: translateX(($translateGX + $translateX *6) *1px) rotate($rotate * 2.5deg) translateY(32px);
     }
 
-    &.card8of8 {
+    &.card8of8, &.card9of10 {
       position: absolute;
-      transform: translateX(($translateGX + $translateX *7) *1px) rotate($rotate * 3.5deg) translateY(60px);
+      transform: translateX(($translateGX + $translateX *7) *1px) rotate($rotate * 3.5deg) translateY(62px);
+    }
+
+    &.card10of10 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *8) *1px) rotate($rotate * 4.5deg) translateY(97px);
     }
   }
 

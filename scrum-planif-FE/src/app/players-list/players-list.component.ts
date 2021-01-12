@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
 import { Player } from '../planif.room/player';
 import { faCog, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -15,9 +14,6 @@ export class PlayersListComponent implements OnInit {
   faSmile = faSmile;
 
   @Input() planifRoom: PlanifRoom;
-
-  //votes$: Observable<Map<String, {player: Player, vote : String}>> ;
-  //votes: Map<String, {player: Player, vote : String}> = new Map<String, {player: Player, vote : String}>();
 
   public players: Map<String, Player> = new Map<String, Player>();
 
