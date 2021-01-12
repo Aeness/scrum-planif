@@ -112,4 +112,74 @@ div.card {
   @media (max-width: 767px) {
     margin-bottom: 20px;
   }
+
+  @media (min-width: 1200px) {
+
+    $translateGX: -35;
+    $translateX: 80;
+    $rotate: 7;
+    &.card1of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *-2) *1px) rotate(-31deg) translateY(137px); // -35deg
+    }
+    &.card2of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *-1) *1px) rotate(-28.5deg) translateY(97px); // -31.5deg
+    }
+    &.card3of12 {
+      position: absolute;
+      transform: translateX($translateGX *1px) rotate($rotate * -3.5deg) translateY(62px);
+    }
+    &.card4of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *1) *1px) rotate($rotate * -2.5deg) translateY(32px);
+    }
+
+    &.card5of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *2) *1px) rotate($rotate * -1.5deg) translateY(12px);
+    }
+
+    &.card6of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *3) *1px) rotate($rotate * -0.5deg);
+    }
+
+    &.card7of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *4) *1px) rotate($rotate * 0.5deg);
+    }
+
+    &.card8of12 {
+      position: absolute;
+     transform: translateX(($translateGX + $translateX *5) *1px) rotate($rotate * 1.5deg)  translateY(12px);
+    }
+
+    &.card9of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *6) *1px) rotate($rotate * 2.5deg) translateY(32px);
+    }
+
+    &.card10of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *7) *1px) rotate($rotate * 3.5deg) translateY(62px);
+    }
+
+    &.card11of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *8) *1px) rotate(28.5deg) translateY(97px); // 31.5deg
+    }
+
+    &.card12of12 {
+      position: absolute;
+      transform: translateX(($translateGX + $translateX *9) *1px) rotate(31deg) translateY(137px);// 35deg
+    }
+  }
+
+  @media (max-width: 1200px) {
+    &.card1of12,  &.card2of12,  &.card3of12, &.card4of12, &.card5of12, &.card6of12,
+    &.card7of12,  &.card8of12,  &.card9of12, &.card10of12, &.card11of12, &.card12of12 {
+      margin-bottom: 20px;
+    }
+  }
 }

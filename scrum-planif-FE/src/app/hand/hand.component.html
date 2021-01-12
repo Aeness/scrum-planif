@@ -1,5 +1,5 @@
 <div class='top-help'>Selectionner une carte pour voter.</div>
-<div [className]="'cards'">
+<div [className]="'cards' + ' cards' + values.length">
   <ng-container *ngFor="let value of values; let index = index">
     <app-card [value]="value" [rank]="(index+1) + 'of' + values.length" (choosenEvent)="changeValue(value,$event)" #card></app-card>
   </ng-container>
