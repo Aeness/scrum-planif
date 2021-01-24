@@ -51,3 +51,7 @@ $primary: $mainColor;
 body.no-user {
   background-color: $mainColor;
 }
+
+div.clear {
+  clear: both;
+}

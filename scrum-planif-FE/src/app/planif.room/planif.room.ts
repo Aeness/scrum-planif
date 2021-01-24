@@ -11,6 +11,7 @@ export class PlanifRoom extends IoWebsocketService {
   public subject$ : BehaviorSubject<String> = new BehaviorSubject("");
   public playersList$ : BehaviorSubject<Map<String, Player>> = new BehaviorSubject(new Map<String, Player>());
   public resultsVisibility$ : BehaviorSubject<Boolean> = new BehaviorSubject(true);
+  public cardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
 
   /**
    * Each MAIN component must have is own PlanifRoom.
@@ -31,6 +32,7 @@ export class PlanifRoom extends IoWebsocketService {
         } else {
           this.name$.next(response.name);
           this.subject$.next(response.subject);
+          this.cardsList$.value.push(...response.cards);
 
           // Object to Map
           let entry : [string, any];
@@ -74,6 +76,12 @@ export class PlanifRoom extends IoWebsocketService {
           this.listenResultsVisibility().subscribe(
             (dataChoise: {choosenVisibility : Boolean}) => {
               this.resultsVisibility$.next(dataChoise.choosenVisibility);
+            }
+          );
+
+          this.listenCardVisibility().subscribe(
+            (data : {cardIndex: number, choosenVisibility : boolean}) => {
+              this.cardsList$.value[data.cardIndex].active = data.choosenVisibility;
             }
           );
           // TODO use AsyncSubject<boolean> ???
@@ -140,5 +148,13 @@ export class PlanifRoom extends IoWebsocketService {
     this.sendMessage("send_game_subject", subject);
     this.sendMessage("change_results_visibility", {choosenVisibility : false});
     this.socket.emit("restart_choose");
+  }
+
+  public sendCardVisibility(cardIndex: number, choosenVisibility : boolean) {
+    this.sendMessage("change_card_visibility", {cardIndex: cardIndex, choosenVisibility : choosenVisibility});
+  }
+
+  public listenCardVisibility() : Observable<{cardIndex : number, choosenVisibility : boolean}> {
+      return this.getMessages('card_visibility_changed');
   }
 }

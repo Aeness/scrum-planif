@@ -12,7 +12,7 @@ import { AuthService } from '../auth.service/auth.service';
 @Component({
   selector: 'app-planif-admin',
   templateUrl: 'planif-admin.component.html',
-  styleUrls: ['./planif-admin.component.scss'],
+  styleUrls: ['../card/font-icon.scss', './planif-admin.component.scss'],
   providers:  [ PlanifRoom ]
 })
 export class PlanifAdminComponent extends PlanifComponent {
@@ -26,6 +26,8 @@ export class PlanifAdminComponent extends PlanifComponent {
   faEdit = faEdit;
 
   resultsVisibilityChoosen = new FormControl(false);
+
+  cards : Array<{value: string, active: boolean}>;
 
   constructor(
     protected route: ActivatedRoute,
@@ -73,7 +75,13 @@ export class PlanifAdminComponent extends PlanifComponent {
         }
       }
     );
-    // An admin doesn't play
+    this.planifRoom.cardsList$.subscribe(
+      (data) => {
+
+        console.log(data)
+        this.cards = data;
+      }
+    );
   }
 
   public iVoteChange() {
@@ -126,6 +134,12 @@ export class PlanifAdminComponent extends PlanifComponent {
         subject: ''
       });
     }
+  }
+
+  click(index) {
+    //this.cards[index].active = !this.cards[index].active ;
+    this.planifRoom.sendCardVisibility(index, !this.cards[index].active);
+    console.log("click")
   }
 
 }

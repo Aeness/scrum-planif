@@ -121,3 +121,27 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+div.exampleCard {
+  border: solid 1px black;
+  border-radius: 0.25rem;
+  height: 3rem;
+  width: 2rem;
+  float: left;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  text-align: center;
+  padding-top: 0.7rem;
+
+  cursor: pointer;
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &.selected {
+    background-color: $mainColor;
+    color: #FFF;
+  }
+}

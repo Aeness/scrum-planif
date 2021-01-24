@@ -30,6 +30,13 @@ module.exports = {
                             room.name = null;
                             room.subject = null;
                             room.resultsVisibility = false;
+                            room.cards = [
+                                {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
+                                {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
+                                {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
+                                {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
+                                {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
+                            ];
                         }
     
                         var participant = JSON.parse(socket.handshake.query.user);
@@ -50,7 +57,8 @@ module.exports = {
                         name : room.name,
                         subject: room.subject,
                         players : reponsePlayerTS,
-                        resultsVisibility : room.resultsVisibility
+                        resultsVisibility : room.resultsVisibility,
+                        cards : room.cards
                     };
                     acknowledgement(null, reponse);
                 });
@@ -132,6 +140,15 @@ module.exports = {
                     socket.adapter.rooms[this.getRoomName(planif_ref)].resultsVisibility = data.choosenVisibility;
                     this.sendVisibilityChanged(planif_ref, data.choosenVisibility)
                 });
+
+                socket.on('change_card_visibility', (data) => {
+                    debug("%s choose card %s visibility to %s", socket.id, data.cardIndex, data.choosenVisibility);
+                    var roomCards = socket.adapter.rooms[this.getRoomName(planif_ref)].cards;
+                    if (data.cardIndex>=0 && data.cardIndex<roomCards.length) {
+                        roomCards[data.cardIndex].active = data.choosenVisibility;
+                        this.sendCardVisibilityChanged(planif_ref, data.cardIndex, data.choosenVisibility);
+                    }
+                });
             }
         });
     },
@@ -172,5 +189,9 @@ module.exports = {
     sendVisibilityChanged: function(planif_ref, choosenValue) {
         debug('sendVisibilityChanged to planif %s : %s', planif_ref, choosenValue);
         this.app.io.to(this.getRoomName(planif_ref)).emit('results_visibility_changed', { choosenVisibility: choosenValue});
+    },
+    sendCardVisibilityChanged: function(planif_ref, cardIndex, choosenValue) {
+        debug('sendCardVisibilityChanged to planif %s : %s, %s', planif_ref, cardIndex, choosenValue);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('card_visibility_changed', {cardIndex: cardIndex, choosenVisibility: choosenValue});
     },
 }

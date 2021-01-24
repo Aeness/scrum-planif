@@ -11,7 +11,13 @@
           formControlName="name">
     <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
     </form>-->
-    <div class="form-group form-check mt-2">
+    <div class="mt-2">
+      Cartes utilisées :
+    </div>
+    <ng-container *ngFor="let card of cards; let index = index">
+      <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':'')" (click)="click(index)" [innerHTML]="card.value"></div>
+    </ng-container>
+    <div class="form-group form-check mt-2 pt-2 clear">
       <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
       <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
     </div>

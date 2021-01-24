@@ -1,62 +1,73 @@
-div.cards, div.top-help {
+div.top-help {
   margin-top: 20px;
+  margin-bottom: 10px;
+}
+div.cards, div.bottom-help {
+  margin: auto;
 }
 div.bottom-help {
   text-align: center;
+  display: none;
 }
 
-.hand12, .hand14 {
 
-  @media (max-width: 1199.98px) {
-
-    div.cards {
-      width: auto;
-      margin: 0;
-    }
-    div.bottom-help {
+.hand5, .hand6, .hand7, .hand8, .hand9, .hand10 {
+  height: 254px;
+  @media (min-width: 768px) {
+    div.top-help {
       display: none;
     }
+    .cards5, .cards6, .cards7, .cards8, .cards9, .cards10 {
+      width: 588px; // Cards are not inside this 588px
+    }
+    .cards5 , .cards6, .cards7, .cards8, .cards9 {
+      height: 170px;
+    }
+    .cards10 {
+      height: 180px;
+    }
+    div.bottom-help {
+      display: block;
+    }
   }
+}
 
+.hand11, .hand12 {
+  height: 294px;
+  @media (min-width: 992px) {
+    div.top-help {
+      display: none;
+    }
+    .cards11, .cards12 {
+      width: 588px; // Cards are not inside this 588px
+    }
+    .cards11 {
+      height: 180px;
+    }
+    div.cards12 {
+      height: 184px;
+    }
+    div.bottom-help {
+      display: block;
+    }
+
+  }
+}
+
+.hand13, .hand14 {
+  height: 322px;
   @media (min-width: 1200px) {
     div.top-help {
       display: none;
     }
-    div.cards, div.bottom-help {
+    .cards13, .cards14 {
       width: 588px; // Cards are not inside this 588px
-      margin: auto;
-      margin-top: 20px;
     }
-
-    div.cards12 {
+    div.cards13, div.cards14 {
       height: 184px;
     }
-    div.cards14 {
-      height: 240px;
+    div.bottom-help {
+      display: block;
     }
   }
 }
-/*
-@media (min-width: 768px) {
-  div.cards, div.bottom-help {
-    width: 588px; // Cards are not inside this 588px
-    margin: auto;
-    margin-top: 20px;
-  }
-
-
-  div.cards {
-    height: 145px;
-  }
-  div.top-help {
-    display: none;
-  }
-}
-
-
-@media (max-width: 765px) {
-  div.bottom-help {
-    display: none;
-  }
-}
-*/
