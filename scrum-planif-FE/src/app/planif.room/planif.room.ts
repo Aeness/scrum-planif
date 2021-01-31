@@ -25,14 +25,14 @@ export class PlanifRoom extends IoWebsocketService {
    */
   public init(planif_ref : String, data: User, onChildrenConnect : () => void) {
     super.connect("planif=" + planif_ref, "user", data, () => {
-
+      // Call when the server restart
       this.socket.emit("ask_planif_informations", (error, response : any) => {
         if (error) {
           console.error(error);
         } else {
           this.name$.next(response.name);
           this.subject$.next(response.subject);
-          this.cardsList$.value.push(...response.cards);
+          this.cardsList$.next(response.cards);
 
           // Object to Map
           let entry : [string, any];

@@ -36,7 +36,8 @@ export class HandComponent /*implements AfterViewInit*/ {
     // TODO : use this.planifRoom.listen.....
       this.planifRoom.cardsList$.subscribe(
         (data : {value: string, active: boolean}[]) => {
-
+          this.allValues = [];
+          this.values = [];
           data.forEach(element => {
             this.allValues.push(element);
             if (element.active) {
