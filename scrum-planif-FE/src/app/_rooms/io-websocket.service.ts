@@ -51,7 +51,7 @@ export class IoWebsocketService implements OnDestroy {
   }
 
   protected getMessages = (message: string) => {
-    return Observable.create((observer) => {
+    return new Observable<any>((observer) => {
         this.socket.on(message, (data) => {
           observer.next(data);
         });
