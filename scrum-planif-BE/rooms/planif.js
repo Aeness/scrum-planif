@@ -2,6 +2,7 @@ var debug = require('debug')('scrum-planif:serverIo')
 
 module.exports = {
     app: null,
+    planifRooms: new Map(),
 
     launchTheRooms: function(app, io){
         this.app = app;
@@ -19,34 +20,35 @@ module.exports = {
                 // TODO check the socket is not on another room
                 // if yes, don't let it to join
 
-                socket.join(this.getRoomName(planif_ref),(err) => {
-                    if (err == null) {
+                socket.join(this.getRoomName(planif_ref),);
                         
-                        debug("%s open planif room %s.", socket.id, planif_ref);
+                debug("%s open planif room %s.", socket.id, planif_ref);
+                
+                if(!this.planifRooms.has(this.getRoomName(planif_ref))) {
+                    debug("INit");
+                    let room = {};
+                    room.players = new Map();
+                    room.users = new Map();
+                    room.name = null;
+                    room.subject = null;
+                    room.resultsVisibility = false;
+                    room.cards = [
+                        {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
+                        {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
+                        {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
+                        {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
+                        {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
+                    ];
+                    this.planifRooms.set(this.getRoomName(planif_ref), room);
+                }
 
-                        let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
-                        if (room.players === undefined) {
-                            room.players = new Map();
-                            room.name = null;
-                            room.subject = null;
-                            room.resultsVisibility = false;
-                            room.cards = [
-                                {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
-                                {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
-                                {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
-                                {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
-                                {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
-                            ];
-                        }
-    
-                        var participant = JSON.parse(socket.handshake.query.user);
-                        socket.participant = participant;
-                    }
-                });
+                var participant = JSON.parse(socket.handshake.query.user);
+                this.planifRooms.get(this.getRoomName(planif_ref)).users.set(participant.ref);
+                socket.participant = participant;
 
                 socket.on('ask_planif_informations', (acknowledgement) => {
                     debug("%s %s ask_planif_informations for room %s.", socket.id, socket.participant.ref, planif_ref);
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     
                     let reponsePlayerTS = {};
                     for (let entry of room.players.entries()) {
@@ -69,7 +71,7 @@ module.exports = {
                 socket.on('join_planif', () => {
                     debug("%s plays in planif room %s.", socket.id, planif_ref);
                     // TODO what happen if the room not exists ?
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     var player = JSON.parse(socket.handshake.query.user);
                     player.vote = null;
                     player.socked_id = socket.id;
@@ -85,7 +87,7 @@ module.exports = {
                 socket.on('leave_planif', () => {
                       debug("%s does not play in planif room %s.", socket.id, planif_ref);
                       // TODO what happen if the room not exists ?
-                      let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                      let room = this.planifRooms.get(this.getRoomName(planif_ref));
                       if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
                           this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
                       }
@@ -93,15 +95,22 @@ module.exports = {
 
                 socket.on('disconnecting', () => {
                     debug("%s disconnecting", socket.id);
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
                         this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
+                    }
+                    if (room.users !== undefined) {
+                        room.users.delete(socket.participant.ref);
+                    }
+                    if (room.users !== undefined && room.users.size == 0) {
+                        debug("last user leave planif room %s.", planif_ref);
+                        this.planifRooms.delete(this.getRoomName(planif_ref));
                     }
                 });
 
                 socket.on('player_choose', (data) => {
                     debug("%s choose %s", socket.id, data.choosenValue);
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined && room.players.has(socket.participant.ref)) {
                         room.players.get(socket.participant.ref).vote = data.choosenValue;
                     }
@@ -110,7 +119,7 @@ module.exports = {
 
                 socket.on('restart_choose', () => {
                     debug("%s restart_choose", socket.id);
-                    let room = socket.adapter.rooms[this.getRoomName(planif_ref)];
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined) {
                       for (let entry of room.players.entries()) {
                         entry[1].vote = null;
@@ -120,7 +129,7 @@ module.exports = {
                 });
 
                 socket.on('send_planif_name', (name) => {
-                    socket.adapter.rooms[this.getRoomName(planif_ref)].name = name;
+                    this.planifRooms.get(this.getRoomName(planif_ref)).name = name;
                     
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
@@ -128,7 +137,7 @@ module.exports = {
                 });
 
                 socket.on('send_game_subject', (subject) => {
-                    socket.adapter.rooms[this.getRoomName(planif_ref)].subject = subject;
+                    this.planifRooms.get(this.getRoomName(planif_ref)).subject = subject;
                     
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
@@ -137,13 +146,13 @@ module.exports = {
 
                 socket.on('change_results_visibility', (data) => {
                     debug("%s choose result visibility to %s", socket.id, data.choosenVisibility);
-                    socket.adapter.rooms[this.getRoomName(planif_ref)].resultsVisibility = data.choosenVisibility;
+                    this.planifRooms.get(this.getRoomName(planif_ref)).resultsVisibility = data.choosenVisibility;
                     this.sendVisibilityChanged(planif_ref, data.choosenVisibility)
                 });
 
                 socket.on('change_card_visibility', (data) => {
                     debug("%s choose card %s visibility to %s", socket.id, data.cardIndex, data.choosenVisibility);
-                    var roomCards = socket.adapter.rooms[this.getRoomName(planif_ref)].cards;
+                    var roomCards = this.planifRooms.get(this.getRoomName(planif_ref)).cards;
                     if (data.cardIndex>=0 && data.cardIndex<roomCards.length) {
                         roomCards[data.cardIndex].active = data.choosenVisibility;
                         this.sendCardVisibilityChanged(planif_ref, data.cardIndex, data.choosenVisibility);

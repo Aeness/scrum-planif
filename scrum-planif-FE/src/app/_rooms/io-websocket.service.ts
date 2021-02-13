@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import * as io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import Debug from "debug";
@@ -25,21 +25,31 @@ export class IoWebsocketService implements OnDestroy {
 
       this.socket = io(url);
 
+      // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
       debug("#[Io]# Try to connected: " + url);
 
-      // Global events are bound against socket
-      this.socket.on('connect_failed', () => {
-        debug('#[Io]# Connection Failed ' + this.nameRoom);
+      // Socket event
+      this.socket.on('connect_error', () => {
+        debug('#[Io:socket]# Connection Error ' + this.nameRoom);
       });
       this.socket.on('connect',  () => {
-        debug('#[Io]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
-        debug('#[Io]# transport ' + this.socket.io.engine.transport.name);
+        debug('#[Io:socket]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
+        debug('#[Io:socket]# transport ' + this.socket.io.engine.transport.name);
         if (onConnect !== undefined) {
           onConnect();
         }
       });
       this.socket.on('disconnect',  (reason) => {
-        debug('#[Io]# Disconnected ' + this.nameRoom + ' ' + reason);
+        // When quite the page, call before this.socket.io.on("close"
+        debug('#[Io:socket]# Disconnected ' + this.nameRoom + ' ' + reason);
+      });
+
+      // Manager event : open, error, close, ping, packet, reconnect_attempt, reconnect, reconnect_error, reconnect_failed
+      this.socket.io.on("open", () => {
+        debug('#[Io:Manager]# open ' + this.nameRoom);
+      });
+      this.socket.io.on("close", (reason) => {
+        debug('#[Io:Manager]# close ' + this.nameRoom + ' ' + reason);
       });
 
       // this.socket.io: Manager
