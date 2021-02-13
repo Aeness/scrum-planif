@@ -1,4 +1,5 @@
 var express = require('express');
+var helmet = require('helmet');
 var bodyParser = require('body-parser');
 var path = require('path');
 var logger = require('morgan');
@@ -16,6 +17,9 @@ function initApp(conf) {
 
     // Node.js body parsing middleware.
     app.use(bodyParser.json());
+    
+    app.use(helmet());
+    app.disable('x-powered-by');
 
     // CORS (Cross-Origin Resource Sharing)
     // https://www.html5rocks.com/en/tutorials/cors/
