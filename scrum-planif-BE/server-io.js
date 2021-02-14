@@ -11,7 +11,6 @@ module.exports = function(app, server, corsOrigin) {
         "optionsSuccessStatus": 204
     */
     var io = require('socket.io')(server, {
-        allowEIO3: true,
         cors: {
             origin: corsOrigin,
             methods: ["GET", "POST"], //  Access-Control-Allow-Methods => Not working
