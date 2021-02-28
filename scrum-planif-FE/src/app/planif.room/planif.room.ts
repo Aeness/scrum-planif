@@ -2,7 +2,6 @@ import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from './player';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { User } from '../auth.service/user';
 
 @Injectable()
 export class PlanifRoom extends IoWebsocketService {
@@ -23,8 +22,9 @@ export class PlanifRoom extends IoWebsocketService {
    * @param data
    * @param onConnect
    */
-  public init(planif_ref : String, data: User, onChildrenConnect : () => void) {
-    super.connect("planif=" + planif_ref, "user", data, () => {
+
+    public init(planif_ref : string, onChildrenConnect : () => void) {
+      super.connect("planif=" + planif_ref, () => {
       // Call when the server restart
       this.socket.emit("ask_planif_informations", (error, response : any) => {
         if (error) {
@@ -39,6 +39,8 @@ export class PlanifRoom extends IoWebsocketService {
           for (entry of Object.entries(response.players)) {
             this.playersList$.value.set(entry[0],entry[1]);
           }
+
+          this.listenAuthenticationError();
 
           this.listenPlanifName().subscribe(
             (data) => {
@@ -89,6 +91,15 @@ export class PlanifRoom extends IoWebsocketService {
         }
       });
     });
+  }
+
+  private listenAuthenticationError() {
+      this.getMessages('authentication_error').subscribe(
+        () => {
+          // TODO Display a message in a toast
+          window.location.reload();
+        }
+      )
   }
 
   // TODO rename without ask

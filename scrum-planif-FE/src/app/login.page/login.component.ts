@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StorageTokenTool } from '../auth.service/storage-token.tool';
+import { TokenTool } from '../auth.service/token.tool';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,7 @@ export class LoginComponent implements OnInit {
       this.authService.start(this.authForm.controls.name.value).subscribe(
         (authResult) => {
             StorageTokenTool.saveTokens(authResult.token, authResult.refreshToken);
-            this.authService.announceUser(StorageTokenTool.decodeToken(authResult.token))
+            this.authService.announceUser(TokenTool.decodeToken(authResult.token))
             this.authForm.enable();
             this.authFormSubmiting(false);
             // login successful so redirect to return url

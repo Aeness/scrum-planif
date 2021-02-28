@@ -3,6 +3,10 @@ import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import Debug from "debug";
+import { TokenTool } from '../auth.service/token.tool';
+import { AuthService } from '../auth.service/auth.service';
+import { JwtTokens } from '../auth.service/jwtTokens';
+import { StorageTokenTool } from '../auth.service/storage-token.tool';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
@@ -11,26 +15,25 @@ export class IoWebsocketService implements OnDestroy {
   protected socket; // Socket -  SocketIOClient.Socket
   protected nameRoom: String
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
-  protected connect(nameRoom : String, jsonName? : String, jsonData? : any, onConnect? : () => void) {
+  protected connect(nameRoom : String, onConnect? : () => void) {
     if (!this.socket) {
       this.nameRoom = nameRoom
-      var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom;
 
+       // TODO : check token
+      var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + StorageTokenTool.token();
 
-      if (jsonName !== undefined && jsonData !== undefined) {
-        url = url + "&" + jsonName + "=" + JSON.stringify(jsonData);
-      }
-
+      // TODO : https://socket.io/docs/v3/client-initialization/#auth
       this.socket = io(url);
 
       // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
       debug("#[Io]# Try to connected: " + url);
 
       // Socket event
-      this.socket.on('connect_error', () => {
-        debug('#[Io:socket]# Connection Error ' + this.nameRoom);
+      this.socket.on('connect_error', (err : Error) => {
+        debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
+        window.location.reload();
       });
       this.socket.on('connect',  () => {
         debug('#[Io:socket]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
@@ -74,7 +77,22 @@ export class IoWebsocketService implements OnDestroy {
   }
 
   protected sendMessage(message: string, data: any) {
+
+
+    let token = StorageTokenTool.token();
+    if (!TokenTool.tokenIsOk(token)) {
+      debug('tokenIsOk is NOT OK');
+      return this.authService.refresh(StorageTokenTool.refeshToken()).subscribe(
+        (tokens: JwtTokens) => {
+          StorageTokenTool.saveTokens(tokens.token, tokens.refreshToken);
+          data.jwt = tokens.token;
+          this.socket.emit(message, data);
+        }
+      )
+    } else {
+      data.jwt = token;
       this.socket.emit(message, data);
+    }
   }
 
   ngOnDestroy() {

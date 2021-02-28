@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth.service/auth.service';
 import { StorageTokenTool } from '../auth.service/storage-token.tool';
-import * as moment from 'moment';
 import { JwtTokens } from '../auth.service/jwtTokens';
+import { TokenTool } from '../auth.service/token.tool';
 
 /**
  * Refresh and add the JWT token to the request to the http server.
@@ -25,18 +25,18 @@ export class AuthInterceptor implements HttpInterceptor {
         if (((req.url.endsWith("/auth") || req.url.endsWith("/auth/refresh")) && req.method == "POST")) {
             return next.handle(req);
         } else {
-            const current_ts: number = Math.trunc(moment().valueOf() / 1000);
-            if(current_ts >= StorageTokenTool.decodedToken().exp - 1) {
-              return this.authService.refresh(StorageTokenTool.refeshToken()).pipe<HttpEvent<any>>(
-                  switchMap<JwtTokens, Observable<HttpEvent<any>>>(
-                  (authResult: JwtTokens) => {
-                      StorageTokenTool.saveTokens(authResult.token, authResult.refreshToken);
-                      return next.handle(this.addTheToken(req, StorageTokenTool.token()));
-                  }
-              ))
-            } else {
-                return next.handle(this.addTheToken(req, StorageTokenTool.token()));
-            }
+          let token = StorageTokenTool.token();
+          if (!TokenTool.tokenIsOk(token)) {
+            return this.authService.refresh(StorageTokenTool.refeshToken()).pipe<HttpEvent<any>>(
+                switchMap<JwtTokens, Observable<HttpEvent<any>>>(
+                (authResult: JwtTokens) => {
+                    StorageTokenTool.saveTokens(authResult.token, authResult.refreshToken);
+                    return next.handle(this.addTheToken(req, authResult.token));
+                }
+            ))
+          } else {
+            return next.handle(this.addTheToken(req, StorageTokenTool.token()));
+          }
         }
     }
 

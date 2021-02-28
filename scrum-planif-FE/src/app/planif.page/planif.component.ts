@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
+import { StorageTokenTool } from '../auth.service/storage-token.tool';
 
 @Component({
   selector: 'app-planif',
@@ -12,7 +13,7 @@ import { AuthService } from '../auth.service/auth.service';
 export class PlanifComponent {
 
   public init: boolean = false;
-  public planif : {ref: String, name: String, subject: String};
+  public planif : {ref: string, name: String, subject: String};
   public takePartIn: boolean = false;
   public resultsVisibility: Boolean = false;
 
@@ -29,7 +30,11 @@ export class PlanifComponent {
           name : '',
           subject : ''
         };
-        this.planifRoom.init(this.planif.ref, this.authService.userConnected, () => {
+        if (!StorageTokenTool.hasToken()) {
+          // TODO Display a message in a toast
+          window.location.reload();
+        }
+        this.planifRoom.init(this.planif.ref, () => {
           this.init = true;
           this.takePartIn = true;
           this.afterInit();
