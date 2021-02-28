@@ -21,46 +21,59 @@ export class IoWebsocketService implements OnDestroy {
     if (!this.socket) {
       this.nameRoom = nameRoom
 
-       // TODO : check token
-      var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + StorageTokenTool.token();
-
-      // TODO : https://socket.io/docs/v3/client-initialization/#auth
-      this.socket = io(url);
-
-      // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
-      debug("#[Io]# Try to connected: " + url);
-
-      // Socket event
-      this.socket.on('connect_error', (err : Error) => {
-        debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
-        window.location.reload();
-      });
-      this.socket.on('connect',  () => {
-        debug('#[Io:socket]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
-        debug('#[Io:socket]# transport ' + this.socket.io.engine.transport.name);
-        if (onConnect !== undefined) {
-          onConnect();
-        }
-      });
-      this.socket.on('disconnect',  (reason) => {
-        // When quite the page, call before this.socket.io.on("close"
-        debug('#[Io:socket]# Disconnected ' + this.nameRoom + ' ' + reason);
-      });
-
-      // Manager event : open, error, close, ping, packet, reconnect_attempt, reconnect, reconnect_error, reconnect_failed
-      this.socket.io.on("open", () => {
-        debug('#[Io:Manager]# open ' + this.nameRoom);
-      });
-      this.socket.io.on("close", (reason) => {
-        debug('#[Io:Manager]# close ' + this.nameRoom + ' ' + reason);
-      });
-
-      // this.socket.io: Manager
-      this.socket.io.engine.on('upgrade', function(transport) {
-        debug('#[Io]# transport changed to ' + transport.name);
-      });
-
+      let token = StorageTokenTool.token();
+      if (!TokenTool.tokenIsOk(token)) {
+        return this.authService.refresh(StorageTokenTool.refeshToken()).subscribe(
+          (tokens: JwtTokens) => {
+            StorageTokenTool.saveTokens(tokens.token, tokens.refreshToken);
+            this._connect(tokens.token, onConnect)
+          }
+        )
+      } else {
+        this._connect(token, onConnect)
+      }
     }
+  }
+
+  // The token must be OK
+  private _connect(token : string, onConnect? : () => void) {
+    var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + token;
+
+    // TODO : https://socket.io/docs/v3/client-initialization/#auth
+    this.socket = io(url);
+
+    // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
+    debug("#[Io]# Try to connected: " + url);
+
+    // Socket event
+    this.socket.on('connect_error', (err : Error) => {
+      debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
+      window.location.reload();
+    });
+    this.socket.on('connect',  () => {
+      debug('#[Io:socket]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
+      debug('#[Io:socket]# transport ' + this.socket.io.engine.transport.name);
+      if (onConnect !== undefined) {
+        onConnect();
+      }
+    });
+    this.socket.on('disconnect',  (reason) => {
+      // When quite the page, call before this.socket.io.on("close"
+      debug('#[Io:socket]# Disconnected ' + this.nameRoom + ' ' + reason);
+    });
+
+    // Manager event : open, error, close, ping, packet, reconnect_attempt, reconnect, reconnect_error, reconnect_failed
+    this.socket.io.on("open", () => {
+      debug('#[Io:Manager]# open ' + this.nameRoom);
+    });
+    this.socket.io.on("close", (reason) => {
+      debug('#[Io:Manager]# close ' + this.nameRoom + ' ' + reason);
+    });
+
+    // this.socket.io: Manager
+    this.socket.io.engine.on('upgrade', function(transport) {
+      debug('#[Io]# transport changed to ' + transport.name);
+    });
   }
 
   protected getMessages = (message: string) => {
