@@ -1,7 +1,7 @@
-import * as jwt_decode from 'jwt-decode';
 import { Payload } from './payload';
+import { TokenTool } from './token.tool';
 
-// TODO find a way to add methode to sessionStorage instead
+// Data are share beetwen regular application and socket-io client.
 export class StorageTokenTool {
 
     static saveTokens(token: string, refreshToken: string) {
@@ -22,15 +22,7 @@ export class StorageTokenTool {
     }
 
     static decodedToken() : Payload {
-        return StorageTokenTool.decodeToken(localStorage.getItem('token'));
-    }
-
-    static decodeToken(token : String) : Payload {
-        if (token !== null) {
-            return jwt_decode(token);
-        } else {
-            return null;
-        }
+        return TokenTool.decodeToken(localStorage.getItem('token'));
     }
 
     static deleteTokens() {

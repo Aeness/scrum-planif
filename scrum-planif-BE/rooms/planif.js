@@ -1,4 +1,5 @@
-var debug = require('debug')('scrum-planif:serverIo')
+var debug = require('debug')('scrum-planif:serverIo');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
     app: null,
@@ -18,9 +19,9 @@ module.exports = {
                 var planif_ref = socket.handshake.query.planif;
 
                 // TODO check the socket is not on another room
-                // if yes, don't let it to join
+                // if yes, don't let it to join ==> io.use((socket, next)
 
-                socket.join(this.getRoomName(planif_ref),);
+                socket.join(this.getRoomName(planif_ref));
                         
                 debug("%s open planif room %s.", socket.id, planif_ref);
                 
@@ -42,7 +43,13 @@ module.exports = {
                     this.planifRooms.set(this.getRoomName(planif_ref), room);
                 }
 
-                var participant = JSON.parse(socket.handshake.query.user);
+                // The jwt has been checked in allowRequest
+                // TODO move to io.use((socket, next)
+                let decoded = jwt.verify(socket.handshake.query.jwt, app.set('tokensecret'));
+                let participant = {};
+                participant.ref = decoded.ref;
+                participant.name = decoded.name;
+
                 this.planifRooms.get(this.getRoomName(planif_ref)).users.set(participant.ref);
                 socket.participant = participant;
 
@@ -114,7 +121,7 @@ module.exports = {
                     if (room.players !== undefined && room.players.has(socket.participant.ref)) {
                         room.players.get(socket.participant.ref).vote = data.choosenValue;
                     }
-                    this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue)
+                    this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue);
                 });
 
                 socket.on('restart_choose', () => {
@@ -152,6 +159,11 @@ module.exports = {
 
                 socket.on('change_card_visibility', (data) => {
                     debug("%s choose card %s visibility to %s", socket.id, data.cardIndex, data.choosenVisibility);
+                    if (!this.checkJwt(data.jwt, this.app)) {
+                        this.sendAuthenticationError(socket);
+                        return;
+                    }
+
                     var roomCards = this.planifRooms.get(this.getRoomName(planif_ref)).cards;
                     if (data.cardIndex>=0 && data.cardIndex<roomCards.length) {
                         roomCards[data.cardIndex].active = data.choosenVisibility;
@@ -164,9 +176,25 @@ module.exports = {
     getRoomName: function (planif_ref) {
         return "planif_" + planif_ref;
     },
+    checkJwt: (token, app) => {
+        try {
+            jwt.verify(token, app.set('tokensecret'));
+        } catch(err) {
+            debug("wrong jwt %s.", err);
+            return false;
+        }
+        return true;
+    },
 
     ///////
     // list of "messages" which can be emit by the server to the clients
+
+    sendAuthenticationError: function (socket) {
+        debug('sendAuthenticationError to %s:', socket.id);
+        // https://socket.io/docs/v3/emit-cheatsheet/
+        // sending to the client
+        socket.emit("authentication_error", null);
+    },
 
     sendPlayerJoinPlanif: function (planif_ref, player) {
         debug('sendPlayerJoinPlanif to planif:' + planif_ref + JSON.stringify(player));

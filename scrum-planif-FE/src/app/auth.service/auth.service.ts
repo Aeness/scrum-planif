@@ -21,6 +21,8 @@ export class AuthService {
   }
 
   // TODO use shareReplay
+  // TODO refresh should use StorageTokenTool like hasUserConnected
+  // TODO AuthService should get the active token (and refresh if necessary)
   refresh(refreshToken:string): Observable<JwtTokens> {
     return this.http.post<JwtTokens>(
       this.restServiceUrl + '/refresh', {},
