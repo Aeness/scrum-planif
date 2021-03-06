@@ -42,7 +42,7 @@ function initApp(conf) {
         if (req.method !== "OPTIONS" && !req.path.startsWith("/auth")) {
 
             if (req.header("Authorization") && req.header("Authorization").startsWith("Bearer ")) {
-                var token = req.header("Authorization").substr(7);
+                let token = req.header("Authorization").substr(7);
 
                 jwt.verify(token,req.app.set('tokensecret'),function(err){
                     if(err){

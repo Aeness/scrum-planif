@@ -37,7 +37,7 @@ router.post('/', newAuthValidation, function(req, res/*, next*/) {
 });
 
 router.post('/refresh', function(req, res/*, next*/) {
-    var refreshToken = req.header("Authorization").substr(7);
+    let refreshToken = req.header("Authorization").substr(7);
 
     jwt.verify(refreshToken,req.app.get('refreshsecret'),function(err,refreshTokenDecoded){
         if (err) {
@@ -55,12 +55,12 @@ router.post('/refresh', function(req, res/*, next*/) {
 const createTokens = function(app, player_ref,player_name) {
     // https://www.iana.org/assignments/jwt/jwt.xhtml
     // claims will be in the PAYLOAD
-    var claims = {
+    let claims = {
         ref: player_ref,
         name: player_name
     };
 
-    var token = jwt.sign(
+    let token = jwt.sign(
         claims, app.get('tokensecret'),
         {
             //algorithm: 'RS256',
@@ -68,7 +68,7 @@ const createTokens = function(app, player_ref,player_name) {
         }
     );
 
-    var refreshToken = jwt.sign(
+    let refreshToken = jwt.sign(
         claims, app.get('refreshsecret'),
         {
             //algorithm: 'RS256',

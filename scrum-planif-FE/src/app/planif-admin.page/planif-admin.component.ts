@@ -97,8 +97,8 @@ export class PlanifAdminComponent extends PlanifComponent {
   }
 
   public copyElement(idElement) {
-    var range = document.createRange();
-    var selection = window.getSelection();
+    let range = document.createRange();
+    let selection = window.getSelection();
     range.selectNode(document.getElementById(idElement));
     selection.removeAllRanges();
     selection.addRange(range);

@@ -37,7 +37,7 @@ export class IoWebsocketService implements OnDestroy {
 
   // The token must be OK
   private _connect(token : string, onConnect? : () => void) {
-    var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + token;
+    let url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + token;
 
     // TODO : https://socket.io/docs/v3/client-initialization/#auth
     this.socket = io(url);
