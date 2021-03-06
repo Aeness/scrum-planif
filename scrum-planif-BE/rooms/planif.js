@@ -79,7 +79,9 @@ module.exports = {
                     debug("%s plays in planif room %s.", socket.id, planif_ref);
                     // TODO what happen if the room not exists ?
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
-                    var player = JSON.parse(socket.handshake.query.user);
+                    var player = {};
+                    player.ref = socket.participant.ref;
+                    player.name = socket.participant.name;
                     player.vote = null;
                     player.socked_id = socket.id;
                     
