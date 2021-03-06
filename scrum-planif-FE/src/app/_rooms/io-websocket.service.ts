@@ -13,11 +13,11 @@ const debug = Debug("scrum-planif:clientIo");
 export class IoWebsocketService implements OnDestroy {
 
   protected socket; // Socket -  SocketIOClient.Socket
-  protected nameRoom: String
+  protected nameRoom: string
 
   constructor(private authService: AuthService) { }
 
-  protected connect(nameRoom : String, onConnect? : () => void) {
+  protected connect(nameRoom : string, onConnect? : () => void) {
     if (!this.socket) {
       this.nameRoom = nameRoom
 

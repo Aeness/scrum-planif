@@ -9,8 +9,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class CardComponent implements OnInit {
   @Input() value: string;
   @Input() rank: string;
-  @Output() choosenEvent = new EventEmitter<Boolean>();
-  public isSelected: Boolean = false;
+  @Output() choosenEvent = new EventEmitter<boolean>();
+  public isSelected: boolean = false;
 
   ngOnInit() {
   }

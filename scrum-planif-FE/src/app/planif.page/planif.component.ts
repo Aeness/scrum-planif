@@ -13,7 +13,7 @@ import { StorageTokenTool } from '../auth.service/storage-token.tool';
 export class PlanifComponent {
 
   public init: boolean = false;
-  public planif : {ref: string, name: String, subject: String};
+  public planif : {ref: string, name: string, subject: string};
   public takePartIn: boolean = false;
   public resultsVisibility: Boolean = false;
 
@@ -58,7 +58,7 @@ export class PlanifComponent {
     this.planifRoom.askToPlay();
 
     this.planifRoom.resultsVisibility$.subscribe(
-      (data: Boolean) => {
+      (data: boolean) => {
         this.resultsVisibility = data;
       }
     );

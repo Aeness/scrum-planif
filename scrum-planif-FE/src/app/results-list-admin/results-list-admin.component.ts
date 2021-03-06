@@ -8,6 +8,6 @@ import { ResultsListComponent } from '../results-list/results-list.component';
 })
 export class ResultsListAdminComponent extends ResultsListComponent {
 
-  @Input() iVoteValue: Boolean;
-  @Input() resultsVisibilityValue: Boolean;
+  @Input() iVoteValue: boolean;
+  @Input() resultsVisibilityValue: boolean;
 }

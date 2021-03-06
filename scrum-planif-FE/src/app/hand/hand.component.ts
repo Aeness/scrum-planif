@@ -11,7 +11,7 @@ export class HandComponent /*implements AfterViewInit*/ {
   public init: boolean = false;
 
   @Input() planifRoom: PlanifRoom;
-  @Input() isAdmin: Boolean = false;
+  @Input() isAdmin: boolean = false;
 
   public values : string[] = [];
   public allValues : {value: string, active: boolean}[] = [];
@@ -82,7 +82,7 @@ export class HandComponent /*implements AfterViewInit*/ {
     }
   }
 
-  changeValue(value: string, active: Boolean) {
+  changeValue(value: string, active: boolean) {
     if (value == this.choosenValue && active == false) {
       this.choosenValue = null;
       this.planifRoom.sendPlanifChoise(null);

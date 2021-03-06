@@ -4,7 +4,7 @@ import { Payload } from './payload';
 
 export class TokenTool {
 
-    static tokenIsOk(token : String) : boolean {
+    static tokenIsOk(token : string) : boolean {
       const current_ts: number = Math.trunc(moment().valueOf() / 1000);
       if(token === null || current_ts >= TokenTool.decodeToken(token).exp - 1) {
         return false;
@@ -13,7 +13,7 @@ export class TokenTool {
       }
     }
 
-    static decodeToken(token : String) : Payload {
+    static decodeToken(token : string) : Payload {
       if (token !== null) {
         return jwt_decode(token);
       } else {

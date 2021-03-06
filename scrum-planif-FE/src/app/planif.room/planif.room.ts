@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class PlanifRoom extends IoWebsocketService {
   // Send the last name knew by the room.
-  public name$ : BehaviorSubject<String> = new BehaviorSubject("");
-  public subject$ : BehaviorSubject<String> = new BehaviorSubject("");
-  public playersList$ : BehaviorSubject<Map<String, Player>> = new BehaviorSubject(new Map<String, Player>());
-  public resultsVisibility$ : BehaviorSubject<Boolean> = new BehaviorSubject(true);
+  public name$ : BehaviorSubject<string> = new BehaviorSubject("");
+  public subject$ : BehaviorSubject<string> = new BehaviorSubject("");
+  public playersList$ : BehaviorSubject<Map<string, Player>> = new BehaviorSubject(new Map<string, Player>());
+  public resultsVisibility$ : BehaviorSubject<boolean> = new BehaviorSubject(true);
   public cardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
 
   /**
@@ -61,13 +61,13 @@ export class PlanifRoom extends IoWebsocketService {
           );
 
           this.listenPlayerQuitPlanif().subscribe(
-            (dataQuit: { player_ref: String; }) => {
+            (dataQuit: { player_ref: string; }) => {
               this.playersList$.value.delete(dataQuit.player_ref);
             }
           );
 
           this.listenPlanifChoise().subscribe(
-            (dataChoise: {player_ref: String, choosenValue : String}) => {
+            (dataChoise: {player_ref: string, choosenValue : string}) => {
               //this.votes.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
               this.playersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
             }
@@ -76,7 +76,7 @@ export class PlanifRoom extends IoWebsocketService {
           this.resultsVisibility$.next(response.resultsVisibility);
 
           this.listenResultsVisibility().subscribe(
-            (dataChoise: {choosenVisibility : Boolean}) => {
+            (dataChoise: {choosenVisibility : boolean}) => {
               this.resultsVisibility$.next(dataChoise.choosenVisibility);
             }
           );
@@ -115,15 +115,15 @@ export class PlanifRoom extends IoWebsocketService {
       return this.getMessages('player_join_planif');
   }
 
-  private listenPlayerQuitPlanif() : Observable<{player_ref: String}> {
+  private listenPlayerQuitPlanif() : Observable<{player_ref: string}> {
       return this.getMessages('player_leave_planif');
   }
 
-  public sendPlanifChoise(choosenValue : String) {
+  public sendPlanifChoise(choosenValue : string) {
     this.sendMessage("player_choose", {choosenValue : choosenValue});
   }
 
-  private listenPlanifChoise() : Observable<{player_ref: String, choosenValue : String}> {
+  private listenPlanifChoise() : Observable<{player_ref: string, choosenValue : string}> {
       return this.getMessages('player_choose');
   }
 
@@ -131,31 +131,31 @@ export class PlanifRoom extends IoWebsocketService {
       return this.getMessages('restart_choose');
   }
 
-  public sendPlanifName(name: String) {
+  public sendPlanifName(name: string) {
     this.sendMessage("send_planif_name", name);
   }
 
-  private listenPlanifName() : Observable<{name: String}> {
+  private listenPlanifName() : Observable<{name: string}> {
     return this.getMessages('planif_name');
   }
 
-  public sendGameSubject(subject: String) {
+  public sendGameSubject(subject: string) {
     this.sendMessage("send_game_subject", subject);
   }
 
-  private listenGameSubject() : Observable<{subject: String}> {
+  private listenGameSubject() : Observable<{subject: string}> {
     return this.getMessages('game_subject');
   }
 
-  public sendResultsVisibility(choosenValue : Boolean) {
+  public sendResultsVisibility(choosenValue : boolean) {
     this.sendMessage("change_results_visibility", {choosenVisibility : choosenValue});
   }
 
-  private listenResultsVisibility() : Observable<{choosenVisibility : Boolean}> {
+  private listenResultsVisibility() : Observable<{choosenVisibility : boolean}> {
       return this.getMessages('results_visibility_changed');
   }
 
-  public sendRestartGameSubject(subject: String) {
+  public sendRestartGameSubject(subject: string) {
     this.sendMessage("send_game_subject", subject);
     this.sendMessage("change_results_visibility", {choosenVisibility : false});
     this.socket.emit("restart_choose");
