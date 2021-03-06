@@ -64,7 +64,7 @@ const createTokens = function(app, player_ref,player_name) {
         claims, app.get('tokensecret'),
         {
             //algorithm: 'RS256',
-            expiresIn: 900 // expires in 15 minutes
+            expiresIn: 1800 // expires in 30 minutes
         }
     );
 
@@ -72,7 +72,7 @@ const createTokens = function(app, player_ref,player_name) {
         claims, app.get('refreshsecret'),
         {
             //algorithm: 'RS256',
-            expiresIn: 1800 // expires in 30 minutes
+            expiresIn: 3600 // expires in 60 minutes
         }
     );
 
