@@ -79,9 +79,12 @@ export class PlanifAdminComponent extends PlanifComponent {
     );
     this.planifRoom.cardsList$.subscribe(
       (data) => {
-
-        console.log(data)
         this.cards = data;
+        // TODO do better
+        if (Array.isArray(data) && data.length > 0 && data[0].value == "XS"
+        && this.gameTypeChoosen.value !== true) {
+          this.gameTypeChoosen.setValue(true);
+        }
       }
     );
   }
