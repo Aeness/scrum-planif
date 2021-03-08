@@ -157,14 +157,16 @@ module.exports = {
 
                 socket.on('change_type_game', (data) => {
                     debug("%s change type game to %s", socket.id, data.choosenGameType);
-                    this.planifRooms.get(this.getRoomName(planif_ref)).choosenGameType = data.choosenGameType;
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
+                    room.choosenGameType = data.choosenGameType;
                     if (data.choosenGameType === "TS") {
+                        room.cards = this.getTShirtCard();
                         this.sendGameTypeChanged(planif_ref, this.getTShirtCard())
 
                     } else {
+                        room.cards = this.getClassicCard();
                         this.sendGameTypeChanged(planif_ref, this.getClassicCard())
                     }
-                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined) {
                       for (let entry of room.players.entries()) {
                         entry[1].vote = null;
