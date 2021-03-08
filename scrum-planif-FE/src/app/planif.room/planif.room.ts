@@ -86,6 +86,12 @@ export class PlanifRoom extends IoWebsocketService {
               this.cardsList$.value[data.cardIndex].active = data.choosenVisibility;
             }
           );
+
+          this.listenGameType().subscribe(
+            (response: {gameCards : []}) => {
+              this.cardsList$.next(response.gameCards);
+            }
+          );
           // TODO use AsyncSubject<boolean> ???
           onChildrenConnect();
         }
@@ -153,6 +159,18 @@ export class PlanifRoom extends IoWebsocketService {
 
   private listenResultsVisibility() : Observable<{choosenVisibility : boolean}> {
       return this.getMessages('results_visibility_changed');
+  }
+
+  public sendTypeGameToTshirt() {
+    this.sendMessage("change_type_game", {choosenGameType : "TS"});
+  }
+
+  public sendTypeGameToNumber() {
+    this.sendMessage("change_type_game", {choosenGameType : "classic"});
+  }
+
+  private listenGameType() : Observable<{gameCards : []}> {
+      return this.getMessages('game_type_changed');
   }
 
   public sendRestartGameSubject(subject: string) {

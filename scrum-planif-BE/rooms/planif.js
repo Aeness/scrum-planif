@@ -16,7 +16,7 @@ module.exports = {
             
             // Check if the connection is for this kind of room
             if (socket.handshake.query.planif) {
-                var planif_ref = socket.handshake.query.planif;
+                let planif_ref = socket.handshake.query.planif;
 
                 // TODO check the socket is not on another room
                 // if yes, don't let it to join ==> io.use((socket, next)
@@ -33,13 +33,8 @@ module.exports = {
                     room.name = null;
                     room.subject = null;
                     room.resultsVisibility = false;
-                    room.cards = [
-                        {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
-                        {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
-                        {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
-                        {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
-                        {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
-                    ];
+                    room.choosenGameType = "classic";
+                    room.cards = this.getClassicCard();
                     this.planifRooms.set(this.getRoomName(planif_ref), room);
                 }
 
@@ -67,6 +62,7 @@ module.exports = {
                         subject: room.subject,
                         players : reponsePlayerTS,
                         resultsVisibility : room.resultsVisibility,
+                        choosenGameType: room.choosenGameType,
                         cards : room.cards
                     };
                     acknowledgement(null, reponse);
@@ -159,6 +155,24 @@ module.exports = {
                     this.sendVisibilityChanged(planif_ref, data.choosenVisibility)
                 });
 
+                socket.on('change_type_game', (data) => {
+                    debug("%s change type game to %s", socket.id, data.choosenGameType);
+                    this.planifRooms.get(this.getRoomName(planif_ref)).choosenGameType = data.choosenGameType;
+                    if (data.choosenGameType === "TS") {
+                        this.sendGameTypeChanged(planif_ref, this.getTShirtCard())
+
+                    } else {
+                        this.sendGameTypeChanged(planif_ref, this.getClassicCard())
+                    }
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
+                    if (room.players !== undefined) {
+                      for (let entry of room.players.entries()) {
+                        entry[1].vote = null;
+                        this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                      }
+                    }
+                });
+
                 socket.on('change_card_visibility', (data) => {
                     debug("%s choose card %s visibility to %s", socket.id, data.cardIndex, data.choosenVisibility);
                     if (!this.checkJwt(data.jwt, this.app)) {
@@ -186,6 +200,22 @@ module.exports = {
             return false;
         }
         return true;
+    },
+    getClassicCard: function () {
+        return [
+            {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
+            {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
+            {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
+            {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
+            {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
+        ]
+    },
+    getTShirtCard: function () {
+        return [
+            {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
+            {value:"L", active: true},{value:"XL", active: true},{value:"?", active: true},
+            {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
+        ]
     },
 
     ///////
@@ -232,5 +262,9 @@ module.exports = {
     sendCardVisibilityChanged: function(planif_ref, cardIndex, choosenValue) {
         debug('sendCardVisibilityChanged to planif %s : %s, %s', planif_ref, cardIndex, choosenValue);
         this.app.io.to(this.getRoomName(planif_ref)).emit('card_visibility_changed', {cardIndex: cardIndex, choosenVisibility: choosenValue});
+    },
+    sendGameTypeChanged: function(planif_ref, cardsValue) {
+        debug('sendGameTypeChanged to planif %s', planif_ref);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('game_type_changed', { gameCards: cardsValue});
     },
 }

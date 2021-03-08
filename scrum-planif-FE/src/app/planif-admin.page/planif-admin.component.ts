@@ -26,9 +26,11 @@ export class PlanifAdminComponent extends PlanifComponent {
   faEdit = faEdit;
 
   resultsVisibilityChoosen = new FormControl(false);
+  gameTypeChoosen = new FormControl(false);
 
   cards : Array<{value: string, active: boolean}>;
 
+  // https://www.pinterest.fr/pin/194288171399705962/
   constructor(
     protected route: ActivatedRoute,
     protected planifRoom: PlanifRoom,
@@ -94,6 +96,14 @@ export class PlanifAdminComponent extends PlanifComponent {
 
   public resultsVisibilityChoosenChange() {
     this.planifRoom.sendResultsVisibility(this.resultsVisibilityChoosen.value);
+  }
+
+  public gameTypeChoosenChange() {
+    if (this.gameTypeChoosen.value) {
+      this.planifRoom.sendTypeGameToTshirt();
+    } else {
+      this.planifRoom.sendTypeGameToNumber();
+    }
   }
 
   public copyElement(idElement) {
