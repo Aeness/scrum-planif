@@ -133,20 +133,20 @@ module.exports = {
                     }
                 });
 
-                socket.on('send_planif_name', (name) => {
-                    this.planifRooms.get(this.getRoomName(planif_ref)).name = name;
+                socket.on('send_planif_name', (data) => {
+                    this.planifRooms.get(this.getRoomName(planif_ref)).name = data.name;
                     
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
-                    this.sendPlanifName(planif_ref,name);
+                    this.sendPlanifName(planif_ref,data.name);
                 });
 
-                socket.on('send_game_subject', (subject) => {
-                    this.planifRooms.get(this.getRoomName(planif_ref)).subject = subject;
+                socket.on('send_game_subject', (data) => {
+                    this.planifRooms.get(this.getRoomName(planif_ref)).subject = data.subject;
                     
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
-                    this.sendGameSubject(planif_ref,subject);
+                    this.sendGameSubject(planif_ref,data.subject);
                 });
 
                 socket.on('change_results_visibility', (data) => {

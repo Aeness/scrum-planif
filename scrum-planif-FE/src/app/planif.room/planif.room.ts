@@ -146,7 +146,7 @@ export class PlanifRoom extends IoWebsocketService {
   }
 
   public sendGameSubject(subject: string) {
-    this.sendMessage("send_game_subject", subject);
+    this.sendMessage("send_game_subject", {"subject": subject});
   }
 
   private listenGameSubject() : Observable<{subject: string}> {
@@ -174,7 +174,7 @@ export class PlanifRoom extends IoWebsocketService {
   }
 
   public sendRestartGameSubject(subject: string) {
-    this.sendMessage("send_game_subject", subject);
+    this.sendMessage("send_game_subject", {"subject": subject});
     this.sendMessage("change_results_visibility", {choosenVisibility : false});
     this.socket.emit("restart_choose");
   }
