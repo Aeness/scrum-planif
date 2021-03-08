@@ -100,6 +100,14 @@ export class IoWebsocketService implements OnDestroy {
           StorageTokenTool.saveTokens(tokens.token, tokens.refreshToken);
           data.jwt = tokens.token;
           this.socket.emit(message, data);
+        },
+        (err) => {
+          if (err.status = 401) {
+            window.location.reload();
+          } else {
+            // TODO Display the error
+            console.log('HTTP Error', err);
+          }
         }
       )
     } else {
