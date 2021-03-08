@@ -133,16 +133,16 @@ export class PlanifRoom {
       return this.ioWebsocketService.getMessages('restart_choose');
   }
 
-  public sendPlanifName(name: String) {
+  public sendPlanifName(name: string) {
     this.ioWebsocketService.sendMessage("send_planif_name", name);
   }
 
-  private listenPlanifName() : Observable<{name: String}> {
+  private listenPlanifName() : Observable<{name: string}> {
     return this.ioWebsocketService.getMessages('planif_name');
   }
 
-  public sendGameSubject(subject: String) {
-    this.ioWebsocketService.sendMessage("send_game_subject", subject);
+  public sendGameSubject(subject: string) {
+    this.ioWebsocketService.sendMessage("send_game_subject", {"subject": subject});
   }
 
   private listenGameSubject() : Observable<{subject: String}> {
@@ -157,8 +157,8 @@ export class PlanifRoom {
       return this.ioWebsocketService.getMessages('results_visibility_changed');
   }
 
-  public sendRestartGameSubject(subject: String) {
-    this.ioWebsocketService.sendMessage("send_game_subject", subject);
+  public sendRestartGameSubject(subject: string) {
+    this.ioWebsocketService.sendMessage("send_game_subject", {"subject": subject});
     this.ioWebsocketService.sendMessage("change_results_visibility", {choosenVisibility : false});
     this.ioWebsocketService.socket.emit("restart_choose");
   }
