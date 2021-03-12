@@ -25,12 +25,13 @@ describe('PlayersListComponent', () => {
     fixture = TestBed.createComponent(PlayersListComponent);
     component = fixture.componentInstance;
 
+    let authService : AuthService = (component as any).authService;
+
     // Update the input planifRoom
-    var pr : PlanifRoom = new PlanifRoom();
+    let pr : PlanifRoom = new PlanifRoom(authService);
     component.planifRoom = pr;
 
-    var authService : AuthService = (component as any).authService
-    pr.init("init", authService.userConnected, () => {
+    pr.init("init", () => {
       fixture.detectChanges();
       done();
     })

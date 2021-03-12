@@ -25,12 +25,12 @@ describe('ResultsListAdminComponent', () => {
     fixture = TestBed.createComponent(ResultsListAdminComponent);
     component = fixture.componentInstance;
 
+    var authService : AuthService = (component as any).authService
     // Update the input planifRoom
-    var pr : PlanifRoom = new PlanifRoom();
+    var pr : PlanifRoom = new PlanifRoom(authService);
     component.planifRoom = pr;
 
-    var authService : AuthService = (component as any).authService
-    pr.init("init", authService.userConnected, () => {
+    pr.init("init", () => {
       fixture.detectChanges();
       done();
     })
