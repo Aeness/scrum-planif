@@ -10,13 +10,13 @@ const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
 export class IoWebsocketService implements OnDestroy {
-
-  protected socket; // Socket -  SocketIOClient.Socket
+  // TODO make private
+  public socket; // Socket -  SocketIOClient.Socket
   protected nameRoom: String
 
   constructor(private authService: AuthService) { }
 
-  protected connect(nameRoom : String, onConnect? : () => void) {
+  public connect(nameRoom : String, onConnect? : () => void) {
     if (!this.socket) {
       this.nameRoom = nameRoom
 
@@ -62,7 +62,7 @@ export class IoWebsocketService implements OnDestroy {
     }
   }
 
-  protected getMessages = (message: string) => {
+  public getMessages = (message: string) => {
     return new Observable<any>((observer) => {
         this.socket.on(message, (data) => {
           observer.next(data);
@@ -75,7 +75,7 @@ export class IoWebsocketService implements OnDestroy {
     this.socket.emit(message);
   }
 
-  protected sendMessage(message: string, data: any) {
+  public sendMessage(message: string, data: any) {
 
 
     let token = this.authService.userToken;

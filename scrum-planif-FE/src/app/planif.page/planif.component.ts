@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
+import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 @Component({
   selector: 'app-planif',
   templateUrl: './planif.component.html',
   styleUrls: ['./planif.component.scss'],
-  providers:  [ PlanifRoom ]
+  providers:  [ IoWebsocketService, PlanifRoom ]
 })
 export class PlanifComponent {
 

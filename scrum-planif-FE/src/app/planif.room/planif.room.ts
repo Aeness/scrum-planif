@@ -4,13 +4,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class PlanifRoom extends IoWebsocketService {
+export class PlanifRoom {
   // Send the last name knew by the room.
   public name$ : BehaviorSubject<String> = new BehaviorSubject("");
   public subject$ : BehaviorSubject<String> = new BehaviorSubject("");
   public playersList$ : BehaviorSubject<Map<String, Player>> = new BehaviorSubject(new Map<String, Player>());
   public resultsVisibility$ : BehaviorSubject<Boolean> = new BehaviorSubject(true);
   public cardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
+
+
+  constructor(private ioWebsocketService: IoWebsocketService) { }
 
   /**
    * Each MAIN component must have is own PlanifRoom.
@@ -22,11 +25,10 @@ export class PlanifRoom extends IoWebsocketService {
    * @param data
    * @param onConnect
    */
-
     public init(planif_ref : string, onChildrenConnect : () => void) {
-      super.connect("planif=" + planif_ref, () => {
+      this.ioWebsocketService.connect("planif=" + planif_ref, () => {
       // Call when the server restart
-      this.socket.emit("ask_planif_informations", (error, response : any) => {
+      this.ioWebsocketService.socket.emit("ask_planif_informations", (error, response : any) => {
         if (error) {
           console.error(error);
         } else {
@@ -94,7 +96,7 @@ export class PlanifRoom extends IoWebsocketService {
   }
 
   private listenAuthenticationError() {
-      this.getMessages('authentication_error').subscribe(
+    this.ioWebsocketService.getMessages('authentication_error').subscribe(
         () => {
           // TODO Display a message in a toast
           window.location.reload();
@@ -104,68 +106,68 @@ export class PlanifRoom extends IoWebsocketService {
 
   // TODO rename without ask
   public askToPlay() {
-    this.socket.emit("join_planif");
+    this.ioWebsocketService.socket.emit("join_planif");
   }
   // TODO rename without ask
   public askToNotPlay() {
-    this.socket.emit("leave_planif");
+    this.ioWebsocketService.socket.emit("leave_planif");
   }
 
   private listenPlayerJoinPlanif() : Observable<{player: Player}> {
-      return this.getMessages('player_join_planif');
+      return this.ioWebsocketService.getMessages('player_join_planif');
   }
 
   private listenPlayerQuitPlanif() : Observable<{player_ref: String}> {
-      return this.getMessages('player_leave_planif');
+      return this.ioWebsocketService.getMessages('player_leave_planif');
   }
 
   public sendPlanifChoise(choosenValue : String) {
-    this.sendMessage("player_choose", {choosenValue : choosenValue});
+    this.ioWebsocketService.sendMessage("player_choose", {choosenValue : choosenValue});
   }
 
   private listenPlanifChoise() : Observable<{player_ref: String, choosenValue : String}> {
-      return this.getMessages('player_choose');
+      return this.ioWebsocketService.getMessages('player_choose');
   }
 
   public listenRestartMyChoise() : Observable<any> {
-      return this.getMessages('restart_choose');
+      return this.ioWebsocketService.getMessages('restart_choose');
   }
 
   public sendPlanifName(name: String) {
-    this.sendMessage("send_planif_name", name);
+    this.ioWebsocketService.sendMessage("send_planif_name", name);
   }
 
   private listenPlanifName() : Observable<{name: String}> {
-    return this.getMessages('planif_name');
+    return this.ioWebsocketService.getMessages('planif_name');
   }
 
   public sendGameSubject(subject: String) {
-    this.sendMessage("send_game_subject", subject);
+    this.ioWebsocketService.sendMessage("send_game_subject", subject);
   }
 
   private listenGameSubject() : Observable<{subject: String}> {
-    return this.getMessages('game_subject');
+    return this.ioWebsocketService.getMessages('game_subject');
   }
 
   public sendResultsVisibility(choosenValue : Boolean) {
-    this.sendMessage("change_results_visibility", {choosenVisibility : choosenValue});
+    this.ioWebsocketService.sendMessage("change_results_visibility", {choosenVisibility : choosenValue});
   }
 
   private listenResultsVisibility() : Observable<{choosenVisibility : Boolean}> {
-      return this.getMessages('results_visibility_changed');
+      return this.ioWebsocketService.getMessages('results_visibility_changed');
   }
 
   public sendRestartGameSubject(subject: String) {
-    this.sendMessage("send_game_subject", subject);
-    this.sendMessage("change_results_visibility", {choosenVisibility : false});
-    this.socket.emit("restart_choose");
+    this.ioWebsocketService.sendMessage("send_game_subject", subject);
+    this.ioWebsocketService.sendMessage("change_results_visibility", {choosenVisibility : false});
+    this.ioWebsocketService.socket.emit("restart_choose");
   }
 
   public sendCardVisibility(cardIndex: number, choosenVisibility : boolean) {
-    this.sendMessage("change_card_visibility", {cardIndex: cardIndex, choosenVisibility : choosenVisibility});
+    this.ioWebsocketService.sendMessage("change_card_visibility", {cardIndex: cardIndex, choosenVisibility : choosenVisibility});
   }
 
   public listenCardVisibility() : Observable<{cardIndex : number, choosenVisibility : boolean}> {
-      return this.getMessages('card_visibility_changed');
+      return this.ioWebsocketService.getMessages('card_visibility_changed');
   }
 }
