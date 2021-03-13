@@ -6,7 +6,6 @@ import Debug from "debug";
 import { TokenTool } from '../auth.service/token.tool';
 import { AuthService } from '../auth.service/auth.service';
 import { JwtTokens } from '../auth.service/jwtTokens';
-import { StorageTokenTool } from '../auth.service/storage-token.tool';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
@@ -22,7 +21,7 @@ export class IoWebsocketService implements OnDestroy {
       this.nameRoom = nameRoom
 
        // TODO : check token
-      var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + StorageTokenTool.token();
+      var url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + this.authService.userToken;
 
       // TODO : https://socket.io/docs/v3/client-initialization/#auth
       this.socket = io(url);
@@ -79,12 +78,11 @@ export class IoWebsocketService implements OnDestroy {
   protected sendMessage(message: string, data: any) {
 
 
-    let token = StorageTokenTool.token();
+    let token = this.authService.userToken;
     if (!TokenTool.tokenIsOk(token)) {
       debug('tokenIsOk is NOT OK');
-      return this.authService.refresh(StorageTokenTool.refeshToken()).subscribe(
+      return this.authService.refresh(this.authService.userRefreshToken).subscribe(
         (tokens: JwtTokens) => {
-          StorageTokenTool.saveTokens(tokens.token, tokens.refreshToken);
           data.jwt = tokens.token;
           this.socket.emit(message, data);
         }

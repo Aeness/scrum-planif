@@ -17,7 +17,9 @@ export class PlayersListComponent implements OnInit {
 
   public players: Map<String, Player> = new Map<String, Player>();
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    protected authService: AuthService
+  ) { }
 
   ngOnInit(): void {
 

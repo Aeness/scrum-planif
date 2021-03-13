@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
-import { StorageTokenTool } from '../auth.service/storage-token.tool';
 
 @Component({
   selector: 'app-planif',
@@ -30,7 +29,7 @@ export class PlanifComponent {
           name : '',
           subject : ''
         };
-        if (!StorageTokenTool.hasToken()) {
+        if (!authService.hasUserConnected) {
           // TODO Display a message in a toast
           window.location.reload();
         }
