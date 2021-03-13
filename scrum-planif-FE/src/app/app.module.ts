@@ -70,7 +70,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: environment.routerEnableTracing } // <-- debugging purposes only
+      { enableTracing: environment.routerEnableTracing, relativeLinkResolution: 'legacy' } // <-- debugging purposes only
     ),
     ReactiveFormsModule,
     FontAwesomeModule
