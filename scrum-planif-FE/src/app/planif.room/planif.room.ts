@@ -28,7 +28,7 @@ export class PlanifRoom {
     public init(planif_ref : string, onChildrenConnect : () => void) {
       this.ioWebsocketService.connect("planif=" + planif_ref, () => {
       // Call when the server restart
-      this.ioWebsocketService.socket.emit("ask_planif_informations", (error, response : any) => {
+      this.ioWebsocketService.sendAction("ask_planif_informations", (error, response : any) => {
         if (error) {
           console.error(error);
         } else {
@@ -106,11 +106,11 @@ export class PlanifRoom {
 
   // TODO rename without ask
   public askToPlay() {
-    this.ioWebsocketService.socket.emit("join_planif");
+    this.ioWebsocketService.sendOnlyAMessage("join_planif");
   }
   // TODO rename without ask
   public askToNotPlay() {
-    this.ioWebsocketService.socket.emit("leave_planif");
+    this.ioWebsocketService.sendOnlyAMessage("leave_planif");
   }
 
   private listenPlayerJoinPlanif() : Observable<{player: Player}> {
@@ -160,7 +160,7 @@ export class PlanifRoom {
   public sendRestartGameSubject(subject: string) {
     this.ioWebsocketService.sendMessage("send_game_subject", {"subject": subject});
     this.ioWebsocketService.sendMessage("change_results_visibility", {choosenVisibility : false});
-    this.ioWebsocketService.socket.emit("restart_choose");
+    this.ioWebsocketService.sendOnlyAMessage("restart_choose");
   }
 
   public sendCardVisibility(cardIndex: number, choosenVisibility : boolean) {

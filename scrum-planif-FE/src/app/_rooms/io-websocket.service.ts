@@ -11,7 +11,7 @@ const debug = Debug("scrum-planif:clientIo");
 @Injectable()
 export class IoWebsocketService implements OnDestroy {
   // TODO make private
-  public socket; // Socket -  SocketIOClient.Socket
+  private socket; // Socket -  SocketIOClient.Socket
   protected nameRoom: String
 
   constructor(private authService: AuthService) { }
@@ -70,14 +70,21 @@ export class IoWebsocketService implements OnDestroy {
     });
   }
 
-
-  protected sendOnlyAMessage(message: string) {
-    this.socket.emit(message);
+  public sendOnlyAMessage(message: string) {
+    let token = this.authService.userToken;
+    if (!TokenTool.tokenIsOk(token)) {
+      debug('tokenIsOk is NOT OK');
+      return this.authService.refresh(this.authService.userRefreshToken).subscribe(
+        (tokens: JwtTokens) => {
+          this.socket.emit(message, {jwt: tokens.token});
+        }
+      )
+    } else {
+      this.socket.emit(message, {jwt: token});
+    }
   }
 
   public sendMessage(message: string, data: any) {
-
-
     let token = this.authService.userToken;
     if (!TokenTool.tokenIsOk(token)) {
       debug('tokenIsOk is NOT OK');
@@ -90,6 +97,20 @@ export class IoWebsocketService implements OnDestroy {
     } else {
       data.jwt = token;
       this.socket.emit(message, data);
+    }
+  }
+
+  public sendAction(message: string, action: (error, response : any) => void) {
+    let token = this.authService.userToken;
+    if (!TokenTool.tokenIsOk(token)) {
+      debug('tokenIsOk is NOT OK');
+      return this.authService.refresh(this.authService.userRefreshToken).subscribe(
+        (tokens: JwtTokens) => {
+          this.socket.emit(message, {jwt: tokens.token}, action);
+        }
+      )
+    } else {
+      this.socket.emit(message, {jwt: token}, action);
     }
   }
 

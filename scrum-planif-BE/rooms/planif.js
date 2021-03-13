@@ -53,7 +53,7 @@ module.exports = {
                 this.planifRooms.get(this.getRoomName(planif_ref)).users.set(participant.ref);
                 socket.participant = participant;
 
-                socket.on('ask_planif_informations', (acknowledgement) => {
+                socket.on('ask_planif_informations', (data, acknowledgement) => {
                     debug("%s %s ask_planif_informations for room %s.", socket.id, socket.participant.ref, planif_ref);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     
