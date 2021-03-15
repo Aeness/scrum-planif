@@ -6,6 +6,7 @@ import { StorageTokenTool } from './storage-token.tool';
 import { Observable, Subject } from 'rxjs';
 import { Payload } from './payload';
 import { User } from './user';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -17,16 +18,26 @@ export class AuthService {
   }
 
   start(name:string): Observable<JwtTokens> {
-    return this.http.post<JwtTokens>(this.restServiceUrl, {player: {name: name}});
+    return this.http.post<JwtTokens>(this.restServiceUrl, {player: {name: name}}).pipe(
+      map((authResult : JwtTokens) => {
+        console.log("authResult")
+        this.saveTokens(authResult.token, authResult.refreshToken);
+        return authResult;
+      })
+    );
   }
 
   // TODO use shareReplay
-  // TODO refresh should use StorageTokenTool like hasUserConnected
   // TODO AuthService should get the active token (and refresh if necessary)
   refresh(refreshToken:string): Observable<JwtTokens> {
     return this.http.post<JwtTokens>(
       this.restServiceUrl + '/refresh', {},
       {headers:{"Authorization": "Bearer " + refreshToken}}
+    ).pipe(
+      map((authResult : JwtTokens) => {
+        this.saveTokens(authResult.token, authResult.refreshToken);
+        return authResult;
+      })
     );
     // this is just the HTTP call,
     // we still need to handle the reception of the token
@@ -44,6 +55,14 @@ export class AuthService {
     return {ref: token_decoded.ref, name: token_decoded.name};
   }
 
+  get userToken() : string {
+    return this.getToken();
+  }
+
+  get userRefreshToken() : string {
+    return this.getRefeshToken();
+  }
+
   // Observable player streams
   userAnnounced$ = this.userConnectedSource.asObservable();
 
@@ -53,7 +72,24 @@ export class AuthService {
   }
 
   revokeUser() {
+    this.deleteTokens();
     this.userConnectedSource.next(null);
+  }
+
+  protected saveTokens(token : string, refreshToken : string) {
+    StorageTokenTool.saveTokens(token, refreshToken);
+  }
+
+  protected deleteTokens() {
+    StorageTokenTool.deleteTokens();
+  }
+
+  protected getToken() : string {
+    return StorageTokenTool.token();
+  }
+
+  protected getRefeshToken() : string {
+    return StorageTokenTool.refeshToken();
   }
 
 }

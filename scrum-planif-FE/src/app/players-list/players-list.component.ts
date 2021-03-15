@@ -15,14 +15,16 @@ export class PlayersListComponent implements OnInit {
 
   @Input() planifRoom: PlanifRoom;
 
-  public players: Map<String, Player> = new Map<String, Player>();
+  public players: Map<string, Player> = new Map<string, Player>();
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    protected authService: AuthService // for the template
+  ) { }
 
   ngOnInit(): void {
 
     this.planifRoom.playersList$.subscribe(
-      (data: Map<String, Player>) => {
+      (data: Map<string, Player>) => {
         this.players = data;
       }
     );

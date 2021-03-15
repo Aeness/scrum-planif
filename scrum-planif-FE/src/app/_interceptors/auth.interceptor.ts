@@ -5,7 +5,6 @@ import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent }
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth.service/auth.service';
-import { StorageTokenTool } from '../auth.service/storage-token.tool';
 import { JwtTokens } from '../auth.service/jwtTokens';
 import { TokenTool } from '../auth.service/token.tool';
 
@@ -25,17 +24,16 @@ export class AuthInterceptor implements HttpInterceptor {
         if (((req.url.endsWith("/auth") || req.url.endsWith("/auth/refresh")) && req.method == "POST")) {
             return next.handle(req);
         } else {
-          let token = StorageTokenTool.token();
+          let token = this.authService.userToken;
           if (!TokenTool.tokenIsOk(token)) {
-            return this.authService.refresh(StorageTokenTool.refeshToken()).pipe<HttpEvent<any>>(
+            return this.authService.refresh(this.authService.userRefreshToken).pipe<HttpEvent<any>>(
                 switchMap<JwtTokens, Observable<HttpEvent<any>>>(
                 (authResult: JwtTokens) => {
-                    StorageTokenTool.saveTokens(authResult.token, authResult.refreshToken);
                     return next.handle(this.addTheToken(req, authResult.token));
                 }
             ))
           } else {
-            return next.handle(this.addTheToken(req, StorageTokenTool.token()));
+            return next.handle(this.addTheToken(req, this.authService.userToken));
           }
         }
     }

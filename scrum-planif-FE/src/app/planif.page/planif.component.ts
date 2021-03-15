@@ -2,20 +2,20 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
-import { StorageTokenTool } from '../auth.service/storage-token.tool';
+import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 @Component({
   selector: 'app-planif',
   templateUrl: './planif.component.html',
   styleUrls: ['./planif.component.scss'],
-  providers:  [ PlanifRoom ]
+  providers: [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
 export class PlanifComponent {
 
   public init: boolean = false;
   public planif : {ref: string, name: string, subject: string};
   public takePartIn: boolean = false;
-  public resultsVisibility: Boolean = false;
+  public resultsVisibility: boolean = false;
 
 
   constructor(
@@ -30,7 +30,7 @@ export class PlanifComponent {
           name : '',
           subject : ''
         };
-        if (!StorageTokenTool.hasToken()) {
+        if (!authService.hasUserConnected) {
           // TODO Display a message in a toast
           window.location.reload();
         }

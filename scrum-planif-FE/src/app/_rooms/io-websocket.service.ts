@@ -6,26 +6,24 @@ import Debug from "debug";
 import { TokenTool } from '../auth.service/token.tool';
 import { AuthService } from '../auth.service/auth.service';
 import { JwtTokens } from '../auth.service/jwtTokens';
-import { StorageTokenTool } from '../auth.service/storage-token.tool';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
 export class IoWebsocketService implements OnDestroy {
 
-  protected socket; // Socket -  SocketIOClient.Socket
-  protected nameRoom: string
+  private socket; // Socket -  SocketIOClient.Socket
+  private nameRoom: string
 
   constructor(private authService: AuthService) { }
 
-  protected connect(nameRoom : string, onConnect? : () => void) {
+  public connect(nameRoom : string, onConnect? : () => void) {
     if (!this.socket) {
       this.nameRoom = nameRoom
 
-      let token = StorageTokenTool.token();
+      let token = this.authService.userToken;
       if (!TokenTool.tokenIsOk(token)) {
-        return this.authService.refresh(StorageTokenTool.refeshToken()).subscribe(
+        return this.authService.refresh(this.authService.userRefreshToken).subscribe(
           (tokens: JwtTokens) => {
-            StorageTokenTool.saveTokens(tokens.token, tokens.refreshToken);
             this._connect(tokens.token, onConnect)
           }
         )
@@ -76,7 +74,7 @@ export class IoWebsocketService implements OnDestroy {
     });
   }
 
-  protected getMessages = (message: string) => {
+  public getMessages = (message: string) => {
     return new Observable<any>((observer) => {
         this.socket.on(message, (data) => {
           observer.next(data);
@@ -84,20 +82,26 @@ export class IoWebsocketService implements OnDestroy {
     });
   }
 
-
-  protected sendOnlyAMessage(message: string) {
-    this.socket.emit(message);
-  }
-
-  protected sendMessage(message: string, data: any) {
-
-
-    let token = StorageTokenTool.token();
+  public sendOnlyAMessage(message: string) {
+    let token = this.authService.userToken;
     if (!TokenTool.tokenIsOk(token)) {
       debug('tokenIsOk is NOT OK');
-      return this.authService.refresh(StorageTokenTool.refeshToken()).subscribe(
+      return this.authService.refresh(this.authService.userRefreshToken).subscribe(
         (tokens: JwtTokens) => {
-          StorageTokenTool.saveTokens(tokens.token, tokens.refreshToken);
+          this.socket.emit(message, {jwt: tokens.token});
+        }
+      )
+    } else {
+      this.socket.emit(message, {jwt: token});
+    }
+  }
+
+  public sendMessage(message: string, data: any) {
+    let token = this.authService.userToken;
+    if (!TokenTool.tokenIsOk(token)) {
+      debug('tokenIsOk is NOT OK');
+      return this.authService.refresh(this.authService.userRefreshToken).subscribe(
+        (tokens: JwtTokens) => {
           data.jwt = tokens.token;
           this.socket.emit(message, data);
         },
@@ -113,6 +117,20 @@ export class IoWebsocketService implements OnDestroy {
     } else {
       data.jwt = token;
       this.socket.emit(message, data);
+    }
+  }
+
+  public sendAction(message: string, action: (error, response : any) => void) {
+    let token = this.authService.userToken;
+    if (!TokenTool.tokenIsOk(token)) {
+      debug('tokenIsOk is NOT OK');
+      return this.authService.refresh(this.authService.userRefreshToken).subscribe(
+        (tokens: JwtTokens) => {
+          this.socket.emit(message, {jwt: tokens.token}, action);
+        }
+      )
+    } else {
+      this.socket.emit(message, {jwt: token}, action);
     }
   }
 

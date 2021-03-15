@@ -8,12 +8,13 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
+import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 @Component({
   selector: 'app-planif-admin',
   templateUrl: 'planif-admin.component.html',
   styleUrls: ['../card/font-icon.scss', './planif-admin.component.scss'],
-  providers:  [ PlanifRoom ]
+  providers:  [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
 export class PlanifAdminComponent extends PlanifComponent {
   planifForm: FormGroup;
