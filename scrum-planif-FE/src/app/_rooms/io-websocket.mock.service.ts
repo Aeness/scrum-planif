@@ -17,10 +17,15 @@ export class IoWebsocketMockService {
   }
 
   public getMessages = (message: string) : Observable<any> => {
-    // Necessary ?
+
     if (!this.subjects.has(message)) {
       if ("results_visibility_changed") {
+        // Necessary for results_visibility_changed ?
         let bs : Subject<{choosenVisibility : boolean}> = new Subject();
+        this.subjects.set(message, bs);
+      } else if ("card_visibility_changed") {
+        // To move in PlanifRoom ?
+        let bs : Subject<{cardIndex : number, choosenVisibility : boolean}> = new Subject();
         this.subjects.set(message, bs);
       } else {
         console.error(message + "not mocked")

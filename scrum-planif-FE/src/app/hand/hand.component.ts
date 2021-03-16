@@ -33,7 +33,7 @@ export class HandComponent /*implements AfterViewInit*/ {
       }
     );
     setTimeout(() => {
-    // TODO : use this.planifRoom.listen.....
+      // TODO : use this.planifRoom.listen.....
       this.planifRoom.cardsList$.subscribe(
         (data : {value: string, active: boolean}[]) => {
           this.allValues = [];
@@ -71,6 +71,7 @@ export class HandComponent /*implements AfterViewInit*/ {
     })
   }
 
+  /*
   ngOnChanges(changes: SimpleChanges) {
     console.log("#####");
     console.log(changes);
@@ -81,6 +82,7 @@ export class HandComponent /*implements AfterViewInit*/ {
       console.log(`[ngOnChanges]${propName}`);
     }
   }
+  */
 
   changeValue(value: string, active: boolean) {
     if (value == this.choosenValue && active == false) {
