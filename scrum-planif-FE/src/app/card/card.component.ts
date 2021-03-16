@@ -18,7 +18,6 @@ export class CardComponent implements OnInit {
   click() {
     this.isSelected = !this.isSelected;
     this.choosenEvent.emit(this.isSelected);
-    console.log("click")
   }
 
   public unselectedIfNot(choosenValue : string) {
