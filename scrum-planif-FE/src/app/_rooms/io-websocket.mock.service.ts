@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import Debug from "debug";
 const debug = Debug("scrum-planif:clientIo");
 
@@ -7,6 +7,7 @@ const debug = Debug("scrum-planif:clientIo");
 export class IoWebsocketMockService {
 
   //private nameRoom: string;
+  public subjects = new Map<string,Subject<any>>();
 
   constructor() { }
 
@@ -15,8 +16,20 @@ export class IoWebsocketMockService {
     onConnect();
   }
 
-  public getMessages = (message: string) => {
-    return new Observable<any>((observer) => { });
+  public getMessages = (message: string) : Observable<any> => {
+    // Necessary ?
+    if (!this.subjects.has(message)) {
+      if ("results_visibility_changed") {
+        let bs : Subject<{choosenVisibility : boolean}> = new Subject();
+        this.subjects.set(message, bs);
+      } else {
+        console.error(message + "not mocked")
+        let bs : Subject<any> = new Subject();
+        this.subjects.set(message, bs);
+      }
+    }
+    return this.subjects.get(message);
+    //return new Observable<any>((observer) => { });
   }
 
   public sendOnlyAMessage(message: string) { }
@@ -39,7 +52,7 @@ export class IoWebsocketMockService {
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
           ],
           players : [{ ref: "ref", name: "Toto", vote: null}],
-          resultsVisibility: true
+          resultsVisibility: false
       })
     } else {
       console.error(message + "not mocked")
