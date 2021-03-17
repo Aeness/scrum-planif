@@ -153,7 +153,6 @@ export class PlanifAdminComponent extends PlanifComponent {
   click(index) {
     //this.cards[index].active = !this.cards[index].active ;
     this.planifRoom.sendCardVisibility(index, !this.cards[index].active);
-    console.log("click")
   }
 
 }

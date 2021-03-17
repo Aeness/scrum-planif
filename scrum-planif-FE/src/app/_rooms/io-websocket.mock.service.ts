@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import Debug from "debug";
+import { Player } from '../planif.room/player';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
@@ -27,7 +28,11 @@ export class IoWebsocketMockService {
         // To move in PlanifRoom ?
         let bs : Subject<{cardIndex : number, choosenVisibility : boolean}> = new Subject();
         this.subjects.set(message, bs);
-      } else {
+      } else if ("player_join_planif") {
+        // To move in PlanifRoom ?
+        let bs : Subject<{player: Player}> = new Subject();
+        this.subjects.set(message, bs);
+      } else  {
         console.error(message + "not mocked")
         let bs : Subject<any> = new Subject();
         this.subjects.set(message, bs);
