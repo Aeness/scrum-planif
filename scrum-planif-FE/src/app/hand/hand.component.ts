@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Directive, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 
@@ -7,11 +8,14 @@ import { PlanifRoom } from '../planif.room/planif.room';
   templateUrl: './hand.component.html',
   styleUrls: ['./hand.component.scss']
 })
-export class HandComponent /*implements AfterViewInit*/ {
+export class HandComponent implements AfterViewInit {
   public init: boolean = false;
 
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: boolean = false;
+
+  iVoteTop = new FormControl(false);
+  iVoteBottom = new FormControl(false);
 
   public values : string[] = [];
   public allValues : {value: string, active: boolean}[] = [];
@@ -20,8 +24,10 @@ export class HandComponent /*implements AfterViewInit*/ {
 
   private choosenValue : string;
 
-  ngAfterViewInit() {
+  constructor(private fb: FormBuilder) { }
 
+  ngAfterViewInit() {
+    // TODO : Why in ngAfterViewInit ?
     this.planifRoom.listenRestartMyChoise().subscribe(
       () => {
         this.choosenValue = null;
@@ -32,6 +38,10 @@ export class HandComponent /*implements AfterViewInit*/ {
         });
       }
     );
+    // setTimeout() defer the code to another Javascript Virtual Machine turn
+    // TODO : move code in ngOnInit
+    // OR make PlanifRoom available by a module ? => goal : remove
+    // https://angular.io/guide/lifecycle-hooks
     setTimeout(() => {
       // TODO : use this.planifRoom.listen.....
       this.planifRoom.cardsList$.subscribe(
@@ -44,6 +54,7 @@ export class HandComponent /*implements AfterViewInit*/ {
               this.values.push(element.value);
             }
           })
+          // This is the raison why we have to use setTimeout
           this.init = true;
         }
       );
@@ -98,6 +109,24 @@ export class HandComponent /*implements AfterViewInit*/ {
 
       this.choosenValue = value;
       this.planifRoom.sendPlanifChoise(value);
+    }
+  }
+
+  public iVoteChangeTop() {
+    this.iVoteBottom.setValue(this.iVoteTop.value);
+    if (this.iVoteTop.value == true) {
+      this.planifRoom.askToPlay();
+    } else {
+      this.planifRoom.askToNotPlay();
+    }
+  }
+
+  public iVoteChangeBottom() {
+    this.iVoteTop.setValue(this.iVoteBottom.value);
+    if (this.iVoteBottom.value == true) {
+      this.planifRoom.askToPlay();
+    } else {
+      this.planifRoom.askToNotPlay();
     }
   }
 

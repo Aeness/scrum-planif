@@ -4,9 +4,6 @@
   margin-bottom: 15px;
   border-bottom: 1px solid #B8B8B8;
 }
-.part {
-  margin-top: 15px;
-}
 
 .toCopy {
   border: 1px solid #B8B8B8;
@@ -24,10 +21,8 @@
     color: #444444;
   }
 }
+
 @media (min-width: 2560px) {
-  .part {
-    margin-top: 0;
-  }
 }
 
 #content {
@@ -36,6 +31,17 @@
 
 .no-padding-r {
   padding-right: 0 !important;
+}
+
+
+@media (min-width: 1200px) {
+  .subject {
+    width: 465px;
+    input {
+      width: 400px;
+    }
+
+  }
 }
 
 @media (max-width: 1199.98px) {

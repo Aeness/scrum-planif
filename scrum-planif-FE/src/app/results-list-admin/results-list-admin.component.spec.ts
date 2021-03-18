@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthServiceMock } from '../auth.service/auth.mock.service';
 import { AuthService } from '../auth.service/auth.service';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
@@ -18,7 +19,7 @@ describe('ResultsListAdminComponent', () => {
       declarations: [ ResultsListAdminComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
-        AuthService, // because PlayersListComponent need it (for the template) and ResultsListAdminComponent extends PlayersListComponent
+        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref2", name: "Admin"})},
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
     })

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { CardComponent } from './card.component';
@@ -19,6 +19,7 @@ describe('CardComponent', () => {
     component = fixture.componentInstance;
     component.value = "5";
     component.rank = "1";
+    component.isDesactived = false;
     fixture.detectChanges();
   });
 
@@ -47,5 +48,14 @@ describe('CardComponent', () => {
     component.unselectedIfNot("7");
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('div')).classes["selected"]).toEqual(undefined, 'change');
+  });
+
+  it('should not select on click', () => {
+    component.isDesactived = true;
+    let mySpy = spyOn(component.choosenEvent, 'emit').and.callThrough();
+    component.click();
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('div')).classes["selected"]).toEqual(undefined);
+    expect(mySpy).toHaveBeenCalledTimes(0);
   });
 });

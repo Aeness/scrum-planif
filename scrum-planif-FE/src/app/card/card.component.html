@@ -1,5 +1,5 @@
 
-    <div [className]="'card ' + (isSelected?'selected':'') + ' card'+rank + (value.startsWith('&')?' fa':'')" (click)="click()">
+    <div [className]="'card ' + (isSelected?'selected':'') + ' card'+rank + (value.startsWith('&')?' fa':'') + ((isDesactived)?' desactived':'')" (click)="click()">
       <div>
         <div [className]="'top left'" [innerHTML]="value"></div>
         <div [className]="'top right'" [innerHTML]="value"></div>

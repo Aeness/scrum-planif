@@ -7,6 +7,12 @@ div.card {
   margin-bottom: 20px;
   cursor: pointer;
 
+  &.desactived {
+    border: solid 2px #ccc;
+    color: #ccc;
+    cursor: auto;
+  }
+
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;

@@ -7,6 +7,7 @@ import { HandComponent } from './hand.component';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { CardComponent } from '../card/card.component';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 describe('HandComponent', () => {
@@ -20,8 +21,9 @@ describe('HandComponent', () => {
         HandComponent,
         CardComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule],
       providers: [
+        FormBuilder,
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
     })
@@ -63,6 +65,7 @@ describe('HandComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14, 'all card');
+    expect(fixture.debugElement.queryAll(By.css('#iVote')).length).toEqual(0);
   });
 
   it('should change cards', () => {
@@ -115,5 +118,70 @@ describe('HandComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(8, 'one more');
+  });
+
+  it('admin could join', () => {
+    component.isAdmin = true;
+    fixture.detectChanges();
+
+    let nbIVote = fixture.debugElement.queryAll(By.css('#iVoteTop')).length;
+    nbIVote += fixture.debugElement.queryAll(By.css('#iVoteBottom')).length;
+    expect(nbIVote).toEqual(2);
+  });
+
+  it('admin should join', () => {
+    component.isAdmin = true;
+    fixture.detectChanges();
+
+    let mySpy = spyOn((component as any).planifRoom, 'askToPlay').and.callFake(function() {
+      // this <=> PlanifRoom
+      // TODO check that the player is added
+      this.ioWebsocketService.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "Admin"}});
+    })
+    fixture.detectChanges();
+
+    component.iVoteTop.setValue(true);
+    component.iVoteChangeTop();
+    fixture.detectChanges();
+
+    expect(mySpy).toHaveBeenCalledTimes(1);
+
+    // TODO see what is changing
+  });
+
+  it('top form change bottom form', () => {
+    component.isAdmin = true;
+    fixture.detectChanges();
+
+    component.iVoteTop.setValue(true);
+    component.iVoteChangeTop();
+    fixture.detectChanges();
+
+    expect(component.iVoteBottom.value).toEqual(true);
+
+
+    component.iVoteTop.setValue(false);
+    component.iVoteChangeTop();
+    fixture.detectChanges();
+
+    expect(component.iVoteBottom.value).toEqual(false);
+  });
+
+  it('bottom form change top form', () => {
+    component.isAdmin = true;
+    fixture.detectChanges();
+
+    component.iVoteBottom.setValue(true);
+    component.iVoteChangeBottom();
+    fixture.detectChanges();
+
+    expect(component.iVoteTop.value).toEqual(true);
+
+
+    component.iVoteBottom.setValue(false);
+    component.iVoteChangeBottom();
+    fixture.detectChanges();
+
+    expect(component.iVoteTop.value).toEqual(false);
   });
 });

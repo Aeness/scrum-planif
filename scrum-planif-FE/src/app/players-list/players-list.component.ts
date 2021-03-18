@@ -18,7 +18,7 @@ export class PlayersListComponent implements OnInit {
   public players: Map<string, Player> = new Map<string, Player>();
 
   constructor(
-    protected authService: AuthService // for the template
+    protected authService: AuthService // for the template and ResultsListAdminComponent
   ) { }
 
   ngOnInit(): void {

@@ -12,6 +12,7 @@ import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { PlanifComponent } from './planif.component';
+import { FormBuilder } from '@angular/forms';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -29,6 +30,7 @@ describe('PlanifComponent', () => {
       ],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
+        FormBuilder, // For HandComponent
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}
       ]
     })

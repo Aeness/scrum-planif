@@ -21,33 +21,26 @@
     <ng-container *ngFor="let card of cards; let index = index">
       <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':'')" (click)="click(index)" [innerHTML]="card.value"></div>
     </ng-container>
-    <div class="form-group form-check mt-2 pt-2 clear">
-      <input id="iVote" type="checkbox" class="form-check-input" [formControl]="iVote" (ngModelChange)="iVoteChange()">
-      <label class="form-check-label" for="iVote">Je souhaite voter avec l'équipe</label>
-    </div>
+    <div class="clear"><p class="text-secondary small-text">Cliquer sur une carte pour ne pas l'utiliser.</p></div>
   </div>
 </div>
 <ng-container *ngIf="takePartIn">
   <div class="row">
-    <div class="col-12 col-xl-5 col-xxl-3 rounded bg-light p-3 mb-3">
-      <h5>L'estimation</h5>
-      <ol>
-        <li>
-          <label class="mb-2 mr-2" for="subject_edit">Editer le sujet de l'estimation actuelle</label>
-          <form [formGroup]="subjectForm" class="form-inline" (ngSubmit)="onSubjectSubmit()">
-            <input type="text" class="form-control mb-2 mr-sm-2" id="subject_edit"
-              formControlName="subject" placeholder="titre facultatif">
-          <button type="submit" class="btn btn-secondary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon></button>
-        </form>
-        </li>
-        <li>Laisser les participants faire leur choix.</li>
-        <li>
+    <div class="col-12 col-xxl-4 m-0 p-0">
+
+      <div class="rounded bg-light p-3 mb-3">
+        <h5>Les résultats</h5>
+        <div class="mb-3 mt-3">
           Rendre visible les résultats à tous les participants.&nbsp;<label class="switch">
             <input id="visibilityChoosen2" type="checkbox" [formControl]="resultsVisibilityChoosen" (ngModelChange)="resultsVisibilityChoosenChange()">
             <span class="slider round"></span>
           </label>
-        </li>
-        <li>
+        </div>
+        <app-results-list-admin [planifRoom]="planifRoom" [iVoteValue]="true" [resultsVisibilityValue]="resultsVisibilityChoosen.value"></app-results-list-admin>
+      </div>
+      <div class="rounded bg-light p-3 mb-3">
+        <h5>Lancer un nouveau sujet</h5>
+        <div>
           <form [formGroup]="gameForm" class="form-inline" (ngSubmit)="onGameSubmit()">
             <label class="mb-2 mr-2" for="subject">Une fois les échanges terminés, lancer un nouveau sujet </label>
             <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
@@ -55,23 +48,23 @@
             <button type="submit" class="btn btn-primary mb-2" [disabled]="!gameForm.valid">Go !</button>
           </form>
           <p class="text-secondary small-text">Efface le titre, réinitialise les votes et cache les résultats.</p>
-        </li>
-      </ol>
-      <div  *ngIf="votes$ | async as votes;">
-        <div *ngFor="let vote of votes | keyvalue">
-          {{vote.value.player.name}} {{vote.value.vote}}
         </div>
       </div>
     </div>
-    <div class="col-12 col-xl-7 col-xxl-4 before-xl-no-padding no-padding-r">
-      <app-results-list-admin [planifRoom]="planifRoom" [iVoteValue]="iVote.value" [resultsVisibilityValue]="resultsVisibilityChoosen.value"></app-results-list-admin>
+
+    <div class="col-12 col-xxl-6">
+      <div class="mb-3 mt-3 subject" style="margin: auto;">
+        <label class="mb-2 mr-2" for="subject_edit">Editer le sujet de l'estimation actuelle</label>
+        <form [formGroup]="subjectForm" class="form-inline" (ngSubmit)="onSubjectSubmit()">
+
+          <input type="text" class="form-control mb-2 mr-sm-2" id="subject_edit"
+            formControlName="subject" placeholder="titre facultatif">
+          <button type="submit" class="btn btn-secondary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon></button>
+        </form>
+      </div>
+      <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
     </div>
-
-
-    <div class="col-12 col-xxl-5 part">
-      <ng-container *ngIf="iVote.value">
-        <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
-    </ng-container>
+    <div class="col-12 col-xxl-2  p-3 mb-3">
     </div>
   </div>
 </ng-container>

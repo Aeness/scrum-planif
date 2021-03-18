@@ -17,19 +17,18 @@ import { IoWebsocketService } from '../_rooms/io-websocket.service';
   providers:  [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
 export class PlanifAdminComponent extends PlanifComponent {
-  planifForm: FormGroup;
-  subjectForm: FormGroup;
-  gameForm: FormGroup;
+  public planifForm: FormGroup;
+  public subjectForm: FormGroup;
+  public gameForm: FormGroup;
 
-  iVote = new FormControl(false);
-  urlLink = environment.linkUrl;
-  faCopy = faCopy;
-  faEdit = faEdit;
+  public urlLink = environment.linkUrl;
+  public faCopy = faCopy;
+  public faEdit = faEdit;
 
-  resultsVisibilityChoosen = new FormControl(false);
-  gameTypeChoosen = new FormControl(false);
+  public resultsVisibilityChoosen = new FormControl(false);
+  public gameTypeChoosen = new FormControl(false);
 
-  cards : Array<{value: string, active: boolean}>;
+  public cards : Array<{value: string, active: boolean}>;
 
   // https://www.pinterest.fr/pin/194288171399705962/
   constructor(
@@ -55,26 +54,38 @@ export class PlanifAdminComponent extends PlanifComponent {
     this.planifRoom.name$.subscribe(
       (data) => {
         // TODO use the value of planifRoom ?
-        if (this.planifForm.controls.name.value != data) {
+        if (this.planifForm && this.planifForm.controls.name.value != data) {
           this.planifForm.patchValue({
             name: data
           });
+        } else if (!this.planifForm) {
+          // TODO happen in test because afterInit is called in the super constructor
+          // before the constructor of PlanifAdminComponent ends
+          console.error("PlanifAdminComponent: this.planifForm does not exist")
         }
       }
     );
     this.planifRoom.subject$.subscribe(
       (data) => {
-        if (this.subjectForm.controls.subject.value != data) {
+        if (this.subjectForm && this.subjectForm.controls.subject.value != data) {
           this.subjectForm.patchValue({
             subject: data
           });
+        } else if (!this.subjectForm) {
+          // TODO happen in test because afterInit is called in the super constructor
+          // before the constructor of PlanifAdminComponent ends
+          console.error("PlanifAdminComponent: this.subjectForm does not exist")
         }
       }
     );
     this.planifRoom.resultsVisibility$.subscribe(
       (data) => {
-        if (this.resultsVisibilityChoosen.value != data) {
+        if (this.resultsVisibilityChoosen && this.resultsVisibilityChoosen.value != data) {
           this.resultsVisibilityChoosen.setValue(data);
+        } else if (!this.resultsVisibilityChoosen) {
+          // TODO happen in test because afterInit is called in the super constructor
+          // before the constructor of PlanifAdminComponent ends
+          console.error("PlanifAdminComponent: this.resultsVisibilityChoosen does not exist")
         }
       }
     );
@@ -88,14 +99,6 @@ export class PlanifAdminComponent extends PlanifComponent {
         }
       }
     );
-  }
-
-  public iVoteChange() {
-    if (this.iVote.value == true) {
-      this.planifRoom.askToPlay();
-    } else {
-      this.planifRoom.askToNotPlay();
-    }
   }
 
   public resultsVisibilityChoosenChange() {
