@@ -13,6 +13,7 @@ import { PlanifAdminComponent } from './planif-admin.component';
 import { ResultsListAdminComponent } from '../results-list-admin/results-list-admin.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -28,7 +29,7 @@ describe('PlanifAdminComponent', () => {
         ResultsListAdminComponent,
         CardComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule],
       providers: [
         FormBuilder,
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref2", name: "Admin"})}

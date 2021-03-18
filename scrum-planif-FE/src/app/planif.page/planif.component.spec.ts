@@ -14,6 +14,7 @@ import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { PlanifComponent } from './planif.component';
 import { FormBuilder } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -30,7 +31,7 @@ describe('PlanifComponent', () => {
         ResultsListComponent,
         CardComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule],
       providers: [
         FormBuilder, // For HandComponent
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}
