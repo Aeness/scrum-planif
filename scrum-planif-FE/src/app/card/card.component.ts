@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -6,15 +6,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './card.component.html',
   styleUrls: ['./font-icon.scss', './card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
   @Input() value: string;
   @Input() rank: string;
   @Input() isDesactived: boolean = false;
   @Output() choosenEvent = new EventEmitter<boolean>();
   public isSelected: boolean = false;
-
-  ngOnInit() {
-  }
 
   click() {
     if (!this.isDesactived) {
