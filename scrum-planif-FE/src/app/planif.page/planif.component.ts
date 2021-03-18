@@ -12,7 +12,6 @@ import { BehaviorSubject } from 'rxjs';
   providers: [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
 export class PlanifComponent {
-
   public init$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public planif : {ref: string, name: string, subject: string};
   public takePartIn: boolean = false;
@@ -45,7 +44,8 @@ export class PlanifComponent {
                   this.planif.subject = data;
                 }
               );
-              this.planifRoom.askToPlay();
+
+              this.askToPlayOrNot();
 
               this.planifRoom.resultsVisibility$.subscribe(
                 (data: boolean) => {
@@ -65,5 +65,9 @@ export class PlanifComponent {
         });
       }
     )
+  }
+
+  protected askToPlayOrNot() {
+    this.planifRoom.askToPlay();
   }
 }

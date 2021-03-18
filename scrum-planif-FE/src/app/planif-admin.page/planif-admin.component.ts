@@ -93,6 +93,10 @@ export class PlanifAdminComponent extends PlanifComponent {
     )
   }
 
+  protected askToPlayOrNot() {
+    // Not ask
+  }
+
   public resultsVisibilityChoosenChange() {
     this.planifRoom.sendResultsVisibility(this.resultsVisibilityChoosen.value);
   }
