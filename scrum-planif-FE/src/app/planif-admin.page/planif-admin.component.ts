@@ -36,69 +36,61 @@ export class PlanifAdminComponent extends PlanifComponent {
     protected planifRoom: PlanifRoom,
     protected authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
-  ) {
-      super(route, planifRoom, authService)
-      this.planifForm = fb.group({
-        name: ['', Validators.required]
-      });
-      this.subjectForm = fb.group({
-        subject: [''/*, Validators.required*/]
-      });
-      this.gameForm = fb.group({
-        subject: [''/*, Validators.required*/]
-      });
-    }
+    private fb: FormBuilder) {
 
-  protected afterInit() {
-    this.planifRoom.name$.subscribe(
-      (data) => {
-        // TODO use the value of planifRoom ?
-        if (this.planifForm && this.planifForm.controls.name.value != data) {
-          this.planifForm.patchValue({
-            name: data
-          });
-        } else if (!this.planifForm) {
-          // TODO happen in test because afterInit is called in the super constructor
-          // before the constructor of PlanifAdminComponent ends
-          console.error("PlanifAdminComponent: this.planifForm does not exist")
+    super(route, planifRoom, authService)
+    this.planifForm = fb.group({
+      name: ['', Validators.required]
+    });
+    this.subjectForm = fb.group({
+      subject: [''/*, Validators.required*/]
+    });
+    this.gameForm = fb.group({
+      subject: [''/*, Validators.required*/]
+    });
+
+    this.init$.subscribe(
+      (init) => {
+        if (init == true) {
+          this.planifRoom.name$.subscribe(
+            (data) => {
+              // TODO use the value of planifRoom ?
+              if (this.planifForm.controls.name.value != data) {
+                this.planifForm.patchValue({
+                  name: data
+                });
+              }
+            }
+          );
+          this.planifRoom.subject$.subscribe(
+            (data) => {
+              if (this.subjectForm.controls.subject.value != data) {
+                this.subjectForm.patchValue({
+                  subject: data
+                });
+              }
+            }
+          );
+          this.planifRoom.resultsVisibility$.subscribe(
+            (data) => {
+              if (this.resultsVisibilityChoosen.value != data) {
+                this.resultsVisibilityChoosen.setValue(data);
+              }
+            }
+          );
+          this.planifRoom.cardsList$.subscribe(
+            (data) => {
+              this.cards = data;
+              // TODO do better
+              if (Array.isArray(data) && data.length > 0 && data[0].value == "XS"
+                  && this.gameTypeChoosen.value !== true) {
+                this.gameTypeChoosen.setValue(true);
+              }
+            }
+          );
         }
       }
-    );
-    this.planifRoom.subject$.subscribe(
-      (data) => {
-        if (this.subjectForm && this.subjectForm.controls.subject.value != data) {
-          this.subjectForm.patchValue({
-            subject: data
-          });
-        } else if (!this.subjectForm) {
-          // TODO happen in test because afterInit is called in the super constructor
-          // before the constructor of PlanifAdminComponent ends
-          console.error("PlanifAdminComponent: this.subjectForm does not exist")
-        }
-      }
-    );
-    this.planifRoom.resultsVisibility$.subscribe(
-      (data) => {
-        if (this.resultsVisibilityChoosen && this.resultsVisibilityChoosen.value != data) {
-          this.resultsVisibilityChoosen.setValue(data);
-        } else if (!this.resultsVisibilityChoosen) {
-          // TODO happen in test because afterInit is called in the super constructor
-          // before the constructor of PlanifAdminComponent ends
-          console.error("PlanifAdminComponent: this.resultsVisibilityChoosen does not exist")
-        }
-      }
-    );
-    this.planifRoom.cardsList$.subscribe(
-      (data) => {
-        this.cards = data;
-        // TODO do better
-        if (Array.isArray(data) && data.length > 0 && data[0].value == "XS"
-        && this.gameTypeChoosen.value !== true) {
-          this.gameTypeChoosen.setValue(true);
-        }
-      }
-    );
+    )
   }
 
   public resultsVisibilityChoosenChange() {

@@ -20,9 +20,6 @@ describe('PlanifAdminComponent', () => {
   let planifRoom : PlanifRoom;
   let service;
 
-      // create new instance of FormBuilder
-      const formBuilder: FormBuilder = new FormBuilder();
-
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -49,9 +46,6 @@ describe('PlanifAdminComponent', () => {
   });
 
   beforeEach(fakeAsync(() => {
-    console.log("start beforeEach ")
-    // this.planifRoom.name$.subscribe in PlanifAdminComponent dont work : we do not see the error
-    // with fakeAsync the error become visible
     fixture = TestBed.createComponent(PlanifAdminComponent);
     component = fixture.componentInstance;
 
@@ -65,8 +59,6 @@ describe('PlanifAdminComponent', () => {
 
     tick(250+1)
     fixture.detectChanges();
-
-    console.log("end beforeEach ")
   }));
 
   afterEach(() => {
