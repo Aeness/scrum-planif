@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthServiceMock } from '../auth.service/auth.mock.service';
@@ -45,7 +45,7 @@ describe('PlanifAdminComponent', () => {
     .compileComponents();
   });
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(PlanifAdminComponent);
     component = fixture.componentInstance;
 
@@ -54,12 +54,8 @@ describe('PlanifAdminComponent', () => {
     service = ((component as any).planifRoom as any).ioWebsocketService;
     expect(service instanceof IoWebsocketMockService).toBeTruthy('ioWebsocketService is mocked');
 
-    // Hand use setTimeout, we need to call tick after
     fixture.detectChanges();
-
-    tick(250+1)
-    fixture.detectChanges();
-  }));
+  });
 
   afterEach(() => {
     fixture.destroy();

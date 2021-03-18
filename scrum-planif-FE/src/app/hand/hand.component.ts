@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Directive, Input, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -8,14 +8,14 @@ import { PlanifRoom } from '../planif.room/planif.room';
   templateUrl: './hand.component.html',
   styleUrls: ['./hand.component.scss']
 })
-export class HandComponent implements AfterViewInit {
+export class HandComponent implements OnInit {
   public init: boolean = false;
 
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: boolean = false;
 
-  iVoteTop = new FormControl(false);
-  iVoteBottom = new FormControl(false);
+  public iVoteTop = new FormControl(false);
+  public iVoteBottom = new FormControl(false);
 
   public values : string[] = [];
   public allValues : {value: string, active: boolean}[] = [];
@@ -26,8 +26,7 @@ export class HandComponent implements AfterViewInit {
 
   constructor(private fb: FormBuilder) { }
 
-  ngAfterViewInit() {
-    // TODO : Why in ngAfterViewInit ?
+  ngOnInit() {
     this.planifRoom.listenRestartMyChoise().subscribe(
       () => {
         this.choosenValue = null;
@@ -38,48 +37,43 @@ export class HandComponent implements AfterViewInit {
         });
       }
     );
-    // setTimeout() defer the code to another Javascript Virtual Machine turn
-    // TODO : move code in ngOnInit
-    // OR make PlanifRoom available by a module ? => goal : remove
-    // https://angular.io/guide/lifecycle-hooks
-    setTimeout(() => {
-      // TODO : use this.planifRoom.listen.....
-      this.planifRoom.cardsList$.subscribe(
-        (data : {value: string, active: boolean}[]) => {
-          this.allValues = [];
-          this.values = [];
-          data.forEach(element => {
-            this.allValues.push(element);
-            if (element.active) {
-              this.values.push(element.value);
-            }
-          })
-          // This is the raison why we have to use setTimeout
-          this.init = true;
-        }
-      );
 
-      this.planifRoom.listenCardVisibility().subscribe(
-        (data : {cardIndex: number, choosenVisibility : boolean}) => {
-          //No need because we use the list updated by planifRoom
-          //this.allValues[data.cardIndex].active = data.choosenVisibility;
-
-          if(this.allValues[data.cardIndex].value == this.choosenValue
-            && data.choosenVisibility == false) {
-            this.choosenValue = null;
-            this.planifRoom.sendPlanifChoise(null);
+    // TODO : use this.planifRoom.listen.....
+    this.planifRoom.cardsList$.subscribe(
+      (data : {value: string, active: boolean}[]) => {
+        this.allValues = [];
+        this.values = [];
+        data.forEach(element => {
+          this.allValues.push(element);
+          if (element.active) {
+            this.values.push(element.value);
           }
+        })
+        // This is the raison why we have to use setTimeout
+        this.init = true;
+      }
+    );
 
-          let newValues:string[] = [];
-          this.allValues.forEach(element => {
-            if (element.active) {
-              newValues.push(element.value);
-            }
-          })
-          this.values = newValues;
+    this.planifRoom.listenCardVisibility().subscribe(
+      (data : {cardIndex: number, choosenVisibility : boolean}) => {
+        //No need because we use the list updated by planifRoom
+        //this.allValues[data.cardIndex].active = data.choosenVisibility;
+
+        if(this.allValues[data.cardIndex].value == this.choosenValue
+          && data.choosenVisibility == false) {
+          this.choosenValue = null;
+          this.planifRoom.sendPlanifChoise(null);
         }
-      );
-    })
+
+        let newValues:string[] = [];
+        this.allValues.forEach(element => {
+          if (element.active) {
+            newValues.push(element.value);
+          }
+        })
+        this.values = newValues;
+      }
+    );
   }
 
   /*

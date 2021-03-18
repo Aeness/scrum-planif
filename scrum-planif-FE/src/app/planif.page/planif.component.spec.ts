@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthServiceMock } from '../auth.service/auth.mock.service';
@@ -13,6 +13,7 @@ import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { PlanifComponent } from './planif.component';
 import { FormBuilder } from '@angular/forms';
+import { CardComponent } from '../card/card.component';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -26,7 +27,8 @@ describe('PlanifComponent', () => {
         PlanifComponent,
         PlayersListComponent,
         HandComponent,
-        ResultsListComponent
+        ResultsListComponent,
+        CardComponent
       ],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
