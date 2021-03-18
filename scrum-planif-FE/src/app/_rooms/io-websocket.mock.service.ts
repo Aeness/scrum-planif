@@ -58,7 +58,7 @@ export class IoWebsocketMockService {
             {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
             {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
             {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
-            {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
+            {value:"40", active: true},{value:"100", active: true},{value:"&#xf128", active: true},
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
           ],
           players : [{ ref: "ref", name: "Toto", vote: null}],

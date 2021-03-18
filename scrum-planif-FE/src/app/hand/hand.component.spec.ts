@@ -58,7 +58,7 @@ describe('HandComponent', () => {
         {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
         {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
         {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
-        {value:"40", active: true},{value:"100", active: true},{value:"?", active: true},
+        {value:"40", active: true},{value:"100", active: true},{value:"&#xf128", active: true},
         {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
       ]
     );
@@ -91,7 +91,7 @@ describe('HandComponent', () => {
     component.planifRoom.cardsList$.next(
       [
         {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
-        {value:"L", active: true},{value:"XL", active: true},{value:"?", active: true},
+        {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
         {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
       ]
     );
@@ -106,7 +106,7 @@ describe('HandComponent', () => {
     component.planifRoom.cardsList$.next(
       [
         {value:"XS", active: true},{value:"S", active: false},{value:"M", active: true},
-        {value:"L", active: true},{value:"XL", active: true},{value:"?", active: true},
+        {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
         {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
       ]
     );

@@ -20,7 +20,6 @@ export class IndexComponent {
     this.planifForm = fb.group({
       ref_planif: ['', Validators.required]
     });
-    console.log(this.planifForm)
   }
 
   onSubmit() {
