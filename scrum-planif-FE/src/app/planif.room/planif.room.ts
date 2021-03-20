@@ -1,16 +1,23 @@
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { Player } from './player';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
-export class PlanifRoom {
-  // Send the last name knew by the room.
+export class PlanifRoom implements OnDestroy {
+  private unsubscribe$ = new Subject();
+
+  // Data from server
   public name$ : BehaviorSubject<string> = new BehaviorSubject("");
   public subject$ : BehaviorSubject<string> = new BehaviorSubject("");
   public playersList$ : BehaviorSubject<Map<string, Player>> = new BehaviorSubject(new Map<string, Player>());
   public resultsVisibility$ : BehaviorSubject<boolean> = new BehaviorSubject(true);
   public cardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
+
+  // Observable
+  private restartMyChoiseEvent$ : Observable<any>;
+  private cardVisibilityEvent$ : Observable<{cardIndex : number, choosenVisibility : boolean}>;
 
 
   constructor(private ioWebsocketService: IoWebsocketService) { }
@@ -56,19 +63,19 @@ export class PlanifRoom {
             }
           );
 
-          this.listenPlayerJoinPlanif().subscribe(
+          this.listenPlayerJoinPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataJoin: { player: Player; }) => {
               this.playersList$.value.set(dataJoin.player.ref, dataJoin.player);
             }
           );
 
-          this.listenPlayerQuitPlanif().subscribe(
+          this.listenPlayerQuitPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataQuit: { player_ref: string; }) => {
               this.playersList$.value.delete(dataQuit.player_ref);
             }
           );
 
-          this.listenPlanifChoise().subscribe(
+          this.listenPlanifChoise().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataChoise: {player_ref: string, choosenValue : string}) => {
               //this.votes.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
               this.playersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
@@ -77,23 +84,24 @@ export class PlanifRoom {
 
           this.resultsVisibility$.next(response.resultsVisibility);
 
-          this.listenResultsVisibility().subscribe(
+          this.listenResultsVisibility().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataChoise: {choosenVisibility : boolean}) => {
               this.resultsVisibility$.next(dataChoise.choosenVisibility);
             }
           );
 
-          this.listenCardVisibility().subscribe(
+          this.listenCardVisibility().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (data : {cardIndex: number, choosenVisibility : boolean}) => {
               this.cardsList$.value[data.cardIndex].active = data.choosenVisibility;
             }
           );
 
-          this.listenGameType().subscribe(
+          this.listenGameType().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (response: {gameCards : []}) => {
               this.cardsList$.next(response.gameCards);
             }
           );
+
           // TODO use AsyncSubject<boolean> ???
           onChildrenConnect();
         }
@@ -136,7 +144,10 @@ export class PlanifRoom {
   }
 
   public listenRestartMyChoise() : Observable<any> {
-      return this.ioWebsocketService.getMessages('restart_choose');
+    if (this.restartMyChoiseEvent$ == undefined) {
+      this.restartMyChoiseEvent$ = this.ioWebsocketService.getMessages('restart_choose');
+    }
+    return this.restartMyChoiseEvent$;
   }
 
   public sendPlanifName(name: string) {
@@ -186,6 +197,14 @@ export class PlanifRoom {
   }
 
   public listenCardVisibility() : Observable<{cardIndex : number, choosenVisibility : boolean}> {
-      return this.ioWebsocketService.getMessages('card_visibility_changed');
+    if (this.cardVisibilityEvent$ == undefined) {
+      this.cardVisibilityEvent$ = this.ioWebsocketService.getMessages('card_visibility_changed');
+    }
+    return this.cardVisibilityEvent$;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -3,6 +3,8 @@ import { Player } from '../planif.room/player';
 import { faCog, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-players',
@@ -10,6 +12,8 @@ import { AuthService } from '../auth.service/auth.service';
   styleUrls: ['./players-list.component.scss']
 })
 export class PlayersListComponent implements OnInit {
+  protected unsubscribe$ = new Subject();
+
   faCog = faCog;
   faSmile = faSmile;
 
@@ -23,11 +27,16 @@ export class PlayersListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.planifRoom.playersList$.subscribe(
+    this.planifRoom.playersList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data: Map<string, Player>) => {
         this.players = data;
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

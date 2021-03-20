@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { AuthService } from '../auth.service/auth.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-planif',
@@ -11,7 +12,9 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./planif.component.scss'],
   providers: [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
-export class PlanifComponent {
+export class PlanifComponent implements OnDestroy {
+  protected unsubscribe$ = new Subject();
+
   public init$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public planif : {ref: string, name: string, subject: string};
   public takePartIn: boolean = false;
@@ -34,12 +37,12 @@ export class PlanifComponent {
         this.init$.subscribe(
           (init) => {
             if (init == true) {
-              this.planifRoom.name$.subscribe(
+              this.planifRoom.name$.pipe(takeUntil(this.unsubscribe$)).subscribe(
                 (data) => {
                   this.planif.name = data;
                 }
               );
-              this.planifRoom.subject$.subscribe(
+              this.planifRoom.subject$.pipe(takeUntil(this.unsubscribe$)).subscribe(
                 (data) => {
                   this.planif.subject = data;
                 }
@@ -47,7 +50,7 @@ export class PlanifComponent {
 
               this.askToPlayOrNot();
 
-              this.planifRoom.resultsVisibility$.subscribe(
+              this.planifRoom.resultsVisibility$.pipe(takeUntil(this.unsubscribe$)).subscribe(
                 (data: boolean) => {
                   this.resultsVisibility = data;
                 }
@@ -69,5 +72,10 @@ export class PlanifComponent {
 
   protected askToPlayOrNot() {
     this.planifRoom.askToPlay();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

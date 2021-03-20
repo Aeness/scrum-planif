@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CardComponent } from '../card/card.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 
@@ -8,7 +10,8 @@ import { PlanifRoom } from '../planif.room/planif.room';
   templateUrl: './hand.component.html',
   styleUrls: ['./hand.component.scss']
 })
-export class HandComponent implements OnInit {
+export class HandComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject();
   public init: boolean = false;
 
   @Input() planifRoom: PlanifRoom;
@@ -27,7 +30,7 @@ export class HandComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.planifRoom.listenRestartMyChoise().subscribe(
+    this.planifRoom.listenRestartMyChoise().pipe(takeUntil(this.unsubscribe$)).subscribe(
       () => {
         this.choosenValue = null;
         this.planifRoom.sendPlanifChoise(null);
@@ -39,7 +42,7 @@ export class HandComponent implements OnInit {
     );
 
     // TODO : use this.planifRoom.listen.....
-    this.planifRoom.cardsList$.subscribe(
+    this.planifRoom.cardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data : {value: string, active: boolean}[]) => {
         this.allValues = [];
         this.values = [];
@@ -54,7 +57,7 @@ export class HandComponent implements OnInit {
       }
     );
 
-    this.planifRoom.listenCardVisibility().subscribe(
+    this.planifRoom.listenCardVisibility().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data : {cardIndex: number, choosenVisibility : boolean}) => {
         //No need because we use the list updated by planifRoom
         //this.allValues[data.cardIndex].active = data.choosenVisibility;
@@ -122,6 +125,11 @@ export class HandComponent implements OnInit {
     } else {
       this.planifRoom.askToNotPlay();
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

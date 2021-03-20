@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-planif-admin',
@@ -52,7 +53,7 @@ export class PlanifAdminComponent extends PlanifComponent {
     this.init$.subscribe(
       (init) => {
         if (init == true) {
-          this.planifRoom.name$.subscribe(
+          this.planifRoom.name$.pipe(takeUntil(this.unsubscribe$)).subscribe(
             (data) => {
               // TODO use the value of planifRoom ?
               if (this.planifForm.controls.name.value != data) {
@@ -62,7 +63,7 @@ export class PlanifAdminComponent extends PlanifComponent {
               }
             }
           );
-          this.planifRoom.subject$.subscribe(
+          this.planifRoom.subject$.pipe(takeUntil(this.unsubscribe$)).subscribe(
             (data) => {
               if (this.subjectForm.controls.subject.value != data) {
                 this.subjectForm.patchValue({
@@ -71,14 +72,14 @@ export class PlanifAdminComponent extends PlanifComponent {
               }
             }
           );
-          this.planifRoom.resultsVisibility$.subscribe(
+          this.planifRoom.resultsVisibility$.pipe(takeUntil(this.unsubscribe$)).subscribe(
             (data) => {
               if (this.resultsVisibilityChoosen.value != data) {
                 this.resultsVisibilityChoosen.setValue(data);
               }
             }
           );
-          this.planifRoom.cardsList$.subscribe(
+          this.planifRoom.cardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
             (data) => {
               this.cards = data;
               // TODO do better
