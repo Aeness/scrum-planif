@@ -68,7 +68,7 @@ describe('HandComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('#iVote')).length).toEqual(0);
   });
 
-  it('should change cards', () => {
+  it('should select visible cards', () => {
     // Change values by IoWebsocketMockService
     service.subjects.get("card_visibility_changed").next({cardIndex : 1, choosenVisibility : false});
     fixture.detectChanges();
@@ -86,7 +86,7 @@ describe('HandComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14-1);
   });
 
-  it('should restart cards', () => {
+  it('change should change cards game', () => {
     // Change values by PlanifRoom : enough ?
     component.planifRoom.cardsList$.next(
       [
@@ -101,7 +101,7 @@ describe('HandComponent', () => {
   });
 
 
-  it('should restart cards with inactive', () => {
+  it('should change cards game with one inactive', () => {
     // Change values by PlanifRoom : enough ?
     component.planifRoom.cardsList$.next(
       [
@@ -147,6 +147,49 @@ describe('HandComponent', () => {
     expect(mySpy).toHaveBeenCalledTimes(1);
 
     // TODO see what is changing
+  });
+
+  it('admin should quit', () => {
+    component.isAdmin = true;
+    fixture.detectChanges();
+    component.iVoteTop.setValue(true);
+    component.iVoteChangeTop();
+    fixture.detectChanges();
+
+    let mySpy = spyOn((component as any).planifRoom, 'askToNotPlay').and.callFake(function() {
+      // this <=> PlanifRoom
+      // TODO check that the player is added
+      this.ioWebsocketService.subjects.get("player_leave_planif").next({ player_ref: "ref2"});
+    })
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14);
+  });
+
+  it('admin with selected card should quit', () => {
+    component.isAdmin = true;
+    fixture.detectChanges();
+    component.iVoteTop.setValue(true);
+    component.iVoteChangeTop();
+    fixture.detectChanges();
+
+    let allCards = fixture.debugElement.queryAll(By.css('app-card>div'));
+    allCards[1].nativeElement.click();
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('app-card div.selected')).length).toEqual(1);
+
+    spyOn((component as any).planifRoom, 'askToNotPlay').and.callFake(function() {
+      // this <=> PlanifRoom
+      // TODO check that the player is added
+      this.ioWebsocketService.subjects.get("player_leave_planif").next({ player_ref: "ref2"});
+    })
+    component.iVoteTop.setValue(false);
+    component.iVoteChangeTop();
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('app-card div.selected')).length).toEqual(0);
+
   });
 
   it('top form change bottom form', () => {

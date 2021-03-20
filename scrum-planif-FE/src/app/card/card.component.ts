@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 
 @Component({
@@ -23,6 +23,19 @@ export class CardComponent {
   public unselectedIfNot(choosenValue : string) {
     if (this.value != choosenValue) {
       this.isSelected = false;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      //console.log(`[ngOnChanges]${propName}: currentValue = ${JSON.stringify(chng.currentValue)}, previousValue = ${JSON.stringify(chng.previousValue)}`);
+      let chng = changes[propName];
+      if (propName == "isDesactived") {
+        if (chng.currentValue == true) {
+          // TODO : Should be CardComponent who said to the other to unselect the card
+          this.isSelected = false;
+        }
+      }
     }
   }
 }

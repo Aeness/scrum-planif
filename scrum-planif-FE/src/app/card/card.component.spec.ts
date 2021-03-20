@@ -1,3 +1,4 @@
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -38,7 +39,7 @@ describe('CardComponent', () => {
     expect(mySpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should unselect on event', () => {
+  it('should unselect on event - changeValue', () => {
     component.click();
     component.unselectedIfNot("5");
     fixture.detectChanges();
@@ -48,6 +49,19 @@ describe('CardComponent', () => {
     component.unselectedIfNot("7");
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('div')).classes["selected"]).toEqual(undefined, 'change');
+  });
+
+  it('should unselect on event - admin leaves the game', () => {
+    component.click();
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('div')).classes["selected"]).toEqual(true);
+
+    //directly call ngOnChanges
+    component.ngOnChanges({
+      isDesactived: new SimpleChange(false, true, false)
+    });
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('div')).classes["selected"]).toEqual(undefined);
   });
 
   it('should not select on click', () => {
