@@ -138,7 +138,7 @@ export class IoWebsocketService implements OnDestroy {
     // We can because each IoWebsocketService have is own Soket :
     // All IoWebsocketService use the same namespace
     // and with io.socket reusing the same namespace will also create two connections/Manager/Socket
-    // https://socket.io/docs/client-api/#With-multiplexing
+    // https://socket.io/docs/v3/namespaces/ (see Client initialization)
     // This call also destroy the Socket and close and destroy the Manager
 
     // The socket can be undefinited if we destroy the component before call
