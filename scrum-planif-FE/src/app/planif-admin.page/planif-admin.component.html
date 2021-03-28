@@ -62,6 +62,9 @@
           <button type="submit" class="btn btn-secondary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon></button>
         </form>
       </div>
+      <div style="text-align: center;">
+        <p class="subject">{{planif.subject}}</p>
+      </div>
       <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
     </div>
     <div class="col-12 col-xxl-2  p-3 mb-3">
