@@ -62,12 +62,6 @@ export class HandComponent implements OnInit, OnDestroy {
         //No need because we use the list updated by planifRoom
         //this.allValues[data.cardIndex].active = data.choosenVisibility;
 
-        if(this.allValues[data.cardIndex].value == this.choosenValue
-          && data.choosenVisibility == false) {
-          this.choosenValue = null;
-          this.planifRoom.sendPlanifChoise(null);
-        }
-
         let newValues:string[] = [];
         this.allValues.forEach(element => {
           if (element.active) {

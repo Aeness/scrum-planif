@@ -28,12 +28,12 @@ export class CardComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     for (let propName in changes) {
-      //console.log(`[ngOnChanges]${propName}: currentValue = ${JSON.stringify(chng.currentValue)}, previousValue = ${JSON.stringify(chng.previousValue)}`);
       let chng = changes[propName];
+      //console.log(`[ngOnChanges]${propName}: currentValue = ${JSON.stringify(chng.currentValue)}, previousValue = ${JSON.stringify(chng.previousValue)}`);
       if (propName == "isDesactived") {
-        if (chng.currentValue == true) {
-          // TODO : Should be CardComponent who said to the other to unselect the card
+        if (chng.currentValue == true && this.isSelected) {
           this.isSelected = false;
+          this.choosenEvent.emit(this.isSelected);
         }
       }
     }

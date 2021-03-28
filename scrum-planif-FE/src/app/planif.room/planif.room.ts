@@ -78,7 +78,9 @@ export class PlanifRoom implements OnDestroy {
           this.listenPlanifChoise().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataChoise: {player_ref: string, choosenValue : string}) => {
               //this.votes.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
-              this.playersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
+              if (this.playersList$.value.has(dataChoise.player_ref)) {
+                this.playersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
+              }
             }
           );
 
