@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnDestroy } from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/
   templateUrl: './card.component.html',
   styleUrls: ['./font-icon.scss', './card.component.scss']
 })
-export class CardComponent {
+export class CardComponent implements OnDestroy {
   @Input() value: string;
   @Input() rank: string;
   @Input() isDesactived: boolean = false;
@@ -36,6 +36,12 @@ export class CardComponent {
           this.choosenEvent.emit(this.isSelected);
         }
       }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.isSelected == true) {
+      this.choosenEvent.emit(false);
     }
   }
 }
