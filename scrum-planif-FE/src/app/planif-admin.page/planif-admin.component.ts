@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-planif-admin',
   templateUrl: 'planif-admin.component.html',
-  styleUrls: ['../card/font-icon.scss', './planif-admin.component.scss'],
+  styleUrls: ['./planif-admin.component.scss'],
   providers:  [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
 export class PlanifAdminComponent extends PlanifComponent {
@@ -27,9 +27,6 @@ export class PlanifAdminComponent extends PlanifComponent {
   public faEdit = faEdit;
 
   public resultsVisibilityChoosen = new FormControl(false);
-  public gameTypeChoosen = new FormControl(false);
-
-  public cards : Array<{value: string, active: boolean}>;
 
   // https://www.pinterest.fr/pin/194288171399705962/
   constructor(
@@ -79,16 +76,6 @@ export class PlanifAdminComponent extends PlanifComponent {
               }
             }
           );
-          this.planifRoom.cardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-            (data) => {
-              this.cards = data;
-              // TODO do better
-              if (Array.isArray(data) && data.length > 0 && data[0].value == "XS"
-                  && this.gameTypeChoosen.value !== true) {
-                this.gameTypeChoosen.setValue(true);
-              }
-            }
-          );
         }
       }
     )
@@ -100,14 +87,6 @@ export class PlanifAdminComponent extends PlanifComponent {
 
   public resultsVisibilityChoosenChange() {
     this.planifRoom.sendResultsVisibility(this.resultsVisibilityChoosen.value);
-  }
-
-  public gameTypeChoosenChange() {
-    if (this.gameTypeChoosen.value) {
-      this.planifRoom.sendTypeGameToTshirt();
-    } else {
-      this.planifRoom.sendTypeGameToNumber();
-    }
   }
 
   public copyElement(idElement) {
@@ -148,11 +127,6 @@ export class PlanifAdminComponent extends PlanifComponent {
         subject: ''
       });
     }
-  }
-
-  click(index) {
-    //this.cards[index].active = !this.cards[index].active ;
-    this.planifRoom.sendCardVisibility(index, !this.cards[index].active);
   }
 
 }

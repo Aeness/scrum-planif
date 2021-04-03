@@ -1,63 +1,27 @@
 @import "../../variables.scss";
 
-.title {
-  margin-bottom: 15px;
-  border-bottom: 1px solid #B8B8B8;
-}
+div.exampleCard {
+  border: solid 1px black;
+  border-radius: 0.25rem;
+  height: 3rem;
+  width: 2rem;
+  float: left;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  text-align: center;
+  padding-top: 0.7rem;
 
-p.subject {
-  font-weight: bold;
-  margin: auto;
-  margin-bottom: 1rem;
-}
+  cursor: pointer;
 
-.toCopy {
-  border: 1px solid #B8B8B8;
-  padding: 5px;
-}
-.copy, .copy:active {
-  border: none;
-  background-color: transparent;
-  color: #6A6A6A;
-  padding: 5px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 
-  &:active {
-    transform: translate(2px, 4px);
-    color: #444444;
+  &.selected {
+    background-color: $mainColor;
+    color: #FFF;
   }
-}
-
-@media (min-width: 2560px) {
-}
-
-#content {
-  background-color: rosybrown;
-}
-
-.no-padding-r {
-  padding-right: 0 !important;
-}
-
-
-@media (min-width: 1200px) {
-  .subject {
-    width: 465px;
-    input {
-      width: 400px;
-    }
-
-  }
-}
-
-@media (max-width: 1199.98px) {
-  .before-xl-no-padding {
-    padding: 0 !important;
-  }
-}
-
-li {
-  margin-bottom: 0.5rem;
 }
 
 $switchWidth: 45; // 60px

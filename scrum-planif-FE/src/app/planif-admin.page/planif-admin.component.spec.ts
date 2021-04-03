@@ -14,6 +14,7 @@ import { ResultsListAdminComponent } from '../results-list-admin/results-list-ad
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ChooseCardsGameComponent } from '../choose-cards-game/choose-cards-game.component';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -25,6 +26,7 @@ describe('PlanifAdminComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         PlanifAdminComponent,
+        ChooseCardsGameComponent,
         HandComponent,
         ResultsListAdminComponent,
         CardComponent

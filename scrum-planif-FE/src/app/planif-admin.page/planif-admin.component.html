@@ -11,17 +11,7 @@
           formControlName="name">
     <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
     </form>-->
-    <div class="mt-2 mb-2">
-      Utiliser des chiffres&nbsp;<label class="switch">
-        <input id="gameTypeChoosen" type="checkbox" [formControl]="gameTypeChoosen" (ngModelChange)="gameTypeChoosenChange()">
-        <span class="slider round"></span>
-      </label>&nbsp;Utiliser des T-shirt
-    </div>
-
-    <ng-container *ngFor="let card of cards; let index = index">
-      <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':'')" (click)="click(index)" [innerHTML]="card.value"></div>
-    </ng-container>
-    <div class="clear"><p class="text-secondary small-text">Cliquer sur une carte pour ne pas l'utiliser.</p></div>
+    <app-choose-cards-game [planifRoom]="planifRoom"></app-choose-cards-game>
   </div>
 </div>
 <ng-container *ngIf="takePartIn">
