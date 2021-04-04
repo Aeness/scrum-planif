@@ -114,7 +114,7 @@ export class PlanifAdminComponent extends PlanifComponent {
   }
 
   onSubjectSubmit() {
-    if(this.gameForm.valid) {
+    if(this.subjectForm.valid) {
       // Send also to itself
       this.planifRoom.sendGameSubject(this.subjectForm.controls.subject.value)
     }
