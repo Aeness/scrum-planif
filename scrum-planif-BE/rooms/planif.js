@@ -34,7 +34,9 @@ module.exports = {
                     room.subject = null;
                     room.resultsVisibility = false;
                     room.choosenGameType = "classic";
-                    room.cards = this.getClassicCard();
+                    room.cardsGames = new Map();
+                    room.cardsGames.set("classic", this.getClassicCard());
+                    room.cardsGames.set("TS", this.getTShirtCard());
                     this.planifRooms.set(this.getRoomName(planif_ref), room);
                 }
 
@@ -56,6 +58,11 @@ module.exports = {
                     for (let entry of room.players.entries()) {
                         reponsePlayerTS[entry[0]] = entry[1];
                     }
+                    
+                    let cardsGamesTS = {};
+                    for (let entry of room.cardsGames.entries()) {
+                        cardsGamesTS[entry[0]] = entry[1];
+                    }
                     let reponse = {
                         ref : planif_ref,
                         name : room.name,
@@ -63,7 +70,7 @@ module.exports = {
                         players : reponsePlayerTS,
                         resultsVisibility : room.resultsVisibility,
                         choosenGameType: room.choosenGameType,
-                        cards : room.cards
+                        cardsGame : cardsGamesTS
                     };
                     acknowledgement(null, reponse);
                 });
@@ -159,14 +166,7 @@ module.exports = {
                     debug("%s change type game to %s", socket.id, data.choosenGameType);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     room.choosenGameType = data.choosenGameType;
-                    if (data.choosenGameType === "TS") {
-                        room.cards = this.getTShirtCard();
-                        this.sendGameTypeChanged(planif_ref, this.getTShirtCard())
-
-                    } else {
-                        room.cards = this.getClassicCard();
-                        this.sendGameTypeChanged(planif_ref, this.getClassicCard())
-                    }
+                    this.sendGameTypeChanged(planif_ref, data.choosenGameType);
                     if (room.players !== undefined) {
                       for (let entry of room.players.entries()) {
                         entry[1].vote = null;
@@ -182,7 +182,8 @@ module.exports = {
                         return;
                     }
 
-                    var roomCards = this.planifRooms.get(this.getRoomName(planif_ref)).cards;
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
+                    let roomCards = room.cardsGames.get(room.choosenGameType);
                     if (data.cardIndex>=0 && data.cardIndex<roomCards.length) {
                         roomCards[data.cardIndex].active = data.choosenVisibility;
                         this.sendCardVisibilityChanged(planif_ref, data.cardIndex, data.choosenVisibility);
@@ -207,14 +208,14 @@ module.exports = {
         return [
             {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
             {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
-            {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
+            {value:"8", active: true},{value:"13", active: false},{value:"20", active: true},
             {value:"40", active: true},{value:"100", active: true},{value:"&#xf128", active: true},
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
         ]
     },
     getTShirtCard: function () {
         return [
-            {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
+            {value:"XS", active: true},{value:"S", active: false},{value:"M", active: true},
             {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
         ]
@@ -265,8 +266,8 @@ module.exports = {
         debug('sendCardVisibilityChanged to planif %s : %s, %s', planif_ref, cardIndex, choosenValue);
         this.app.io.to(this.getRoomName(planif_ref)).emit('card_visibility_changed', {cardIndex: cardIndex, choosenVisibility: choosenValue});
     },
-    sendGameTypeChanged: function(planif_ref, cardsValue) {
+    sendGameTypeChanged: function(planif_ref, cardsGameName) {
         debug('sendGameTypeChanged to planif %s', planif_ref);
-        this.app.io.to(this.getRoomName(planif_ref)).emit('game_type_changed', { gameCards: cardsValue});
+        this.app.io.to(this.getRoomName(planif_ref)).emit('game_type_changed', { cardsGameName: cardsGameName});
     },
 }

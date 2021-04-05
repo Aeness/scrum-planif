@@ -53,7 +53,7 @@ describe('HandComponent', () => {
 
   it('should have cards', () => {
     // Change values by PlanifRoom : enough ?
-    component.planifRoom.cardsList$.next(
+    component.planifRoom.currentCardsList$.next(
       [
         {value:"0", active: true},{value:"1/2", active: true},{value:"1", active: true},
         {value:"2", active: true},{value:"3", active: true},{value:"5", active: true},
@@ -88,7 +88,7 @@ describe('HandComponent', () => {
 
   it('change should change cards game', () => {
     // Change values by PlanifRoom : enough ?
-    component.planifRoom.cardsList$.next(
+    component.planifRoom.currentCardsList$.next(
       [
         {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
         {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
@@ -103,7 +103,7 @@ describe('HandComponent', () => {
 
   it('should change cards game with one inactive', () => {
     // Change values by PlanifRoom : enough ?
-    component.planifRoom.cardsList$.next(
+    component.planifRoom.currentCardsList$.next(
       [
         {value:"XS", active: true},{value:"S", active: false},{value:"M", active: true},
         {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},

@@ -13,11 +13,14 @@ export class PlanifRoom implements OnDestroy {
   public subject$ : BehaviorSubject<string> = new BehaviorSubject("");
   public playersList$ : BehaviorSubject<Map<string, Player>> = new BehaviorSubject(new Map<string, Player>());
   public resultsVisibility$ : BehaviorSubject<boolean> = new BehaviorSubject(true);
-  public cardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
+  public allCardsList$ : BehaviorSubject<Map<string, Array<{value: string, active: boolean}>>> = new BehaviorSubject(new Map<string, Array<{value: string, active: boolean}>>());
+  public currentCardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
+  public currentGameName$ : BehaviorSubject<string> = new BehaviorSubject<string>("");
+  public currentGameName : string = "";
 
   // Observable
   private restartMyChoiseEvent$ : Observable<any>;
-  private cardVisibilityEvent$ : Observable<{cardIndex : number, choosenVisibility : boolean}>;
+  private cardVisibilityEvent$ : Observable<{gameName : string, cardIndex : number, choosenVisibility : boolean}>;
 
 
   constructor(private ioWebsocketService: IoWebsocketService) { }
@@ -41,13 +44,23 @@ export class PlanifRoom implements OnDestroy {
         } else {
           this.name$.next(response.name);
           this.subject$.next(response.subject);
-          this.cardsList$.next(response.cards);
+
+          // Object to Map
+          let entryPlayer : [string, any];
+          for (entryPlayer of Object.entries(response.players)) {
+            this.playersList$.value.set(entryPlayer[0],entryPlayer[1]);
+          }
 
           // Object to Map
           let entry : [string, any];
-          for (entry of Object.entries(response.players)) {
-            this.playersList$.value.set(entry[0],entry[1]);
+          let allCardsList: Map<string, Array<{value: string, active: boolean}>> = new Map<string, Array<{value: string, active: boolean}>>();
+          for (entry of Object.entries(response.cardsGame)) {
+            allCardsList.set(entry[0],entry[1]);
           }
+          this.allCardsList$.next(allCardsList);
+          this.currentCardsList$.next(allCardsList.get(response.choosenGameType));
+          this.currentGameName$.next(response.choosenGameType);
+          this.currentGameName = response.choosenGameType;
 
           this.listenAuthenticationError();
 
@@ -94,13 +107,16 @@ export class PlanifRoom implements OnDestroy {
 
           this.listenCardVisibility().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (data : {cardIndex: number, choosenVisibility : boolean}) => {
-              this.cardsList$.value[data.cardIndex].active = data.choosenVisibility;
+              this.currentCardsList$.value[data.cardIndex].active = data.choosenVisibility;
             }
           );
 
           this.listenGameType().pipe(takeUntil(this.unsubscribe$)).subscribe(
-            (response: {gameCards : []}) => {
-              this.cardsList$.next(response.gameCards);
+            (response: {cardsGameName : string}) => {
+              // TODO : put this two informations together
+              this.currentCardsList$.next(this.allCardsList$.value.get(response.cardsGameName));
+              this.currentGameName$.next(response.cardsGameName);
+              this.currentGameName = response.cardsGameName;
             }
           );
 
@@ -176,15 +192,11 @@ export class PlanifRoom implements OnDestroy {
       return this.ioWebsocketService.getMessages('results_visibility_changed');
   }
 
-  public sendTypeGameToTshirt() {
-    this.ioWebsocketService.sendMessage("change_type_game", {choosenGameType : "TS"});
+  public sendTypeGame(gameName : string) {
+    this.ioWebsocketService.sendMessage("change_type_game", {choosenGameType : gameName});
   }
 
-  public sendTypeGameToNumber() {
-    this.ioWebsocketService.sendMessage("change_type_game", {choosenGameType : "classic"});
-  }
-
-  private listenGameType() : Observable<{gameCards : []}> {
+  private listenGameType() : Observable<{cardsGameName : string}> {
       return this.ioWebsocketService.getMessages('game_type_changed');
   }
 

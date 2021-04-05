@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -7,42 +7,39 @@ import { PlanifRoom } from '../planif.room/planif.room';
 @Component({
   selector: 'app-choose-cards-game',
   templateUrl: './choose-cards-game.component.html',
-  styleUrls: ['../card/font-icon.scss', './choose-cards-game.component.scss']
+  styleUrls: ['./choose-cards-game.component.scss']
 })
 export class ChooseCardsGameComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
 
   @Input() planifRoom: PlanifRoom;
 
-  public cards : Array<{value: string, active: boolean}>;
-  public gameTypeChoosen = new FormControl(false);
+  public gameTypeForm: FormGroup;
 
-  constructor() { }
+  public gamesType : Map<string, Array<{value: string, active: boolean}>>;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.planifRoom.cardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (data) => {
-        this.cards = data;
-        // TODO do better
-        if (Array.isArray(data) && data.length > 0 && data[0].value == "XS"
-            && this.gameTypeChoosen.value !== true) {
-          this.gameTypeChoosen.setValue(true);
-        }
+    this.gameTypeForm = this.fb.group({
+      gameName: [this.planifRoom.currentGameName/*, Validators.required*/]
+    });
+
+    this.planifRoom.allCardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (data : Map<string, Array<{value: string, active: boolean}>>) => {
+        this.gamesType = data;
+      }
+    );
+
+    this.planifRoom.currentGameName$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (data : string) => {
+        this.gameTypeForm.get("gameName").setValue(data)
       }
     );
   }
 
-  public gameTypeChoosenChange() {
-    if (this.gameTypeChoosen.value) {
-      this.planifRoom.sendTypeGameToTshirt();
-    } else {
-      this.planifRoom.sendTypeGameToNumber();
-    }
-  }
-
-  click(index) {
-    //this.cards[index].active = !this.cards[index].active ;
-    this.planifRoom.sendCardVisibility(index, !this.cards[index].active);
+  public gameTypeChoosenChange(gameName) {
+    this.planifRoom.sendTypeGame(gameName);
   }
 
   ngOnDestroy() {

@@ -42,7 +42,7 @@ export class HandComponent implements OnInit, OnDestroy {
     );
 
     // TODO : use this.planifRoom.listen.....
-    this.planifRoom.cardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+    this.planifRoom.currentCardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data : {value: string, active: boolean}[]) => {
         this.allValues = [];
         this.values = [];

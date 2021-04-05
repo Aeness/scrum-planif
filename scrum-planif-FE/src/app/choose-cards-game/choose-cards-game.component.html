@@ -1,12 +1,9 @@
 
-    <div class="mt-2 mb-2">
-      Utiliser des chiffres&nbsp;<label class="switch">
-        <input id="gameTypeChoosen" type="checkbox" [formControl]="gameTypeChoosen" (ngModelChange)="gameTypeChoosenChange()">
-        <span class="slider round"></span>
-      </label>&nbsp;Utiliser des T-shirt
+    <div class="mt-2 mb-2" *ngIf="gamesType && gamesType.size > 0">
+      <form [formGroup]="gameTypeForm">
+      Type de jeux de carte :
+        <div *ngFor="let gameType of gamesType | keyvalue" [className]="'formChoice border pt-3 pl-1 mb-1 ml-3 ' + ((gameType.key==planifRoom.currentGameName)?' selected':'')" (click)="gameTypeChoosenChange(gameType.key)">
+          <input type="radio" [value]="gameType.key" formControlName="gameName"><label><app-cards-game [planifRoom]="planifRoom"  [myGameTypeName]="gameType.key"></app-cards-game></label>
+        </div>
+      </form>
     </div>
-
-    <ng-container *ngFor="let card of cards; let index = index">
-      <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':'')" (click)="click(index)" [innerHTML]="card.value"></div>
-    </ng-container>
-    <div class="clear"><p class="text-secondary small-text">Cliquer sur une carte pour ne pas l'utiliser.</p></div>

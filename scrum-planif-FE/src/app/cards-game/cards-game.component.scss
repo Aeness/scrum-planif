@@ -19,25 +19,25 @@ div.exampleCard {
   user-select: none;
 
   &.selected {
-    background-color: $mainColor;
     color: #FFF;
   }
 }
 
-input {
-  margin-top: 18px;
-  margin-left: 8px;
-  margin-right: 13px;
+.cardGame.unselected {
+  div.exampleCard {
+    border: solid 1px lighten(black, 50%);
+  }
+  div.exampleCard.unselected {
+    color: lighten(black, 50%);
+  }
+  div.exampleCard.selected {
+    background-color: lighten($mainColor, 10%);
+  }
 }
- label {
-   vertical-align: top;
-   margin: 0;
- }
 
- .formChoice {
-   background-color: #FFF;
+.cardGame.selected {
+  div.exampleCard.selected {
+    background-color: $mainColor;
+  }
+}
 
-   &.selected {
-     border-color: $mainColor !important;
-   }
- }
