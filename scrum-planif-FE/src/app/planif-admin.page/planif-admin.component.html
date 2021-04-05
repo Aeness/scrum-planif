@@ -10,6 +10,20 @@
       </div>
 
       <div class="rounded bg-light p-3 mb-3">
+        <h5>Sujet de la partie</h5>
+        <div>
+          <form [formGroup]="subjectForm" (ngSubmit)="onSubjectSubmit($event)">
+            <label class="mb-2 mr-2" for="subject">Corriger ou lancer un nouveau sujet</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
+                formControlName="subject" placeholder="Sujet facultatif">
+            <button type="submit" name="subject" class="btn btn-secondary mb-2 mr-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon> Editer uniquement le sujet</button>
+            <button type="submit" name="game" class="btn btn-primary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faRedo"></fa-icon> Lancer une nouvelle partie.</button>
+          </form>
+          <p class="text-secondary small-text"></p>
+        </div>
+      </div>
+
+      <div class="rounded bg-light p-3 mb-3">
         <h5>Les résultats</h5>
         <div class="mb-3 mt-3">
           Rendre visible les résultats à tous les participants.&nbsp;<label class="switch">
@@ -19,30 +33,9 @@
         </div>
         <app-results-list-admin [planifRoom]="planifRoom" [iVoteValue]="true" [resultsVisibilityValue]="resultsVisibilityChoosen.value"></app-results-list-admin>
       </div>
-      <div class="rounded bg-light p-3 mb-3">
-        <h5>Lancer un nouveau sujet</h5>
-        <div>
-          <form [formGroup]="gameForm" class="form-inline" (ngSubmit)="onGameSubmit()">
-            <label class="mb-2 mr-2" for="subject">Une fois les échanges terminés, lancer un nouveau sujet </label>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
-                formControlName="subject" placeholder="titre facultatif">
-            <button type="submit" class="btn btn-primary mb-2" [disabled]="!gameForm.valid">Go !</button>
-          </form>
-          <p class="text-secondary small-text">Efface le titre, réinitialise les votes et cache les résultats.</p>
-        </div>
-      </div>
     </div>
 
     <div class="col-12 col-xxl-6">
-      <div class="mb-3 mt-3 subject" style="margin: auto;">
-        <label class="mb-2 mr-2" for="subject_edit">Editer le sujet de l'estimation actuelle</label>
-        <form [formGroup]="subjectForm" class="form-inline" (ngSubmit)="onSubjectSubmit()">
-
-          <input type="text" class="form-control mb-2 mr-sm-2" id="subject_edit"
-            formControlName="subject" placeholder="titre facultatif">
-          <button type="submit" class="btn btn-secondary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon></button>
-        </form>
-      </div>
       <div style="text-align: center;">
         <p class="subject">{{planif.subject}}</p>
       </div>

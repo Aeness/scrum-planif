@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PlanifComponent } from '../planif.page/planif.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { FormControl } from '@angular/forms';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faRedo } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
@@ -21,6 +21,7 @@ export class PlanifAdminComponent extends PlanifComponent {
   public gameForm: FormGroup;
 
   public faEdit = faEdit;
+  public faRedo = faRedo;
 
   public resultsVisibilityChoosen = new FormControl(false);
 
@@ -36,9 +37,6 @@ export class PlanifAdminComponent extends PlanifComponent {
       name: ['', Validators.required]
     });
     this.subjectForm = fb.group({
-      subject: [''/*, Validators.required*/]
-    });
-    this.gameForm = fb.group({
       subject: [''/*, Validators.required*/]
     });
 
@@ -91,19 +89,20 @@ export class PlanifAdminComponent extends PlanifComponent {
     }
   }
 
-  onSubjectSubmit() {
+  onSubjectSubmit(event) {
     if(this.subjectForm.valid) {
-      // Send also to itself
-      this.planifRoom.sendGameSubject(this.subjectForm.controls.subject.value)
-    }
-  }
+      if (event.submitter.name == "subject") {
+        // Send also to itself
+        this.planifRoom.sendGameSubject(this.subjectForm.controls.subject.value)
 
-  onGameSubmit() {
-    if(this.gameForm.valid) {
-      this.planifRoom.sendRestartGameSubject(this.gameForm.controls.subject.value)
-      this.gameForm.patchValue({
-        subject: ''
-      });
+      } else {
+        this.planifRoom.sendRestartGameSubject(this.subjectForm.controls.subject.value)
+        /*
+        this.gameForm.patchValue({
+          subject: ''
+        });
+        */
+      }
     }
   }
 
