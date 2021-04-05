@@ -15,6 +15,7 @@ import { PlanifComponent } from './planif.component';
 import { FormBuilder } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DescriptionComponent } from '../description/description.component';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -26,6 +27,7 @@ describe('PlanifComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         PlanifComponent,
+        DescriptionComponent,
         PlayersListComponent,
         HandComponent,
         ResultsListComponent,
