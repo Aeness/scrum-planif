@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 import { PlanifComponent } from '../planif.page/planif.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { FormControl } from '@angular/forms';
-import { environment } from '../../environments/environment';
-import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { takeUntil } from 'rxjs/operators';
@@ -22,8 +20,6 @@ export class PlanifAdminComponent extends PlanifComponent {
   public subjectForm: FormGroup;
   public gameForm: FormGroup;
 
-  public urlLink = environment.linkUrl;
-  public faCopy = faCopy;
   public faEdit = faEdit;
 
   public resultsVisibilityChoosen = new FormControl(false);
@@ -33,7 +29,6 @@ export class PlanifAdminComponent extends PlanifComponent {
     protected route: ActivatedRoute,
     protected planifRoom: PlanifRoom,
     protected authService: AuthService,
-    private router: Router,
     private fb: FormBuilder) {
 
     super(route, planifRoom, authService)
@@ -87,23 +82,6 @@ export class PlanifAdminComponent extends PlanifComponent {
 
   public resultsVisibilityChoosenChange() {
     this.planifRoom.sendResultsVisibility(this.resultsVisibilityChoosen.value);
-  }
-
-  public copyElement(idElement) {
-    let range = document.createRange();
-    let selection = window.getSelection();
-    range.selectNode(document.getElementById(idElement));
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    try {
-        if (document.execCommand('copy')) {
-          console.log('The copy succeed');
-        }
-    }
-    catch(err) {
-        console.error(err);
-    }
   }
 
   onPlanifSubmit() {

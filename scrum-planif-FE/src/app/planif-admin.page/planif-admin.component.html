@@ -1,18 +1,5 @@
 <ng-container *ngIf="init$ | async">
-<div class="row">
-  <div class="col-12 rounded bg-light p-3 mb-3">
-    <h5>Le poker planning</h5>
-    Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif.ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
-    ou via le lien <span id="link" class="toCopy">{{urlLink}}/planif/{{planif.ref}}</span> <button class="copy" (click)="copyElement('link')"><fa-icon [icon]="faCopy"></fa-icon></button>.
-    <!--
-    <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onPlanifSubmit()">
-      <label class="mb-2 mr-2" for="name">Vous pouvez préciser un nom pour ce pocker planning :</label>
-      <input type="text" class="form-control mb-2 mr-sm-2" id="name"
-          formControlName="name">
-    <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
-    </form>-->
-  </div>
-</div>
+<app-description [planif_ref]="planif.ref"></app-description>
 <ng-container *ngIf="takePartIn">
   <div class="row">
     <div class="col-12 col-xxl-4 m-0 p-0">

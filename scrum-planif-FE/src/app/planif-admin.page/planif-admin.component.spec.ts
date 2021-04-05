@@ -16,6 +16,7 @@ import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ChooseCardsGameComponent } from '../choose-cards-game/choose-cards-game.component';
 import { CardsGameComponent } from '../cards-game/cards-game.component';
+import { DescriptionComponent } from '../description/description.component';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -27,6 +28,7 @@ describe('PlanifAdminComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         PlanifAdminComponent,
+        DescriptionComponent,
         ChooseCardsGameComponent,
         CardsGameComponent,
         HandComponent,
