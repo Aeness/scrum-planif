@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import { StorageTokenTool } from './storage-token.tool';
 import { Observable, Subject } from 'rxjs';
 import { Payload } from './payload';
-import { User } from './user';
+import { LoginPerson } from './login-person';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -44,13 +44,13 @@ export class AuthService {
     //.shareReplay();
   }
 
-  protected userConnectedSource = new Subject<User>();
+  protected userConnectedSource = new Subject<LoginPerson>();
 
   get hasUserConnected() : boolean {
     return StorageTokenTool.hasToken();
   }
 
-  get userConnected() : User {
+  get userConnected() : LoginPerson {
     let token_decoded : Payload = StorageTokenTool.decodedToken();
     return {ref: token_decoded.ref, name: token_decoded.name};
   }

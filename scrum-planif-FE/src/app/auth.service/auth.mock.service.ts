@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
-import { User } from "./user";
+import { LoginPerson } from "./login-person";
 
 @Injectable()
 export class AuthServiceMock extends AuthService {
-  private user : User;
+  private user : LoginPerson;
   //private token : string;
   //private refreshToken : string;
 
-  constructor(user : User) {
+  constructor(user : LoginPerson) {
     super(null);
     this.user = user;
     this.userConnectedSource.next(user);
   }
 
-  get userConnected() : User {
+  get userConnected() : LoginPerson {
     return this.user;
   }
 

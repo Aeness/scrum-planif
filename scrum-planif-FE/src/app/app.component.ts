@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { User } from './auth.service/user';
+import { LoginPerson } from './auth.service/login-person';
 import { AuthService } from './auth.service/auth.service';
 import { Subject, Subscription } from 'rxjs';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -15,12 +15,12 @@ export class AppComponent implements OnDestroy {
 
   faSignOutAlt = faSignOutAlt;
   title = 'scrum-planif';
-  user : User ;
+  user : LoginPerson ;
   subscription: Subscription;
 
   constructor(private authService: AuthService) {
     this.subscription = authService.userAnnounced$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (user : User) => {
+      (user : LoginPerson) => {
         this.user = user;
       }
     );
