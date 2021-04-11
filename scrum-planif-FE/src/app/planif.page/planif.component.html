@@ -1,35 +1,35 @@
 <ng-container *ngIf="init$ | async">
 <app-description [planif_ref]="planif.ref"></app-description>
 <div class="row">
-  <div class="col-12 col-xxl-3"></div>
-  <div class="col-12 col-xxl-6" style="text-align: center;">
+  <div class="col-12 col-xxxl-3"></div>
+  <div class="col-12 col-xxxl-6" style="text-align: center;">
     <p class="subject">{{planif.subject}}</p>
   </div>
-  <div class="col-12 col-xxl-3"></div>
+  <div class="col-12 col-xxxl-3"></div>
 </div>
 <div class="row">
-  <div class="col-12 col-xxl-3"></div>
-  <div class="col-12 col-xxl-6" *ngIf="takePartIn">
+  <div class="col-12 col-xxxl-3"></div>
+  <div class="col-12 col-xxxl-6" *ngIf="takePartIn">
     <app-players [planifRoom]="planifRoom"></app-players>
   </div>
   <div class="col-12 col-xl-3"></div>
 </div>
 
 <div class="row">
-  <div class="col-12 col-xxl-3"></div>
-  <div class="col-12 col-xxl-6" *ngIf="takePartIn">
+  <div class="col-12 col-xxxl-3"></div>
+  <div class="col-12 col-xxxl-6" *ngIf="takePartIn">
     <app-hand [planifRoom]="planifRoom"></app-hand>
   </div>
-  <div class="col-12 col-xxl-3">
+  <div class="col-12 col-xxxl-3">
     <app-users-list [planifRoom]="planifRoom" ></app-users-list>
   </div>
 </div>
 
 <div class="row" style="margin-top: 45px;" *ngIf="resultsVisibility">
-  <div class="col-12 col-xxl-3"></div>
-  <div class="col-12 col-xxl-6" *ngIf="takePartIn">
+  <div class="col-12 col-xxxl-3"></div>
+  <div class="col-12 col-xxxl-6" *ngIf="takePartIn">
     <app-results-list [planifRoom]="planifRoom"></app-results-list>
   </div>
-  <div class="col-12 col-xxl-3"></div>
+  <div class="col-12 col-xxxl-3"></div>
 </div>
 </ng-container>

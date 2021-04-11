@@ -2,7 +2,7 @@
 <app-description [planif_ref]="planif.ref"></app-description>
 <ng-container *ngIf="takePartIn">
   <div class="row">
-    <div class="col-12 col-xxl-4 m-0 p-0">
+    <div class="col-12 col-xxxl-4 m-0 p-0">
 
       <div class="rounded bg-light p-3 mb-3">
         <h5>Type de jeux de carte</h5>
@@ -35,14 +35,14 @@
       </div>
     </div>
 
-    <div class="col-12 col-xxl-6">
+    <div class="col-12 col-xxxl-6">
       <div style="text-align: center;">
         <p class="subject">{{planif.subject}}</p>
       </div>
       <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
       <app-users-list [planifRoom]="planifRoom" ></app-users-list>
     </div>
-    <div class="col-12 col-xxl-2  p-3 mb-3">
+    <div class="col-12 col-xxxl-2  p-3 mb-3">
     </div>
   </div>
 </ng-container>
