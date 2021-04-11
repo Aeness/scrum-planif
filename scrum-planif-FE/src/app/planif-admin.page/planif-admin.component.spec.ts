@@ -38,7 +38,7 @@ describe('PlanifAdminComponent', () => {
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule],
       providers: [
         FormBuilder,
-        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref2", name: "Admin"})}
+        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})}
       ]
     })
     // https://angular.io/guide/testing-components-scenarios#override-component-providers
@@ -53,6 +53,7 @@ describe('PlanifAdminComponent', () => {
   });
 
   beforeEach(() => {
+    // Call planifRoom.init and 'ask_planif_informations
     fixture = TestBed.createComponent(PlanifAdminComponent);
     component = fixture.componentInstance;
 
@@ -72,11 +73,10 @@ describe('PlanifAdminComponent', () => {
     expect(component).toBeTruthy();
   });
 
-   it('should have admin result with cards', fakeAsync(() => {
+  it('should have admin result with cards', fakeAsync(() => {
     expect(fixture.debugElement.queryAll(By.css('app-hand')).length).toEqual(1, 'one app-hand');
     expect(fixture.debugElement.queryAll(By.css('app-results-list-admin')).length).toEqual(1, 'one app-results-list-admin');
 
-    // Hand use setTimeout, we need to wait for "see" the result
     fixture.detectChanges();
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14);
   }));

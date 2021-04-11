@@ -136,7 +136,7 @@ describe('HandComponent', () => {
     let mySpy = spyOn((component as any).planifRoom, 'askToPlay').and.callFake(function() {
       // this <=> PlanifRoom
       // TODO check that the player is added
-      this.ioWebsocketService.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "Admin"}});
+      this.ioWebsocketService.subjects.get("player_join_planif").next({player: {ref: "ref", name: "Admin"}});
     })
     fixture.detectChanges();
 

@@ -13,7 +13,7 @@ import { PlayersListComponent } from './players-list.component';
 describe('PlayersListComponent', () => {
   let component: PlayersListComponent;
   let fixture: ComponentFixture<PlayersListComponent>;
-  let service: IoWebsocketService;
+  let service;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

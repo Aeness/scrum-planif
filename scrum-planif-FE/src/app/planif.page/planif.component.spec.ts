@@ -51,6 +51,7 @@ describe('PlanifComponent', () => {
   });
 
   beforeEach(() => {
+    // Call planifRoom.init and 'ask_planif_informations
     fixture = TestBed.createComponent(PlanifComponent);
     component = fixture.componentInstance;
 

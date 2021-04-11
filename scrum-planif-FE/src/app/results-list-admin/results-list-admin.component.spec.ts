@@ -12,7 +12,7 @@ import { ResultsListAdminComponent } from './results-list-admin.component';
 describe('ResultsListAdminComponent', () => {
   let component: ResultsListAdminComponent;
   let fixture: ComponentFixture<ResultsListAdminComponent>;
-  let service: IoWebsocketService;
+  let service;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

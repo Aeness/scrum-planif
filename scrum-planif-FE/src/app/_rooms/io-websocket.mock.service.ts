@@ -7,39 +7,34 @@ const debug = Debug("scrum-planif:clientIo");
 @Injectable()
 export class IoWebsocketMockService {
 
-  //private nameRoom: string;
+  public curentPlayers : {} = {};
   public subjects = new Map<string,Subject<any>>();
 
-  constructor() { }
+  constructor() {
+    this.subjects.set("results_visibility_changed", new Subject<{choosenVisibility : boolean}>());
+    this.subjects.set("card_visibility_changed", new Subject<{cardIndex: number, choosenVisibility: boolean}>());
+    this.subjects.set("game_type_changed", new Subject<{cardsGameName: string}>());
+    this.subjects.set("authentication_error", new Subject());
+    this.subjects.set("planif_name", new Subject<{name: string}>());
+    this.subjects.set("game_subject", new Subject<{subject: string}>());
+    this.subjects.set("player_join_planif", new Subject<{player: Player}>());
+    this.subjects.set("player_leave_planif", new Subject<{player_ref: string}>());
+    this.subjects.set("player_choose", new Subject<{ player_ref: string, choosenValue: boolean}>());
+    this.subjects.set("restart_choose", new Subject());
+  }
 
   public connect(nameRoom : string, onConnect? : () => void) {
-    //this.nameRoom = nameRoom;
     onConnect();
   }
 
   public getMessages = (message: string) : Observable<any> => {
-
-    if (!this.subjects.has(message)) {
-      if ("results_visibility_changed") {
-        // Necessary for results_visibility_changed ?
-        let bs : Subject<{choosenVisibility : boolean}> = new Subject();
-        this.subjects.set(message, bs);
-      } else if ("card_visibility_changed") {
-        // To move in PlanifRoom ?
-        let bs : Subject<{cardIndex : number, choosenVisibility : boolean}> = new Subject();
-        this.subjects.set(message, bs);
-      } else if ("player_join_planif") {
-        // To move in PlanifRoom ?
-        let bs : Subject<{player: Player}> = new Subject();
-        this.subjects.set(message, bs);
-      } else  {
-        console.error(message + "not mocked")
-        let bs : Subject<any> = new Subject();
-        this.subjects.set(message, bs);
-      }
+    if (this.subjects.has(message)) {
+      return this.subjects.get(message);
+    } else {
+      console.error(message + " not mocked")
+      throw message + " not mocked"
     }
-    return this.subjects.get(message);
-    //return new Observable<any>((observer) => { });
+
   }
 
   public sendOnlyAMessage(message: string) { }
@@ -68,7 +63,7 @@ export class IoWebsocketMockService {
               {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
             ]
           },
-          players : [{ ref: "ref", name: "Toto", vote: null}],
+          players :  this.curentPlayers,
           resultsVisibility: false
       })
     } else {

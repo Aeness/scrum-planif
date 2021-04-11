@@ -36,13 +36,6 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('scrum-planif');
   });
 
-  /*it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to scrum-planif!');
-  });*/
-
   it('userConnected', () => {
     const fixture : ComponentFixture<AppComponent> = TestBed.createComponent(AppComponent);
     let component = fixture.componentInstance;
