@@ -3,6 +3,7 @@ import { Player } from './player';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { User } from './user';
 
 @Injectable()
 export class PlanifRoom implements OnDestroy {
@@ -11,6 +12,7 @@ export class PlanifRoom implements OnDestroy {
   // Data from server
   public name$ : BehaviorSubject<string> = new BehaviorSubject("");
   public subject$ : BehaviorSubject<string> = new BehaviorSubject("");
+  public usersList$ : BehaviorSubject<Map<string, User>> = new BehaviorSubject(new Map<string, User>());
   public playersList$ : BehaviorSubject<Map<string, Player>> = new BehaviorSubject(new Map<string, Player>());
   public resultsVisibility$ : BehaviorSubject<boolean> = new BehaviorSubject(true);
   public allCardsList$ : BehaviorSubject<Map<string, Array<{value: string, active: boolean}>>> = new BehaviorSubject(new Map<string, Array<{value: string, active: boolean}>>());
@@ -35,8 +37,8 @@ export class PlanifRoom implements OnDestroy {
    * @param data
    * @param onConnect
    */
-    public init(planif_ref : string, onChildrenConnect : () => void) {
-      this.ioWebsocketService.connect("planif=" + planif_ref, () => {
+    public init(planif_ref : string, admin : boolean, onChildrenConnect : () => void) {
+      this.ioWebsocketService.connect("planif=" + planif_ref + "&admin=" + admin, () => {
       // Call when the server restart
       this.ioWebsocketService.sendAction("ask_planif_informations", (error, response : any) => {
         if (error) {
@@ -44,6 +46,12 @@ export class PlanifRoom implements OnDestroy {
         } else {
           this.name$.next(response.name);
           this.subject$.next(response.subject);
+
+          // Object to Map
+          let entryUser : [string, any];
+          for (entryUser of Object.entries(response.users)) {
+            this.usersList$.value.set(entryUser[0],entryUser[1]);
+          }
 
           // Object to Map
           let entryPlayer : [string, any];
@@ -76,15 +84,30 @@ export class PlanifRoom implements OnDestroy {
             }
           );
 
+          this.listenUserJoinPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
+            (dataQuit: { user: User }) => {
+              this.usersList$.value.set(dataQuit.user.ref, dataQuit.user);
+            }
+          );
+
+          this.listenParticipantQuitPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
+            (dataQuit: { user_ref: string; }) => {
+              this.playersList$.value.delete(dataQuit.user_ref);
+              this.usersList$.value.delete(dataQuit.user_ref);
+            }
+          );
+
           this.listenPlayerJoinPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataJoin: { player: Player; }) => {
               this.playersList$.value.set(dataJoin.player.ref, dataJoin.player);
+              this.usersList$.value.get(dataJoin.player.ref).role.isPlaying = true;
             }
           );
 
           this.listenPlayerQuitPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataQuit: { player_ref: string; }) => {
               this.playersList$.value.delete(dataQuit.player_ref);
+              this.usersList$.value.get(dataQuit.player_ref).role.isPlaying = false;
             }
           );
 
@@ -134,6 +157,14 @@ export class PlanifRoom implements OnDestroy {
         window.location.reload();
       }
     )
+  }
+
+  private listenUserJoinPlanif() : Observable<{user: User}> {
+      return this.ioWebsocketService.getMessages('user_join_planif');
+  }
+
+  private listenParticipantQuitPlanif() : Observable<{user_ref: string}> {
+      return this.ioWebsocketService.getMessages('user_leave_planif');
   }
 
   // TODO rename without ask

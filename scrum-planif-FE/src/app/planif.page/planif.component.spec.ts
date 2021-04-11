@@ -16,6 +16,7 @@ import { FormBuilder } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DescriptionComponent } from '../description/description.component';
+import { UsersListComponent } from '../users-list/users-list.component';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -31,7 +32,8 @@ describe('PlanifComponent', () => {
         PlayersListComponent,
         HandComponent,
         ResultsListComponent,
-        CardComponent
+        CardComponent,
+        UsersListComponent
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule],
       providers: [

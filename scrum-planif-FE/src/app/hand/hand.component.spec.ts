@@ -40,10 +40,12 @@ describe('HandComponent', () => {
     let pr : PlanifRoom = new PlanifRoom(service);
     component.planifRoom = pr;
 
-    pr.init("init", () => {
+    pr.init("init", false, () => {
       fixture.detectChanges();
       done();
     })
+
+    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "Admin", role: {isAdmin: true, isPlaying: false}}});
   });
 
   it('should create', () => {

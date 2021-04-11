@@ -16,6 +16,7 @@ export class IoWebsocketService implements OnDestroy {
 
   constructor(private authService: AuthService) { }
 
+  // TODO nameRoom is not the nameRoom
   public connect(nameRoom : string, onConnect? : () => void) {
     if (!this.socket) {
       this.nameRoom = nameRoom

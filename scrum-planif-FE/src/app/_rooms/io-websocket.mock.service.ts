@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import Debug from "debug";
 import { Player } from '../planif.room/player';
+import { User } from '../planif.room/user';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
 export class IoWebsocketMockService {
 
+  public curentUsers : {} = {};
   public curentPlayers : {} = {};
   public subjects = new Map<string,Subject<any>>();
 
@@ -17,6 +19,8 @@ export class IoWebsocketMockService {
     this.subjects.set("authentication_error", new Subject());
     this.subjects.set("planif_name", new Subject<{name: string}>());
     this.subjects.set("game_subject", new Subject<{subject: string}>());
+    this.subjects.set("user_join_planif", new Subject<{user: User}>());
+    this.subjects.set("user_leave_planif", new Subject<{user_ref: string}>());
     this.subjects.set("player_join_planif", new Subject<{player: Player}>());
     this.subjects.set("player_leave_planif", new Subject<{player_ref: string}>());
     this.subjects.set("player_choose", new Subject<{ player_ref: string, choosenValue: boolean}>());
@@ -63,6 +67,7 @@ export class IoWebsocketMockService {
               {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
             ]
           },
+          users : this.curentUsers,
           players :  this.curentPlayers,
           resultsVisibility: false
       })

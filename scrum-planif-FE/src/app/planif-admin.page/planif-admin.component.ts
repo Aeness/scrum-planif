@@ -74,6 +74,10 @@ export class PlanifAdminComponent extends PlanifComponent {
     )
   }
 
+  protected isAdmin() : boolean {
+    return true;
+  }
+
   protected askToPlayOrNot() {
     // Not ask
   }

@@ -19,7 +19,7 @@ describe('ResultsListAdminComponent', () => {
       declarations: [ ResultsListAdminComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
-        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref2", name: "Admin"})},
+        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})},
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
     })
@@ -37,7 +37,7 @@ describe('ResultsListAdminComponent', () => {
     let pr : PlanifRoom = new PlanifRoom(service);
     component.planifRoom = pr;
 
-    pr.init("init", () => {
+    pr.init("init", true, () => {
       fixture.detectChanges();
       done();
     })

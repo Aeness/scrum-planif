@@ -43,16 +43,29 @@ module.exports = {
                 // The jwt has been checked in allowRequest
                 // TODO move to io.use((socket, next)
                 let decoded = jwt.verify(socket.handshake.query.jwt, app.set('tokensecret'));
+                
+                let role = {};
+                role.isAdmin = (socket.handshake.query.admin == "true" || socket.handshake.query.admin == "1");
+                role.isPlaying = false;
+
                 let participant = {};
                 participant.ref = decoded.ref;
                 participant.name = decoded.name;
+                participant.role = role;
 
-                this.planifRooms.get(this.getRoomName(planif_ref)).users.set(participant.ref);
+                this.planifRooms.get(this.getRoomName(planif_ref)).users.set(participant.ref, participant);
                 socket.participant = participant;
+
+                this.sendUserJoinPlanif(planif_ref, participant);
 
                 socket.on('ask_planif_informations', (data, acknowledgement) => {
                     debug("%s %s ask_planif_informations for room %s.", socket.id, socket.participant.ref, planif_ref);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
+                    
+                    let reponseUsersTS = {};
+                    for (let entry of room.users.entries()) {
+                      reponseUsersTS[entry[0]] = entry[1];
+                    }
                     
                     let reponsePlayerTS = {};
                     for (let entry of room.players.entries()) {
@@ -67,6 +80,7 @@ module.exports = {
                         ref : planif_ref,
                         name : room.name,
                         subject: room.subject,
+                        users : reponseUsersTS,
                         players : reponsePlayerTS,
                         resultsVisibility : room.resultsVisibility,
                         choosenGameType: room.choosenGameType,
@@ -89,7 +103,8 @@ module.exports = {
                     player.socked_id = socket.id;
                     
                     room.players.set(player.ref, player);
-  
+
+                    room.users.get(player.ref).role.isPlaying = true;
                         
                     // Send the information to all client
                     // socket io docs emit-cheatsheet
@@ -108,11 +123,12 @@ module.exports = {
                 socket.on('disconnecting', () => {
                     debug("%s disconnecting", socket.id);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
-                    if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
-                        this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
+                    if (room.players !== undefined ) {
+                      room.players.delete(socket.participant.ref);
                     }
                     if (room.users !== undefined) {
                         room.users.delete(socket.participant.ref);
+                        this.sendUserLeavePlanif(planif_ref, socket.participant.ref);
                     }
                     if (room.users !== undefined && room.users.size == 0) {
                         debug("last user leave planif room %s.", planif_ref);
@@ -229,6 +245,16 @@ module.exports = {
         // https://socket.io/docs/v3/emit-cheatsheet/
         // sending to the client
         socket.emit("authentication_error", null);
+    },
+
+    sendUserJoinPlanif: function(planif_ref, participant) {
+        debug('sendUserJoinPlanif to planif %s : %s', planif_ref, participant.ref);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('user_join_planif', { user: participant });
+    },
+
+    sendUserLeavePlanif: function(planif_ref, participant_ref) {
+        debug('sendUserLeavePlanif to planif %s : %s', planif_ref, participant_ref);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('user_leave_planif', { user_ref: participant_ref });
     },
 
     sendPlayerJoinPlanif: function (planif_ref, player) {

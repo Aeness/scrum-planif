@@ -62,12 +62,16 @@ export class PlanifComponent implements OnDestroy {
           // TODO Display a message in a toast
           window.location.reload();
         }
-        this.planifRoom.init(this.planif.ref, () => {
+        this.planifRoom.init(this.planif.ref, this.isAdmin(), () => {
           this.init$.next(true);
           this.takePartIn = true;
         });
       }
     )
+  }
+
+  protected isAdmin() : boolean {
+    return false;
   }
 
   protected askToPlayOrNot() {

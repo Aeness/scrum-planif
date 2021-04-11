@@ -34,7 +34,7 @@ describe('CardsGameComponent', () => {
     let pr : PlanifRoom = new PlanifRoom(service);
     component.planifRoom = pr;
 
-    pr.init("init", () => {
+    pr.init("init", true, () => {
       fixture.detectChanges();
       done();
     })

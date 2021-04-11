@@ -17,6 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ChooseCardsGameComponent } from '../choose-cards-game/choose-cards-game.component';
 import { CardsGameComponent } from '../cards-game/cards-game.component';
 import { DescriptionComponent } from '../description/description.component';
+import { UsersListComponent } from '../users-list/users-list.component';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -33,7 +34,8 @@ describe('PlanifAdminComponent', () => {
         CardsGameComponent,
         HandComponent,
         ResultsListAdminComponent,
-        CardComponent
+        CardComponent,
+        UsersListComponent
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule],
       providers: [

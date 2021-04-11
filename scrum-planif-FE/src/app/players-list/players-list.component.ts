@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Player } from '../planif.room/player';
 import { faCog, faSmile } from '@fortawesome/free-solid-svg-icons';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './players-list.component.html',
   styleUrls: ['./players-list.component.scss']
 })
-export class PlayersListComponent implements OnInit {
+export class PlayersListComponent implements OnInit, OnDestroy {
   protected unsubscribe$ = new Subject();
 
   faCog = faCog;
@@ -34,7 +34,7 @@ export class PlayersListComponent implements OnInit {
     );
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

@@ -24,6 +24,7 @@ import { ResultsListAdminComponent } from './results-list-admin/results-list-adm
 import { ChooseCardsGameComponent } from './choose-cards-game/choose-cards-game.component';
 import { CardsGameComponent } from './cards-game/cards-game.component';
 import { DescriptionComponent } from './description/description.component';
+import { UsersListComponent } from './users-list/users-list.component';
 
 
 
@@ -69,7 +70,8 @@ const appRoutes: Routes = [
     ResultsListAdminComponent,
     ChooseCardsGameComponent,
     CardsGameComponent,
-    DescriptionComponent
+    DescriptionComponent,
+    UsersListComponent
   ],
   imports: [
     BrowserModule,
