@@ -1,113 +1,29 @@
 ::ng-deep {
-  .svg-inline--fa.fa-smile, .svg-inline--fa.fa-cog {
-    width: 2.25em !important;
-    height: 2.25em;
-    margin: auto;display: block;
+  .player {
+    .svg-inline--fa.fa-smile, .svg-inline--fa.fa-cog {
+      width: 2.25em !important;
+      height: 2.25em;
+      margin: auto;display: block;
+    }
   }
 }
+.players {
+  display: flex;
+  flex-wrap: wrap;
 
-.player {
-  text-align: center;
-  .name {
-    word-wrap: break-word;
-    height: 2em;
-  }
-  display: inline-block;
-
-  @media (max-width: 767.98px) {
-    width: 20%;
-  }
-  @media (min-width: 768px)  and (max-width: 991.98px) {
-    width: (100/8)*1%;
-  }
-  @media (min-width: 992px)  and (max-width: 1199.98px) {
-    width: (100/11)*1%;
-  }
-  @media (min-width: 1200px)  and (max-width: 2559.98px) {
-    width: (100/13)*1%;
-  }
-  @media (min-width: 2559.99px) {
-    width: (100/14)*1%;
-  }
-
-  &.player1 {
-    width: 100%;
-
-  }
-
-  &.player2 {
-    width: 50%;
-
-  }
-
-  &.player3 {
-    width: 33%;
-
-  }
-
-  &.player4 {
-    width: 25%;
-
-  }
-  @media (min-width: 768px) {
-
-    &.player6 {
-      width: (100/6)*1%;
-
+  .player {
+    flex-grow: 1;
+    text-align: center;
+    width: 6em;
+    margin: 0 5px 10px 5px;
+    .name {
+      word-wrap: break-word;
     }
-
-    &.player7 {
-      width: (100/7)*1%;
-
+    .avatar {
+      width: 5em;
+      height: 5em;
+      margin: auto;
+      display: block;
     }
-
-    &.player8 {
-      width: (100/8)*1%;
-
-    }
-
-  }
-
-  @media (min-width: 992px) {
-
-    &.player9 {
-      width: (100/9)*1%;
-
-    }
-
-    &.player10 {
-      width: (100/10)*1%;
-
-    }
-
-    &.player11 {
-      width: (100/11)*1%;
-
-    }
-  }
-
-  @media (min-width: 1200px) {
-
-    &.player12 {
-      width: (100/12)*1%;
-
-    }
-    &.player13 {
-      width: (100/13)*1%;
-
-    }
-
-  }
-  @media (min-width: 2560px) {
-    &.player14 {
-      width: (100/14)*1%;
-    }
-
-  }
-  .avatar {
-    width: 5em;
-    height: 5em;
-    margin: auto;
-    display: block;
   }
 }
