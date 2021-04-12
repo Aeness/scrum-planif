@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-players',
   templateUrl: './players-list.component.html',
-  styleUrls: ['./players-list.component.scss']
+  styleUrls: ['../card/font-icon.scss', './players-list.component.scss']
 })
 export class PlayersListComponent implements OnInit, OnDestroy {
   protected unsubscribe$ = new Subject();
@@ -19,6 +19,7 @@ export class PlayersListComponent implements OnInit, OnDestroy {
 
   @Input() planifRoom: PlanifRoom;
 
+  public resultsVisibility : boolean = false;
   public players: Map<string, Player> = new Map<string, Player>();
 
   constructor(
@@ -30,6 +31,12 @@ export class PlayersListComponent implements OnInit, OnDestroy {
     this.planifRoom.playersList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data: Map<string, Player>) => {
         this.players = data;
+      }
+    );
+
+    this.planifRoom.resultsVisibility$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (data) => {
+        this.resultsVisibility = data;
       }
     );
   }
