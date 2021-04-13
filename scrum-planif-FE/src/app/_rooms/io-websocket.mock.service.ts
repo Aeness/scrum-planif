@@ -23,7 +23,7 @@ export class IoWebsocketMockService {
     this.subjects.set("user_leave_planif", new Subject<{user_ref: string}>());
     this.subjects.set("player_join_planif", new Subject<{player: Player}>());
     this.subjects.set("player_leave_planif", new Subject<{player_ref: string}>());
-    this.subjects.set("player_choose", new Subject<{ player_ref: string, choosenValue: boolean}>());
+    this.subjects.set("player_choose", new Subject<{ player_ref: string, choosenValue: string}>());
     this.subjects.set("restart_choose", new Subject());
   }
 
