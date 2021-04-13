@@ -45,7 +45,7 @@ describe('HandComponent', () => {
       done();
     })
 
-    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "Admin", role: {isAdmin: true, isPlaying: false}}});
+    service.subjects.get("user_join_planif").next({user: {ref: "ref", name: "Admin", role: {isAdmin: true, isPlaying: false}}});
   });
 
   it('should create', () => {
@@ -138,7 +138,7 @@ describe('HandComponent', () => {
     let mySpy = spyOn((component as any).planifRoom, 'askToPlay').and.callFake(function() {
       // this <=> PlanifRoom
       // TODO check that the player is added
-      this.ioWebsocketService.subjects.get("player_join_planif").next({player: {ref: "ref", name: "Admin"}});
+      this.ioWebsocketService.subjects.get("player_join_planif").next({player: {ref: "ref", name: "Admin", vote: null}});
     })
     fixture.detectChanges();
 
@@ -153,6 +153,7 @@ describe('HandComponent', () => {
 
   it('admin should quit', () => {
     component.isAdmin = true;
+    service.subjects.get("player_join_planif").next({player: {ref: "ref", name: "Admin", vote: null}});
     fixture.detectChanges();
     component.iVoteTop.setValue(true);
     component.iVoteChangeTop();
@@ -161,7 +162,7 @@ describe('HandComponent', () => {
     let mySpy = spyOn((component as any).planifRoom, 'askToNotPlay').and.callFake(function() {
       // this <=> PlanifRoom
       // TODO check that the player is added
-      this.ioWebsocketService.subjects.get("player_leave_planif").next({ player_ref: "ref2"});
+      this.ioWebsocketService.subjects.get("player_leave_planif").next({ player_ref: "ref"});
     })
     fixture.detectChanges();
 
@@ -170,6 +171,7 @@ describe('HandComponent', () => {
 
   it('admin with selected card should quit', () => {
     component.isAdmin = true;
+    service.subjects.get("player_join_planif").next({player: {ref: "ref", name: "Admin", vote: null}});
     fixture.detectChanges();
     component.iVoteTop.setValue(true);
     component.iVoteChangeTop();
@@ -183,7 +185,7 @@ describe('HandComponent', () => {
     spyOn((component as any).planifRoom, 'askToNotPlay').and.callFake(function() {
       // this <=> PlanifRoom
       // TODO check that the player is added
-      this.ioWebsocketService.subjects.get("player_leave_planif").next({ player_ref: "ref2"});
+      this.ioWebsocketService.subjects.get("player_leave_planif").next({ player_ref: "ref"});
     })
     component.iVoteTop.setValue(false);
     component.iVoteChangeTop();
