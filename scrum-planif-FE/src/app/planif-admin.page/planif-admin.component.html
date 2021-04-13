@@ -2,7 +2,7 @@
 <app-description [planif_ref]="planif.ref"></app-description>
 <ng-container *ngIf="takePartIn">
   <div class="row">
-    <div class="col-12 col-xxl-4 col-xxxl-4 m-0 p-0">
+    <div class="col-12 col-xxl-4 col-xxxl-3 m-0 p-0">
 
       <div class="rounded bg-light p-3 mb-3">
         <h5>Type de jeux de carte</h5>
@@ -22,27 +22,22 @@
           <p class="text-secondary small-text"></p>
         </div>
       </div>
+    </div>
 
-      <div class="rounded bg-light p-3 mb-3">
-        <h5>Les résultats</h5>
-        <div class="mb-3 mt-3">
-          Rendre visible les résultats à tous les participants.&nbsp;<label class="switch">
-            <input id="visibilityChoosen2" type="checkbox" [formControl]="resultsVisibilityChoosen" (ngModelChange)="resultsVisibilityChoosenChange()">
-            <span class="slider round"></span>
-          </label>
+    <div class="col-12 col-xxl-8  col-xxxl-9">
+      <div class="row">
+        <div class="col-12 col-xxxl-8">
+          <div style="text-align: center;">
+            <p class="subject">{{planif.subject}}</p>
+          </div>
+          <div></div>
+          <app-players [planifRoom]="planifRoom"></app-players>
+          <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
         </div>
-        <app-results-list-admin [planifRoom]="planifRoom" [iVoteValue]="true" [resultsVisibilityValue]="resultsVisibilityChoosen.value"></app-results-list-admin>
+        <div class="col-12 col-xxxl-4 p-3 mb-3 xxxl-pr-0">
+          <app-users-list [planifRoom]="planifRoom" [isAdmin]="true"></app-users-list>
+        </div>
       </div>
-    </div>
-
-    <div class="col-12 col-xxl-8 col-xxxl-6">
-      <div style="text-align: center;">
-        <p class="subject">{{planif.subject}}</p>
-      </div>
-      <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
-      <app-users-list [planifRoom]="planifRoom" ></app-users-list>
-    </div>
-    <div class="col-12 col-xxl-0 col-xxxl-2  p-3 mb-3">
     </div>
   </div>
 </ng-container>

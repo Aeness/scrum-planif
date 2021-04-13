@@ -77,7 +77,7 @@ describe('UsersListComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('tbody>tr')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="chess-queen"]')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(1);
-    expect(fixture.debugElement.queryAll(By.css('[data-icon="person-booth"]')).length).toEqual(0);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
 
     service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "player1", role: {isAdmin: false, isPlaying: false}}});
     service.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "player1"}});
@@ -86,7 +86,7 @@ describe('UsersListComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('tbody>tr')).length).toEqual(2);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="chess-queen"]')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(1);
-    expect(fixture.debugElement.queryAll(By.css('[data-icon="person-booth"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(1);
   });
 
 
@@ -94,7 +94,7 @@ describe('UsersListComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('tbody>tr')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="chess-queen"]')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(1);
-    expect(fixture.debugElement.queryAll(By.css('[data-icon="person-booth"]')).length).toEqual(0);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
 
     service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "player1", role: {isAdmin: false, isPlaying: false}}});
     service.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "player1"}});
@@ -106,5 +106,40 @@ describe('UsersListComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('tbody>tr')).length).toEqual(2);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="chess-queen"]')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(2);
+  });
+
+
+  it('should hide the result', () => {
+    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "player1", role: {isAdmin: false, isPlaying: false}}});
+    service.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "player1"}});
+    fixture.detectChanges();
+
+    service.subjects.get("player_choose").next({ player_ref: "ref2", choosenValue: "5"});
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('tbody>tr')).length).toEqual(2);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="chess-queen"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="check"]')).length).toEqual(1);
+  });
+
+
+  it('should show the result', () => {
+    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "player1", role: {isAdmin: false, isPlaying: false}}});
+    service.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "player1"}});
+    fixture.detectChanges();
+
+    service.subjects.get("player_choose").next({ player_ref: "ref2", choosenValue: "5"});
+    fixture.detectChanges();
+
+    service.subjects.get("results_visibility_changed").next({ choosenVisibility: true});
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('tbody>tr')).length).toEqual(2);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="chess-queen"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="check"]')).length).toEqual(0);
   });
 });

@@ -10,7 +10,6 @@ import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { PlanifAdminComponent } from './planif-admin.component';
-import { ResultsListAdminComponent } from '../results-list-admin/results-list-admin.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,6 +17,7 @@ import { ChooseCardsGameComponent } from '../choose-cards-game/choose-cards-game
 import { CardsGameComponent } from '../cards-game/cards-game.component';
 import { DescriptionComponent } from '../description/description.component';
 import { UsersListComponent } from '../users-list/users-list.component';
+import { PlayersListComponent } from '../players-list/players-list.component';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -32,8 +32,8 @@ describe('PlanifAdminComponent', () => {
         DescriptionComponent,
         ChooseCardsGameComponent,
         CardsGameComponent,
+        PlayersListComponent,
         HandComponent,
-        ResultsListAdminComponent,
         CardComponent,
         UsersListComponent
       ],
@@ -64,6 +64,8 @@ describe('PlanifAdminComponent', () => {
     service = ((component as any).planifRoom as any).ioWebsocketService;
     expect(service instanceof IoWebsocketMockService).toBeTruthy('ioWebsocketService is mocked');
 
+    service.subjects.get("user_join_planif").next({user: {ref: "ref", name: "Admin", vote: null, role: {isAdmin: true, isPlaying: false}}});
+
     fixture.detectChanges();
   });
 
@@ -75,11 +77,10 @@ describe('PlanifAdminComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have admin result with cards', fakeAsync(() => {
+  it('should have all components and cards', fakeAsync(() => {
+    expect(fixture.debugElement.queryAll(By.css('app-players')).length).toEqual(1, 'one app-players');
     expect(fixture.debugElement.queryAll(By.css('app-hand')).length).toEqual(1, 'one app-hand');
-    expect(fixture.debugElement.queryAll(By.css('app-results-list-admin')).length).toEqual(1, 'one app-results-list-admin');
-
-    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('app-users-list')).length).toEqual(1, 'one app-users-list');
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14);
   }));
 
@@ -143,5 +144,31 @@ describe('PlanifAdminComponent', () => {
     expect(mySpy).toHaveBeenCalledTimes(1);
     expect(pr.sendTypeGame.calls.argsFor(0)).toEqual(["TS"]);
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(8);
+  });
+
+  it('change the results visibility should change the users list', () => {
+    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "Player", vote: null, role: {isAdmin: true, isPlaying: true}}});
+    service.subjects.get("player_join_planif").next({user: {ref: "ref2", name: "Player", vote: null}});
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(2);
+    expect(fixture.debugElement.queryAll(By.css('app-users-list [data-icon="eye"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('app-users-list [data-icon="cog"]')).length).toEqual(1);
+
+    let pr : any = (component as any).planifRoom;
+    let mySpy = spyOn(pr, 'sendResultsVisibility').and.callFake(function(choosenValue : boolean) {
+      // this <=> PlanifRoom
+      this.ioWebsocketService.subjects.get("results_visibility_changed").next({choosenVisibility : choosenValue});
+    })
+
+    fixture.debugElement.queryAll(By.css('#visibilityChangeTrue'))[0].nativeElement.click();
+    fixture.detectChanges();
+
+    expect(mySpy).toHaveBeenCalledTimes(1);
+    expect(pr.sendResultsVisibility.calls.argsFor(0)).toEqual([true]);
+
+    expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(2);
+    expect(fixture.debugElement.queryAll(By.css('app-users-list [data-icon="eye"]')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('app-users-list [data-icon="cog"]')).length).toEqual(0);
   });
 });

@@ -1,0 +1,18 @@
+tbody {
+  td.sm {
+    text-align: center;
+    width:50px;
+  }
+  td.vote {
+    text-align: center;
+    width:50px;
+
+
+    &.grey {
+      color: #ccc;
+    }
+  }
+  .blod {
+    font-weight: 900;
+  }
+}

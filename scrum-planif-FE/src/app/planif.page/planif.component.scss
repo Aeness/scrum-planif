@@ -1,3 +1,14 @@
 p.subject {
   font-weight: bold;
 }
+
+
+@media (min-width: 1900px) {
+
+  .xxl-pr-0 {
+    padding-right: 0 !important;
+  }
+  .xxl-pt-0 {
+    padding-top: 0 !important;
+  }
+}

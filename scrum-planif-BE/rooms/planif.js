@@ -52,6 +52,7 @@ module.exports = {
                 participant.ref = decoded.ref;
                 participant.name = decoded.name;
                 participant.role = role;
+                participant.vote = null;
 
                 this.planifRooms.get(this.getRoomName(planif_ref)).users.set(participant.ref, participant);
                 socket.participant = participant;
@@ -141,6 +142,9 @@ module.exports = {
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined && room.players.has(socket.participant.ref)) {
                         room.players.get(socket.participant.ref).vote = data.choosenValue;
+                        if (room.users.has(socket.participant.ref)) {
+                            room.users.get(socket.participant.ref).vote = data.choosenValue;
+                        }
                     }
                     this.sendPlayerChoose(planif_ref, socket.participant.ref, data.choosenValue);
                 });
@@ -151,6 +155,9 @@ module.exports = {
                     if (room.players !== undefined) {
                       for (let entry of room.players.entries()) {
                         entry[1].vote = null;
+                        if (room.users.has(entry[1].ref)) {
+                            room.users.get(entry[1].ref).vote = null;
+                        }
                         this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
                       }
                     }

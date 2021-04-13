@@ -59,6 +59,12 @@ $primary: $mainColor;
     flex: 0 0 (100%/12*8);
     max-width: (100%/12*8);
   }
+
+  .col-xxl-9 {
+    -ms-flex: 0 0 (100%/12*9);
+    flex: 0 0 (100%/12*9);
+    max-width: (100%/12*9);
+  }
 }
 
 // Mega extra large devices (large desktops, 2560px and up)
@@ -95,6 +101,18 @@ $primary: $mainColor;
     -ms-flex: 0 0 50%;
     flex: 0 0 50%;
     max-width: 50%;
+  }
+
+  .col-xxxl-8 {
+    -ms-flex: 0 0 (100%/12*8);
+    flex: 0 0 (100%/12*8);
+    max-width: (100%/12*8);
+  }
+
+  .col-xxxl-9 {
+    -ms-flex: 0 0 (100%/12*9);
+    flex: 0 0 (100%/12*9);
+    max-width: (100%/12*9);
   }
 
   .col-xxxl-12 {

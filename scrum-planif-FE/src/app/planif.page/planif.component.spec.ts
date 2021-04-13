@@ -6,7 +6,6 @@ import { AuthServiceMock } from '../auth.service/auth.mock.service';
 import { AuthService } from '../auth.service/auth.service';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { PlayersListComponent } from '../players-list/players-list.component';
-import { ResultsListComponent } from '../results-list/results-list.component';
 import { HandComponent } from '../hand/hand.component';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
@@ -31,7 +30,6 @@ describe('PlanifComponent', () => {
         DescriptionComponent,
         PlayersListComponent,
         HandComponent,
-        ResultsListComponent,
         CardComponent,
         UsersListComponent
       ],
@@ -62,37 +60,47 @@ describe('PlanifComponent', () => {
     service = ((component as any).planifRoom as any).ioWebsocketService;
     expect(service instanceof IoWebsocketMockService).toBeTruthy('ioWebsocketService is mocked');
 
+    service.subjects.get("user_join_planif").next({user: {ref: "ref", name: "Toto", vote: null, role: {isAdmin: false, isPlaying: false}}});
+    service.subjects.get("player_join_planif").next({player: {ref: "ref", name: "Toto", vote: null}});
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
 
-  it('should have cards but not result', () => {
     expect(fixture.debugElement.queryAll(By.css('app-players')).length).toEqual(1, 'one app-players');
     expect(fixture.debugElement.queryAll(By.css('app-hand')).length).toEqual(1, 'one app-hand');
-    expect(fixture.debugElement.queryAll(By.css('app-results-list'))).toEqual([], 'zero app-results-list');
-
-
-
+    expect(fixture.debugElement.queryAll(By.css('app-users-list')).length).toEqual(1, 'one app-users-list');
   });
 
-  it('should have cards and result', () => {
-    // Change values by IoWebsocketMockService
-    service.subjects.get("results_visibility_changed").next({choosenVisibility : true});
+  it('should not show result', () => {
+    expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(1);
 
-    // Change values by PlanifRoom : enough ?
-    //planifRoom.resultsVisibility$.next(true);
 
+    service.subjects.get("player_choose").next({ player_ref: "ref", choosenValue: "5"});
     fixture.detectChanges();
 
-    expect(fixture.debugElement.queryAll(By.css('app-players')).length).toEqual(1, 'one app-players');
-    expect(fixture.debugElement.queryAll(By.css('app-hand')).length).toEqual(1, 'one app-hand');
-    expect(fixture.debugElement.queryAll(By.css('app-results-list')).length).toEqual(1, 'zero app-results-list');
+    expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="check"]')).length).toEqual(1);
+
+  });
+
+  it('should not show result', () => {
+    expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(1);
 
 
+    // Change values by IoWebsocketMockService
+    service.subjects.get("player_choose").next({ player_ref: "ref", choosenValue: "5"});
+    service.subjects.get("results_visibility_changed").next({choosenVisibility : true});
+    fixture.detectChanges();
 
+    expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
+    expect(fixture.debugElement.queryAll(By.css('[data-icon="check"]')).length).toEqual(0);
   });
 
   it('should changed the subject', () => {

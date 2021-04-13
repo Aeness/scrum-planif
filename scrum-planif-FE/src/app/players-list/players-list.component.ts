@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
+  // TOOD rename the component or the selector
   selector: 'app-players',
   templateUrl: './players-list.component.html',
   styleUrls: ['../card/font-icon.scss', './players-list.component.scss']

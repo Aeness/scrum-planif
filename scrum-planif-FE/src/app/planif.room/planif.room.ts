@@ -117,6 +117,9 @@ export class PlanifRoom implements OnDestroy {
               if (this.playersList$.value.has(dataChoise.player_ref)) {
                 this.playersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
               }
+              if (this.usersList$.value.has(dataChoise.player_ref)) {
+                this.usersList$.value.get(dataChoise.player_ref).vote = dataChoise.choosenValue;
+              }
             }
           );
 

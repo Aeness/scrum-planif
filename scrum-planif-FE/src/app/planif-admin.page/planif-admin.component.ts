@@ -23,8 +23,6 @@ export class PlanifAdminComponent extends PlanifComponent {
   public faEdit = faEdit;
   public faRedo = faRedo;
 
-  public resultsVisibilityChoosen = new FormControl(false);
-
   // https://www.pinterest.fr/pin/194288171399705962/
   constructor(
     protected route: ActivatedRoute,
@@ -62,13 +60,6 @@ export class PlanifAdminComponent extends PlanifComponent {
               }
             }
           );
-          this.planifRoom.resultsVisibility$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-            (data) => {
-              if (this.resultsVisibilityChoosen.value != data) {
-                this.resultsVisibilityChoosen.setValue(data);
-              }
-            }
-          );
         }
       }
     )
@@ -80,10 +71,6 @@ export class PlanifAdminComponent extends PlanifComponent {
 
   protected askToPlayOrNot() {
     // Not ask
-  }
-
-  public resultsVisibilityChoosenChange() {
-    this.planifRoom.sendResultsVisibility(this.resultsVisibilityChoosen.value);
   }
 
   onPlanifSubmit() {
