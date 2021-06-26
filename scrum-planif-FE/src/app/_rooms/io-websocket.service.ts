@@ -38,7 +38,7 @@ export class IoWebsocketService implements OnDestroy {
   private _connect(token : string, onConnect? : () => void) {
     let url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + token;
 
-    // TODO : https://socket.io/docs/v3/client-initialization/#auth
+    // TODO : https://socket.io/docs/v4/client-initialization/#auth
     this.socket = io(url);
 
     // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
@@ -139,7 +139,7 @@ export class IoWebsocketService implements OnDestroy {
     // We can because each IoWebsocketService have is own Soket :
     // All IoWebsocketService use the same namespace
     // and with io.socket reusing the same namespace will also create two connections/Manager/Socket
-    // https://socket.io/docs/v3/namespaces/ (see Client initialization)
+    // https://socket.io/docs/v4/namespaces/ (see Client initialization)
     // This call also destroy the Socket and close and destroy the Manager
 
     // The socket can be undefinited if we destroy the component before call
