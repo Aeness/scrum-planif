@@ -249,7 +249,7 @@ module.exports = {
 
     sendAuthenticationError: function (socket) {
         debug('sendAuthenticationError to %s:', socket.id);
-        // https://socket.io/docs/v3/emit-cheatsheet/
+        // https://socket.io/docs/v4/emit-cheatsheet/
         // sending to the client
         socket.emit("authentication_error", null);
     },

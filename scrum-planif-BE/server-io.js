@@ -3,7 +3,8 @@ module.exports = function(app, server, corsOrigin) {
     this.debug = require('debug')('scrum-planif:serverIo');
     
 
-    // https://socket.io/docs/v3/server-api/index.html
+    // https://socket.io/docs/v4/server-api/index.html
+    // https://www.npmjs.com/package/cors
     /* CORS : default configuration :
         "origin": "*",
         "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
