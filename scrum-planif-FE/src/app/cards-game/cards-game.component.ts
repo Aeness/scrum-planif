@@ -33,8 +33,8 @@ export class CardsGameComponent implements OnInit, OnDestroy {
   }
 
   click(index) {
-    //this.cards[index].active = !this.cards[index].active ;
-    this.planifRoom.sendCardVisibility(index, !this.cards[index].active);
+    if(this.myGameTypeName == this.planifRoom.currentGameName) {
+      this.planifRoom.sendCardVisibility(index, !this.cards[index].active);
+    }
   }
-
 }

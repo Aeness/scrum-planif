@@ -48,6 +48,7 @@ describe('CardsGameComponent', () => {
     let allExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
 
     let pr : any = (component as any).planifRoom;
+    pr.currentGameName = "classic";
     let mySpy = spyOn(pr, 'sendCardVisibility').and.callFake(function(cardIndex: number, choosenVisibility : boolean) {
       // this <=> PlanifRoom
       this.ioWebsocketService.subjects.get("card_visibility_changed").next({cardIndex : cardIndex, choosenVisibility : choosenVisibility});
@@ -77,5 +78,23 @@ describe('CardsGameComponent', () => {
     expect(mySpy).toHaveBeenCalledTimes(2+1);
     expect(pr.sendCardVisibility.calls.argsFor(2)).toEqual([1, true]);
     expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(13, 'one card less - 2');
+  });
+
+  it('should not change the cards in the game', () => {
+    let allExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
+
+    let pr : any = (component as any).planifRoom;
+    pr.currentGameName = "other";
+    let mySpy = spyOn(pr, 'sendCardVisibility').and.callFake(function(cardIndex: number, choosenVisibility : boolean) {
+      // this <=> PlanifRoom
+      this.ioWebsocketService.subjects.get("card_visibility_changed").next({cardIndex : cardIndex, choosenVisibility : choosenVisibility});
+    })
+
+    expect(allExempleCards.length).toEqual(14, 'all example card');
+
+    allExempleCards[1].nativeElement.click();
+    fixture.detectChanges();
+
+    expect(mySpy).toHaveBeenCalledTimes(0);
   });
 });
