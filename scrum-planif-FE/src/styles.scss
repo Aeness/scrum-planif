@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import "./variables.scss";
 
 $primary: $mainColor;
@@ -7,120 +9,45 @@ $primary: $mainColor;
   color: #FFF;
 }
 
+$breakpoints: (
+  'xxl':  1900px, /* Extra extra large devices (large desktops, 1900px and up) */
+  'xxxl': 2560px, /* Mega extra large devices  (large desktops, 2560px and up) */
+);
 
+@mixin col($colWidth) {
+  -ms-flex: 0 0 (math.div(100%, 12)*$colWidth);
+  flex:     0 0 (math.div(100%, 12)*$colWidth);
+  max-width:    (math.div(100%, 12)*$colWidth);
+}
 
-// Extra extra large devices (large desktops, 1900px and up)
-@media (min-width: 1900px) {
-  .container {
-    max-width: 1900px;
-  }
+@mixin insert-breakpoints($breakpoints) {
 
-  .col-xxl-0 {
-    -ms-flex: 0 0 0;
-    flex: 0 0 0;
-    max-width: 0;
-    border-width: 0;
-    padding-left: 0 ;
-    padding-right: 0 ;
-  }
+  @each $key, $num in $breakpoints {
+    @media (min-width: $num) {
+      .container {
+        max-width: $num;
+      }
 
-  .col-xxl-2 {
-    -ms-flex: 0 0 (100%/6);
-    flex: 0 0 (100%/6);
-    max-width: (100%/6);
-  }
+      .col-#{$key}-0 {
+        -ms-flex: 0 0 0;
+        flex: 0 0 0;
+        max-width: 0;
+        border-width: 0;
+        padding-left: 0 ;
+        padding-right: 0 ;
+      }
 
-  .col-xxl-3 {
-    -ms-flex: 0 0 25%;
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
+      @for $i from 2 through 12 {
+        .col-#{$key}-#{$i} {
+          @include col($i);
+        }
+      }
+    }
 
-  .col-xxl-4 {
-    -ms-flex: 0 0 (100%/12*4);
-    flex: 0 0 (100%/12*4);
-    max-width: (100%/12*4);
-  }
-
-  .col-xxl-5 {
-    -ms-flex: 0 0 (100%/12*5);
-    flex: 0 0 (100%/12*5);
-    max-width: (100%/12*5);
-  }
-
-  .col-xxl-6 {
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-
-  .col-xxl-8 {
-    -ms-flex: 0 0 (100%/12*8);
-    flex: 0 0 (100%/12*8);
-    max-width: (100%/12*8);
-  }
-
-  .col-xxl-9 {
-    -ms-flex: 0 0 (100%/12*9);
-    flex: 0 0 (100%/12*9);
-    max-width: (100%/12*9);
   }
 }
 
-// Mega extra large devices (large desktops, 2560px and up)
-@media (min-width: 2560px) {
-  .container {
-    max-width: 2500px;
-  }
-
-  .col-xxxl-2 {
-    -ms-flex: 0 0 (100%/6);
-    flex: 0 0 (100%/6);
-    max-width: (100%/6);
-  }
-
-  .col-xxxl-3 {
-    -ms-flex: 0 0 25%;
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-
-  .col-xxxl-4 {
-    -ms-flex: 0 0 (100%/12*4);
-    flex: 0 0 (100%/12*4);
-    max-width: (100%/12*4);
-  }
-
-  .col-xxxl-5 {
-    -ms-flex: 0 0 (100%/12*5);
-    flex: 0 0 (100%/12*5);
-    max-width: (100%/12*5);
-  }
-
-  .col-xxxl-6 {
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-
-  .col-xxxl-8 {
-    -ms-flex: 0 0 (100%/12*8);
-    flex: 0 0 (100%/12*8);
-    max-width: (100%/12*8);
-  }
-
-  .col-xxxl-9 {
-    -ms-flex: 0 0 (100%/12*9);
-    flex: 0 0 (100%/12*9);
-    max-width: (100%/12*9);
-  }
-
-  .col-xxxl-12 {
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-}
+@include insert-breakpoints($breakpoints);
 
 body.no-user {
   background-color: $mainColor;
