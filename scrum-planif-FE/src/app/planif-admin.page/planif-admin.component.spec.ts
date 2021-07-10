@@ -149,7 +149,7 @@ describe('PlanifAdminComponent', () => {
 
   it('change the results visibility should change the users list', () => {
     service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "Player", vote: null, role: {isAdmin: true, isPlaying: true}}});
-    service.subjects.get("player_join_planif").next({user: {ref: "ref2", name: "Player", vote: null}});
+    service.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "Player", vote: null}});
     fixture.detectChanges();
 
     expect(fixture.debugElement.queryAll(By.css('app-users-list tbody>tr')).length).toEqual(2);
