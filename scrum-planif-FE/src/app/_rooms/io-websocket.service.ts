@@ -56,22 +56,32 @@ export class IoWebsocketService implements OnDestroy {
     debug("#[Io]# Try to connected: " + url);
 
     // Socket event
-    this.socket.on('connect_error', (err : Error) => {
-      // TODO : If wrong jwt, don't do the same thing
-      debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
-      if (this.activeErrorToast == null) {
-        this.activeErrorToast = this.toastr.error('Veuillez patienter.', 'Impossible de joindre Scrum Planif', {
-          disableTimeOut: true
-        });
-        this.activeErrorToast
-          .onTap
-          .pipe(
-            take(1),
-            takeUntil(this.unsubscribe$))
-          .subscribe(() => {
-            this.activeErrorToast = null;
-          });;
+    this.socket.on('connect_error', (err /*: Error*/) => {
 
+      if (err.data !== undefined && err.data.auth) {
+
+        this.toastr.error('Veuillez vous reconnecter.', null, {
+          disableTimeOut: false
+        });
+        this.authService.revokeUser();
+        this.router.navigate(['/login'], { queryParams: { returnUrl: this.pathname }});
+      } else {
+
+        debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
+        if (this.activeErrorToast == null) {
+          this.activeErrorToast = this.toastr.error('Veuillez patienter.', 'Impossible de joindre Scrum Planif', {
+            disableTimeOut: true
+          });
+          this.activeErrorToast
+            .onTap
+            .pipe(
+              take(1),
+              takeUntil(this.unsubscribe$))
+            .subscribe(() => {
+              this.activeErrorToast = null;
+            });;
+
+        }
       }
     });
     this.socket.on('connect',  () => {
