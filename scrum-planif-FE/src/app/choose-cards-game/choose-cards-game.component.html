@@ -1,7 +1,7 @@
 
     <div class="mt-2 mb-2" *ngIf="gamesType && gamesType.size > 0">
       <form [formGroup]="gameTypeForm">
-        <div *ngFor="let gameType of gamesType | keyvalue" [className]="'formChoice border pt-3 pl-1 mb-1 ' + ((gameType.key==planifRoom.currentGameName)?' selected':'')" (click)="gameTypeChoosenChange(gameType.key)">
+        <div *ngFor="let gameType of gamesType | keyvalue" [className]="'formChoice border pt-3 pl-1 mb-1 ' + ((gameType.key==planifRoom.currentGameName)?' selected':'')" (click)="gameTypeChoosenChange(gameType.key==planifRoom.currentGameName, gameType.key)">
           <input type="radio" [value]="gameType.key" formControlName="gameName"><label><app-cards-game [planifRoom]="planifRoom"  [myGameTypeName]="gameType.key"></app-cards-game></label>
         </div>
       </form>

@@ -41,9 +41,11 @@ export class HandComponent implements OnInit, OnDestroy {
       }
     );
 
-    // TODO : use this.planifRoom.listen.....
+    // Init the hand with the current game
+    // Update the hand when the game change (listenGameType)
     this.planifRoom.currentCardsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data : {value: string, active: boolean}[]) => {
+
         this.allValues = [];
         this.values = [];
         data.forEach(element => {
@@ -52,14 +54,14 @@ export class HandComponent implements OnInit, OnDestroy {
             this.values.push(element.value);
           }
         })
-        // This is the raison why we have to use setTimeout
+
         this.init = true;
       }
     );
 
     this.planifRoom.listenCardVisibility().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data : {cardIndex: number, choosenVisibility : boolean}) => {
-        //No need because we use the list updated by planifRoom
+        //No need because we use the elements updated by planifRoom
         //this.allValues[data.cardIndex].active = data.choosenVisibility;
 
         let newValues:string[] = [];

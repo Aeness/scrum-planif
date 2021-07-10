@@ -38,8 +38,10 @@ export class ChooseCardsGameComponent implements OnInit, OnDestroy {
     );
   }
 
-  public gameTypeChoosenChange(gameName) {
-    this.planifRoom.sendTypeGame(gameName);
+  public gameTypeChoosenChange(selected, gameName) {
+    if (!selected) {
+      this.planifRoom.sendTypeGame(gameName);
+    }
   }
 
   ngOnDestroy() {
