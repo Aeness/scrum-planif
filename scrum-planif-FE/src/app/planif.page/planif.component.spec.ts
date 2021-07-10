@@ -16,6 +16,7 @@ import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DescriptionComponent } from '../description/description.component';
 import { UsersListComponent } from '../users-list/users-list.component';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -33,7 +34,7 @@ describe('PlanifComponent', () => {
         CardComponent,
         UsersListComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
         FormBuilder, // For HandComponent
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}

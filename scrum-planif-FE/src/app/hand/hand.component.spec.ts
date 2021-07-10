@@ -8,6 +8,7 @@ import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { CardComponent } from '../card/card.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 
 describe('HandComponent', () => {
@@ -21,9 +22,10 @@ describe('HandComponent', () => {
         HandComponent,
         CardComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, ToastrModule.forRoot()],
       providers: [
         FormBuilder,
+        ToastrService, // for PlanifRoom
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
     })
@@ -37,7 +39,7 @@ describe('HandComponent', () => {
     service = TestBed.inject(IoWebsocketService);
 
     // Update the input planifRoom
-    let pr : PlanifRoom = new PlanifRoom(service);
+    let pr : PlanifRoom = new PlanifRoom(service, TestBed.inject(ToastrService));
     component.planifRoom = pr;
 
     pr.init("init", false, () => {

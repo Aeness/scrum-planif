@@ -18,6 +18,7 @@ import { CardsGameComponent } from '../cards-game/cards-game.component';
 import { DescriptionComponent } from '../description/description.component';
 import { UsersListComponent } from '../users-list/users-list.component';
 import { PlayersListComponent } from '../players-list/players-list.component';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -37,7 +38,7 @@ describe('PlanifAdminComponent', () => {
         CardComponent,
         UsersListComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
         FormBuilder,
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})}

@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { User } from './user';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class PlanifRoom implements OnDestroy {
@@ -25,7 +26,10 @@ export class PlanifRoom implements OnDestroy {
   private cardVisibilityEvent$ : Observable<{gameName : string, cardIndex : number, choosenVisibility : boolean}>;
 
 
-  constructor(private ioWebsocketService: IoWebsocketService) { }
+  constructor(
+    private ioWebsocketService: IoWebsocketService,
+    private toastr: ToastrService
+  ) { }
 
   /**
    * Each MAIN component must have is own PlanifRoom.
@@ -156,8 +160,11 @@ export class PlanifRoom implements OnDestroy {
   private listenAuthenticationError() {
     this.ioWebsocketService.getMessages('authentication_error').subscribe(
       () => {
-        // TODO Display a message in a toast
-        window.location.reload();
+        // Jwt is checked before is send with the message
+        // Must not append, so, just display a message
+        this.toastr.error(null, 'Votre action n\'a pas été prise en compte.', {
+          disableTimeOut: false
+        });
       }
     )
   }

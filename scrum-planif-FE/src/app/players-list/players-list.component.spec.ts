@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { AuthServiceMock } from '../auth.service/auth.mock.service';
 import { AuthService } from '../auth.service/auth.service';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -18,9 +19,10 @@ describe('PlayersListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ PlayersListComponent ],
-      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}, // for the template
+        ToastrService, // for PlanifRoom
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
     })
@@ -35,7 +37,7 @@ describe('PlayersListComponent', () => {
     service = TestBed.inject(IoWebsocketService);
 
     // Update the input planifRoom
-    let pr : PlanifRoom = new PlanifRoom(service);
+    let pr : PlanifRoom = new PlanifRoom(service, TestBed.inject(ToastrService));
     component.planifRoom = pr;
 
     pr.init("init", false, () => {

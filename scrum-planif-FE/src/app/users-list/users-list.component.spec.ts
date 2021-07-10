@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
@@ -15,7 +16,7 @@ describe('UsersListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ UsersListComponent ],
-      imports: [FontAwesomeModule],
+      imports: [ FontAwesomeModule, ToastrModule.forRoot() ],
       providers: [
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
@@ -31,7 +32,7 @@ describe('UsersListComponent', () => {
     service.curentUsers = {ref: {ref: "ref", name: "Admin", role: {isAdmin: true, isPlaying: false}}}
 
     // Update the input planifRoom
-    let pr : PlanifRoom = new PlanifRoom(service);
+    let pr : PlanifRoom = new PlanifRoom(service, TestBed.inject(ToastrService));
     component.planifRoom = pr;
 
     pr.init("init", true, () => {

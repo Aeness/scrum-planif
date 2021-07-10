@@ -16,6 +16,27 @@ module.exports = {
             
             // Check if the connection is for this kind of room
             if (socket.handshake.query.planif) {
+
+                // Check the jwt
+                // Must not append if the client does its work
+                socket.use((arg, next) => {
+                    try {
+                        jwt.verify(arg[1].jwt, this.app.set('tokensecret'));
+                    } catch(err) {
+                        debug("wrong jwt : %s.", err.message);
+                        err.data = {auth: true};
+                        // inform socket.on("error" of auth failure
+                        next(err);
+                        return;
+                    }
+                    next();
+                  });
+
+                  socket.on("error", (/*err*/) => {
+                    
+                    this.sendAuthenticationError(socket);
+                  });
+
                 let planif_ref = socket.handshake.query.planif;
 
                 // TODO check the socket is not on another room
@@ -200,10 +221,6 @@ module.exports = {
 
                 socket.on('change_card_visibility', (data) => {
                     debug("%s choose card %s visibility to %s", socket.id, data.cardIndex, data.choosenVisibility);
-                    if (!this.checkJwt(data.jwt, this.app)) {
-                        this.sendAuthenticationError(socket);
-                        return;
-                    }
 
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     let roomCards = room.cardsGames.get(room.choosenGameType);
@@ -217,15 +234,6 @@ module.exports = {
     },
     getRoomName: function (planif_ref) {
         return "planif_" + planif_ref;
-    },
-    checkJwt: (token, app) => {
-        try {
-            jwt.verify(token, app.set('tokensecret'));
-        } catch(err) {
-            debug("wrong jwt %s.", err);
-            return false;
-        }
-        return true;
     },
     getClassicCard: function () {
         return [

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
@@ -9,12 +10,14 @@ import { CardsGameComponent } from './cards-game.component';
 describe('CardsGameComponent', () => {
   let component: CardsGameComponent;
   let fixture: ComponentFixture<CardsGameComponent>;
-  let service;
+  let ioWebsocketService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ ToastrModule.forRoot() ],
       declarations: [ CardsGameComponent ],
       providers: [
+        ToastrService, // for PlanifRoom
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]
     })
@@ -25,13 +28,13 @@ describe('CardsGameComponent', () => {
     fixture = TestBed.createComponent(CardsGameComponent);
     component = fixture.componentInstance;
 
-    service = TestBed.inject(IoWebsocketService);
+    ioWebsocketService = TestBed.inject(IoWebsocketService);
 
     // Update the input myGameTypeName
     component.myGameTypeName = "classic"
 
     // Update the input planifRoom
-    let pr : PlanifRoom = new PlanifRoom(service);
+    let pr : PlanifRoom = new PlanifRoom(ioWebsocketService, TestBed.inject(ToastrService));
     component.planifRoom = pr;
 
     pr.init("init", true, () => {
