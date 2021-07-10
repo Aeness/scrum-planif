@@ -8,6 +8,7 @@ import { TokenTool } from '../auth.service/token.tool';
 import { AuthService } from '../auth.service/auth.service';
 import { JwtTokens } from '../auth.service/jwtTokens';
 import { ActiveToast, ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
@@ -18,7 +19,10 @@ export class IoWebsocketService implements OnDestroy {
   private nameRoom: string;
   private activeErrorToast: ActiveToast<any> = null;
 
+  private pathname = window.location.pathname;
+
   constructor(
+    private router: Router,
     private authService: AuthService,
     private toastr: ToastrService
   ) { }
@@ -53,6 +57,7 @@ export class IoWebsocketService implements OnDestroy {
 
     // Socket event
     this.socket.on('connect_error', (err : Error) => {
+      // TODO : If wrong jwt, don't do the same thing
       debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
       if (this.activeErrorToast == null) {
         this.activeErrorToast = this.toastr.error('Veuillez patienter.', 'Impossible de joindre Scrum Planif', {
@@ -135,8 +140,13 @@ export class IoWebsocketService implements OnDestroy {
         },
         (err) => {
           if (err.status = 401) {
-            // TODO Display a message in a toast
-            window.location.reload();
+            this.toastr.error('Veuillez vous reconnecter.', 'Trop longue période sans activité.', {
+              disableTimeOut: false
+            });
+            this.authService.revokeUser();
+            // Don't use window.location.pathname at this time because if two messages are
+            // sent at the same time, the 2nd will have /login as url
+            this.router.navigate(['/login'], { queryParams: { returnUrl: this.pathname }});
           } else {
             // TODO Display the error
             console.log('HTTP Error', err);

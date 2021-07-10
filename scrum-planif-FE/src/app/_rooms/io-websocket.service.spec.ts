@@ -1,4 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { AuthServiceMock } from '../auth.service/auth.mock.service';
 import { AuthService } from '../auth.service/auth.service';
@@ -8,7 +9,7 @@ import { IoWebsocketService } from './io-websocket.service';
 describe('IoWebsocketService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot()],
+      imports: [ RouterTestingModule, ToastrModule.forRoot() ],
       providers: [
         IoWebsocketService, ToastrService,
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}

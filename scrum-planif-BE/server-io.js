@@ -34,8 +34,9 @@ module.exports = function(app, server, corsOrigin) {
     });
 
     io.use((socket, next) => {
-        // Only called at the first request
-
+        // Only called at the (re)connection
+        // next(err) call this.socket.on('connect_error' on the client side
+        
         let jwt = require('jsonwebtoken');
         try {
             // TODO : Move socket.handshake.query.jwt to socket.handshake.auth.jwt
