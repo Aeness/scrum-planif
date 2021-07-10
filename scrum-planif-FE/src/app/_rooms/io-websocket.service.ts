@@ -1,20 +1,27 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { io } from 'socket.io-client';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import Debug from "debug";
 import { TokenTool } from '../auth.service/token.tool';
 import { AuthService } from '../auth.service/auth.service';
 import { JwtTokens } from '../auth.service/jwtTokens';
+import { ActiveToast, ToastrService } from 'ngx-toastr';
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
 export class IoWebsocketService implements OnDestroy {
+  private unsubscribe$ = new Subject();
 
   private socket; // Socket -  SocketIOClient.Socket
-  private nameRoom: string
+  private nameRoom: string;
+  private activeErrorToast: ActiveToast<any> = null;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private toastr: ToastrService
+  ) { }
 
   // TODO nameRoom is not the nameRoom
   public connect(nameRoom : string, onConnect? : () => void) {
@@ -47,11 +54,31 @@ export class IoWebsocketService implements OnDestroy {
     // Socket event
     this.socket.on('connect_error', (err : Error) => {
       debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
-      window.location.reload();
+      if (this.activeErrorToast == null) {
+        this.activeErrorToast = this.toastr.error('Veuillez patienter.', 'Impossible de joindre Scrum Planif', {
+          disableTimeOut: true
+        });
+        this.activeErrorToast
+          .onTap
+          .pipe(
+            take(1),
+            takeUntil(this.unsubscribe$))
+          .subscribe(() => {
+            this.activeErrorToast = null;
+          });;
+
+      }
     });
     this.socket.on('connect',  () => {
       debug('#[Io:socket]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
       debug('#[Io:socket]# transport ' + this.socket.io.engine.transport.name);
+
+      if (this.activeErrorToast != null) {
+        this.toastr.remove(this.activeErrorToast.toastId);
+        this.activeErrorToast = null;
+      }
+
+
       if (onConnect !== undefined) {
         onConnect();
       }
@@ -108,6 +135,7 @@ export class IoWebsocketService implements OnDestroy {
         },
         (err) => {
           if (err.status = 401) {
+            // TODO Display a message in a toast
             window.location.reload();
           } else {
             // TODO Display the error
@@ -129,6 +157,7 @@ export class IoWebsocketService implements OnDestroy {
         (tokens: JwtTokens) => {
           this.socket.emit(message, {jwt: tokens.token}, action);
         }
+        // TODO Display a message in a toast
       )
     } else {
       this.socket.emit(message, {jwt: token}, action);
@@ -147,6 +176,13 @@ export class IoWebsocketService implements OnDestroy {
 
     if (this.socket) {
       this.socket.disconnect();
+    }
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.activeErrorToast != null) {
+      this.toastr.remove(this.activeErrorToast.toastId);
+      this.activeErrorToast = null;
     }
   }
 }

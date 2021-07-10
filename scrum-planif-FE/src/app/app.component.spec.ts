@@ -5,15 +5,16 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth.service/auth.service';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { ToastrModule, ToastrService } from "ngx-toastr";
 
 describe('AppComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule, ToastrModule.forRoot()],
       declarations: [
         AppComponent
       ],
-      providers: [AuthService],
+      providers: [ToastrService, AuthService],
     }).compileComponents();
   });
 

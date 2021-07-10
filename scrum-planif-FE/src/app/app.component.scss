@@ -60,7 +60,12 @@
     }
   }
 }
-
+::ng-deep {
+  .inline-right {
+    margin-top: 12px;
+    right: 12px;
+  }
+}
 #content {
   padding-top: 30px;
 }

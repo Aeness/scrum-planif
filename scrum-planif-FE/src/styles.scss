@@ -1,5 +1,7 @@
 @use "sass:math";
 
+@import '~ngx-toastr/toastr';
+
 @import "./variables.scss";
 
 $primary: $mainColor;
