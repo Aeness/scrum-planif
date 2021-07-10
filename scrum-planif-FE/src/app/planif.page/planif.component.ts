@@ -58,10 +58,6 @@ export class PlanifComponent implements OnDestroy {
             }
           }
         )
-        if (!authService.hasUserConnected) {
-          // TODO Display a message in a toast
-          window.location.reload();
-        }
         this.planifRoom.init(this.planif.ref, this.isAdmin(), () => {
           this.init$.next(true);
           this.takePartIn = true;
