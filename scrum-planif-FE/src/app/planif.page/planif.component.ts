@@ -17,7 +17,6 @@ export class PlanifComponent implements OnDestroy {
 
   public init$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public planif : {ref: string, name: string, subject: string};
-  public takePartIn: boolean = false;
   public resultsVisibility: boolean = false;
   public nbScrumMaster: number;
 
@@ -66,7 +65,6 @@ export class PlanifComponent implements OnDestroy {
         )
         this.planifRoom.init(this.planif.ref, this.isAdmin(), () => {
           this.init$.next(true);
-          this.takePartIn = true;
         });
       }
     )
