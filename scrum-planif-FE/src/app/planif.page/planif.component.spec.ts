@@ -11,7 +11,7 @@ import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { PlanifComponent } from './planif.component';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DescriptionComponent } from '../description/description.component';
@@ -34,10 +34,10 @@ describe('PlanifComponent', () => {
         CardComponent,
         UsersListComponent
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule, ToastrModule.forRoot()],
+      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
         FormBuilder, // For HandComponent
-        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})}
+        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})} // for PlayersListComponent
       ]
     })
     // https://angular.io/guide/testing-components-scenarios#override-component-providers

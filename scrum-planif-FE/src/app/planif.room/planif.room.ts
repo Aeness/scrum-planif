@@ -13,6 +13,8 @@ export class PlanifRoom implements OnDestroy {
   // Data from server
   public name$ : BehaviorSubject<string> = new BehaviorSubject("");
   public subject$ : BehaviorSubject<string> = new BehaviorSubject("");
+  private me : User;
+  public mePlaying$ : BehaviorSubject<boolean> = new BehaviorSubject(false);
   public usersList$ : BehaviorSubject<Map<string, User>> = new BehaviorSubject(new Map<string, User>());
   public playersList$ : BehaviorSubject<Map<string, Player>> = new BehaviorSubject(new Map<string, Player>());
   public nbScrumMaster$ : BehaviorSubject<number> = new BehaviorSubject(0);
@@ -52,6 +54,8 @@ export class PlanifRoom implements OnDestroy {
           this.name$.next(response.name);
           this.subject$.next(response.subject);
 
+          this.me = response.me;
+
           let nbScrumMaster = 0;
           // Object to Map
           let entryUser : [string, any];
@@ -63,6 +67,11 @@ export class PlanifRoom implements OnDestroy {
             }
           }
           this.nbScrumMaster$.next(nbScrumMaster);
+
+          // If is here for the tests
+          if (this.me) {
+            this.mePlaying$.next(this.usersList$.value.get(this.me.ref).role.isPlaying);
+          }
 
           // Object to Map
           let entryPlayer : [string, any];
@@ -119,6 +128,10 @@ export class PlanifRoom implements OnDestroy {
             (dataJoin: { player: Player; }) => {
               this.playersList$.value.set(dataJoin.player.ref, dataJoin.player);
               this.usersList$.value.get(dataJoin.player.ref).role.isPlaying = true;
+              // If "this.me" is here for the tests
+              if (this.me && dataJoin.player.ref==this.me.ref) {
+                this.mePlaying$.next(true);
+              }
             }
           );
 
@@ -126,6 +139,10 @@ export class PlanifRoom implements OnDestroy {
             (dataQuit: { player_ref: string; }) => {
               this.playersList$.value.delete(dataQuit.player_ref);
               this.usersList$.value.get(dataQuit.player_ref).role.isPlaying = false;
+              // If "this.me" is here for the tests
+              if (this.me && dataQuit.player_ref==this.me.ref) {
+                this.mePlaying$.next(false);
+              }
             }
           );
 

@@ -9,6 +9,7 @@ const debug = Debug("scrum-planif:clientIo");
 export class IoWebsocketMockService {
 
   public curentUsers : {} = {};
+  public me : User;
   public curentPlayers : {} = {};
   public subjects = new Map<string,Subject<any>>();
 
@@ -69,11 +70,17 @@ export class IoWebsocketMockService {
           },
           users : this.curentUsers,
           players :  this.curentPlayers,
-          resultsVisibility: false
+          resultsVisibility: false,
+          me : this.me
       })
     } else {
       console.error(message + "not mocked")
       action(null, null);
     }
+  }
+
+  public initMe(me : User) {
+    this.curentUsers[me.ref] = me;
+    this.me = me;
   }
 }

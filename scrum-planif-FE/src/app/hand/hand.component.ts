@@ -17,8 +17,13 @@ export class HandComponent implements OnInit, OnDestroy {
   @Input() planifRoom: PlanifRoom;
   @Input() isAdmin: boolean = false;
 
+  public me;
+
   public iVoteTop = new FormControl(false);
   public iVoteBottom = new FormControl(false);
+
+  public iSeeTop = new FormControl(false);
+  public iSeeBottom = new FormControl(false);
 
   public values : string[] = [];
   public allValues : {value: string, active: boolean}[] = [];
@@ -73,6 +78,16 @@ export class HandComponent implements OnInit, OnDestroy {
         this.values = newValues;
       }
     );
+
+    this.planifRoom.mePlaying$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (data : boolean) => {
+        this.iVoteTop.setValue(data);
+        this.iVoteBottom.setValue(data);
+        this.iSeeTop.setValue(!data);
+        this.iSeeBottom.setValue(!data);
+      }
+    );
+
   }
 
   /*
@@ -120,6 +135,24 @@ export class HandComponent implements OnInit, OnDestroy {
       this.planifRoom.askToPlay();
     } else {
       this.planifRoom.askToNotPlay();
+    }
+  }
+
+  public iSeeChangeTop() {
+    this.iSeeBottom.setValue(this.iSeeTop.value);
+    if (this.iSeeTop.value == true) {
+      this.planifRoom.askToNotPlay();
+    } else {
+      this.planifRoom.askToPlay();
+    }
+  }
+
+  public iSeeChangeBottom() {
+    this.iSeeTop.setValue(this.iSeeBottom.value);
+    if (this.iSeeBottom.value == true) {
+      this.planifRoom.askToNotPlay();
+    } else {
+      this.planifRoom.askToPlay();
     }
   }
 

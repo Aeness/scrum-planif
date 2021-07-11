@@ -37,6 +37,7 @@ describe('HandComponent', () => {
     component = fixture.componentInstance;
 
     service = TestBed.inject(IoWebsocketService);
+    service.initMe({ref: "ref", name: "Admin", role: {isAdmin: true, isPlaying: false}});
 
     // Update the input planifRoom
     let pr : PlanifRoom = new PlanifRoom(service, TestBed.inject(ToastrService));
@@ -46,8 +47,6 @@ describe('HandComponent', () => {
       fixture.detectChanges();
       done();
     })
-
-    service.subjects.get("user_join_planif").next({user: {ref: "ref", name: "Admin", role: {isAdmin: true, isPlaying: false}}});
   });
 
   it('should create', () => {

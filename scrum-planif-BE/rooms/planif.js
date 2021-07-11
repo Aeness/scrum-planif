@@ -106,7 +106,8 @@ module.exports = {
                         players : reponsePlayerTS,
                         resultsVisibility : room.resultsVisibility,
                         choosenGameType: room.choosenGameType,
-                        cardsGame : cardsGamesTS
+                        cardsGame : cardsGamesTS,
+                        me : participant
                     };
                     acknowledgement(null, reponse);
                 });

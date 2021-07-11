@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service/auth.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from '../planif.room/user';
 
 @Component({
   selector: 'app-planif',
@@ -20,11 +21,12 @@ export class PlanifComponent implements OnDestroy {
   public resultsVisibility: boolean = false;
   public nbScrumMaster: number;
 
+  public me: User;
+
 
   constructor(
     protected route: ActivatedRoute,
-    protected planifRoom: PlanifRoom,
-    protected authService: AuthService
+    protected planifRoom: PlanifRoom
   ) {
     this.route.params.subscribe(
       params => {

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { PlanifComponent } from '../planif.page/planif.component';
 import { PlanifRoom } from '../planif.room/planif.room';
-import { FormControl } from '@angular/forms';
 import { faEdit, faRedo } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../auth.service/auth.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,10 +25,9 @@ export class PlanifAdminComponent extends PlanifComponent {
   constructor(
     protected route: ActivatedRoute,
     protected planifRoom: PlanifRoom,
-    protected authService: AuthService,
     private fb: FormBuilder) {
 
-    super(route, planifRoom, authService)
+    super(route, planifRoom)
     this.planifForm = fb.group({
       name: ['', Validators.required]
     });

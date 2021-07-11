@@ -41,7 +41,7 @@ describe('PlanifAdminComponent', () => {
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
         FormBuilder,
-        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})}
+        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})} // For PlayersListComponent
       ]
     })
     // https://angular.io/guide/testing-components-scenarios#override-component-providers

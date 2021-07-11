@@ -1,19 +1,27 @@
 <ng-container *ngIf="init">
-  <div [className]="'hand' + values.length + ((isAdmin && !iVoteTop.value)?' disabled':'')">
+  <div [className]="'hand' + values.length + ((isAdmin && !iVoteTop.value)||(!isAdmin && iSeeTop.value)?' disabled':'')">
     <div class='top-help'>Selectionner une carte pour voter.</div>
     <div class="top-form form-group form-check"  *ngIf="isAdmin">
       <input id="iVoteTop" type="checkbox" class="form-check-input" [formControl]="iVoteTop" (change)="iVoteChangeTop()">
       <label class="form-check-label" for="iVoteTop">Je souhaite voter avec l'équipe</label>
     </div>
+    <div class="top-form form-group form-check"  *ngIf="!isAdmin">
+      <input id="iSeeTop" type="checkbox" class="form-check-input" [formControl]="iSeeTop" (change)="iSeeChangeTop()">
+      <label class="form-check-label" for="iSeeTop">Je veux juste regarder</label>
+    </div>
     <div [className]="'cards' + ' cards' + values.length">
       <ng-container *ngFor="let value of values; let index = index">
-        <app-card [value]="value" [rank]="(index+1) + 'of' + values.length" [isDesactived]="isAdmin && !iVoteTop.value" (choosenEvent)="changeValue(value,$event)" #card></app-card>
+        <app-card [value]="value" [rank]="(index+1) + 'of' + values.length" [isDesactived]="(isAdmin && !iVoteTop.value)||(!isAdmin && iSeeTop.value)" (choosenEvent)="changeValue(value,$event)" #card></app-card>
       </ng-container>
     </div>
     <div class='bottom-help'>Selectionner une carte pour voter.</div>
     <div class="bottom-form form-group form-check"  *ngIf="isAdmin">
       <input id="iVoteBottom" type="checkbox" class="form-check-input" [formControl]="iVoteBottom" (change)="iVoteChangeBottom()">
       <label class="form-check-label" for="iVoteBottom">Je souhaite voter avec l'équipe</label>
+    </div>
+    <div class="bottom-form form-group form-check"  *ngIf="!isAdmin">
+      <input id="iSeeBottom" type="checkbox" class="form-check-input" [formControl]="iSeeBottom" (change)="iSeeChangeBottom()">
+      <label class="form-check-label" for="iSeeBottom">Je veux juste regarder</label>
     </div>
   </div>
 </ng-container>
