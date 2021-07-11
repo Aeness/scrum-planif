@@ -1,44 +1,51 @@
 <ng-container *ngIf="init$ | async">
-<app-description [planif_ref]="planif.ref"></app-description>
-<ng-container *ngIf="takePartIn">
-  <div class="row">
-    <div class="col-12 col-xxl-4 col-xxxl-3 m-0 p-0">
-
-      <div class="rounded bg-light p-3 mb-3">
-        <h5>Type de jeux de carte</h5>
-        <app-choose-cards-game [planifRoom]="planifRoom"></app-choose-cards-game>
-      </div>
-
-      <div class="rounded bg-light p-3 mb-3">
-        <h5>Sujet de la partie</h5>
-        <div>
-          <form [formGroup]="subjectForm" (ngSubmit)="onSubjectSubmit($event)">
-            <label class="mb-2 mr-2" for="subject">Corriger ou lancer un nouveau sujet</label>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
-                formControlName="subject" placeholder="Sujet facultatif">
-            <button type="submit" name="subject" class="btn btn-secondary mb-2 mr-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon> Editer uniquement le sujet</button>
-            <button type="submit" name="game" class="btn btn-primary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faRedo"></fa-icon> Lancer une nouvelle partie.</button>
-          </form>
-          <p class="text-secondary small-text"></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-xxl-8  col-xxxl-9">
-      <div class="row">
-        <div class="col-12 col-xxxl-8">
-          <div style="text-align: center;">
-            <p class="subject">{{planif.subject}}</p>
-          </div>
-          <div></div>
-          <app-players [planifRoom]="planifRoom"></app-players>
-          <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
-        </div>
-        <div class="col-12 col-xxxl-4 p-3 mb-3 xxxl-pr-0">
-          <app-users-list [planifRoom]="planifRoom" [isAdmin]="true"></app-users-list>
-        </div>
+  <div class="row" *ngIf="nbScrumMaster > 1">
+    <div class="col-12 p-0 mb-3">
+      <div class="alert alert-warning" role="alert">
+        Vous êtes plusieurs Scrum Master dans cette partie. <a  class="btn btn-primary" [routerLink]="['/planif', planif.ref]">Devenir simple joueur.</a>
       </div>
     </div>
   </div>
-</ng-container>
+  <app-description [planif_ref]="planif.ref"></app-description>
+  <ng-container *ngIf="takePartIn">
+    <div class="row">
+      <div class="col-12 col-xxl-4 col-xxxl-3 m-0 p-0">
+
+        <div class="rounded bg-light p-3 mb-3">
+          <h5>Type de jeux de carte</h5>
+          <app-choose-cards-game [planifRoom]="planifRoom"></app-choose-cards-game>
+        </div>
+
+        <div class="rounded bg-light p-3 mb-3">
+          <h5>Sujet de la partie</h5>
+          <div>
+            <form [formGroup]="subjectForm" (ngSubmit)="onSubjectSubmit($event)">
+              <label class="mb-2 mr-2" for="subject">Corriger ou lancer un nouveau sujet</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="subject"
+                  formControlName="subject" placeholder="Sujet facultatif">
+              <button type="submit" name="subject" class="btn btn-secondary mb-2 mr-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faEdit"></fa-icon> Editer uniquement le sujet</button>
+              <button type="submit" name="game" class="btn btn-primary mb-2" [disabled]="!subjectForm.valid"><fa-icon [icon]="faRedo"></fa-icon> Lancer une nouvelle partie.</button>
+            </form>
+            <p class="text-secondary small-text"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xxl-8  col-xxxl-9">
+        <div class="row">
+          <div class="col-12 col-xxxl-8">
+            <div style="text-align: center;">
+              <p class="subject">{{planif.subject}}</p>
+            </div>
+            <div></div>
+            <app-players [planifRoom]="planifRoom"></app-players>
+            <app-hand [planifRoom]="planifRoom" [isAdmin]="true"></app-hand>
+          </div>
+          <div class="col-12 col-xxxl-4 p-3 mb-3 xxxl-pr-0">
+            <app-users-list [planifRoom]="planifRoom" [isAdmin]="true"></app-users-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </ng-container>

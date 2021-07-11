@@ -115,4 +115,20 @@ describe('PlanifComponent', () => {
     expect(fixture.debugElement.query(By.css('.subject')).nativeElement.textContent).toEqual('New', 'title change');
   });
 
+  it('should ask for a scrum master', () => {
+
+    expect(fixture.debugElement.queryAll(By.css('.alert-warning')).length).toEqual(1);
+
+    service.subjects.get("user_join_planif").next({user: {ref: "admin", name: "ScrumMaster", vote: null, role: {isAdmin: true, isPlaying: false}}});
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.alert-warning')).length).toEqual(0);
+
+
+    service.subjects.get("user_leave_planif").next({ user_ref: "admin" });
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.alert-warning')).length).toEqual(1);
+  });
+
 });

@@ -19,6 +19,7 @@ export class PlanifComponent implements OnDestroy {
   public planif : {ref: string, name: string, subject: string};
   public takePartIn: boolean = false;
   public resultsVisibility: boolean = false;
+  public nbScrumMaster: number;
 
 
   constructor(
@@ -53,6 +54,11 @@ export class PlanifComponent implements OnDestroy {
               this.planifRoom.resultsVisibility$.pipe(takeUntil(this.unsubscribe$)).subscribe(
                 (data: boolean) => {
                   this.resultsVisibility = data;
+                }
+              );
+              this.planifRoom.nbScrumMaster$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+                (nbScrumMaster) => {
+                  this.nbScrumMaster = nbScrumMaster;
                 }
               );
             }

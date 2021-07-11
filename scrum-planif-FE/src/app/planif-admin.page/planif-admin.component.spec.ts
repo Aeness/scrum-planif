@@ -172,4 +172,20 @@ describe('PlanifAdminComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('app-users-list [data-icon="eye"]')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('app-users-list [data-icon="cog"]')).length).toEqual(0);
   });
+
+  it('should ask for a player', () => {
+
+    expect(fixture.debugElement.queryAll(By.css('.alert-warning')).length).toEqual(0);
+
+    service.subjects.get("user_join_planif").next({user: {ref: "admin2", name: "ScrumMaster", vote: null, role: {isAdmin: true, isPlaying: false}}});
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.alert-warning')).length).toEqual(1);
+
+
+    service.subjects.get("user_leave_planif").next({ user_ref: "ref" });
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.css('.alert-warning')).length).toEqual(0);
+  });
 });

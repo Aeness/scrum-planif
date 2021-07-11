@@ -15,6 +15,7 @@ export class PlanifRoom implements OnDestroy {
   public subject$ : BehaviorSubject<string> = new BehaviorSubject("");
   public usersList$ : BehaviorSubject<Map<string, User>> = new BehaviorSubject(new Map<string, User>());
   public playersList$ : BehaviorSubject<Map<string, Player>> = new BehaviorSubject(new Map<string, Player>());
+  public nbScrumMaster$ : BehaviorSubject<number> = new BehaviorSubject(0);
   public resultsVisibility$ : BehaviorSubject<boolean> = new BehaviorSubject(true);
   public allCardsList$ : BehaviorSubject<Map<string, Array<{value: string, active: boolean}>>> = new BehaviorSubject(new Map<string, Array<{value: string, active: boolean}>>());
   public currentCardsList$ : BehaviorSubject<Array<{value: string, active: boolean}>> = new BehaviorSubject<Array<{value: string, active: boolean}>>([]);
@@ -51,15 +52,22 @@ export class PlanifRoom implements OnDestroy {
           this.name$.next(response.name);
           this.subject$.next(response.subject);
 
+          let nbScrumMaster = 0;
           // Object to Map
           let entryUser : [string, any];
           for (entryUser of Object.entries(response.users)) {
+            // TODO use next ?
             this.usersList$.value.set(entryUser[0],entryUser[1]);
+            if (entryUser[1].role.isAdmin) {
+              nbScrumMaster++;
+            }
           }
+          this.nbScrumMaster$.next(nbScrumMaster);
 
           // Object to Map
           let entryPlayer : [string, any];
           for (entryPlayer of Object.entries(response.players)) {
+            // TODO use next ?
             this.playersList$.value.set(entryPlayer[0],entryPlayer[1]);
           }
 
@@ -91,11 +99,17 @@ export class PlanifRoom implements OnDestroy {
           this.listenUserJoinPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataQuit: { user: User }) => {
               this.usersList$.value.set(dataQuit.user.ref, dataQuit.user);
+              if (dataQuit.user.role.isAdmin) {
+                this.nbScrumMaster$.next(this.nbScrumMaster$.value + 1);
+              }
             }
           );
 
           this.listenParticipantQuitPlanif().pipe(takeUntil(this.unsubscribe$)).subscribe(
             (dataQuit: { user_ref: string; }) => {
+              if (this.usersList$.value.get(dataQuit.user_ref).role.isAdmin) {
+                this.nbScrumMaster$.next(this.nbScrumMaster$.value - 1);
+              }
               this.playersList$.value.delete(dataQuit.user_ref);
               this.usersList$.value.delete(dataQuit.user_ref);
             }
