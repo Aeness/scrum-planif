@@ -1,4 +1,4 @@
-module.exports = function(app, server, corsOrigin) {
+module.exports = function(app, server, corsOrigin, authAdminSocketIo) {
 
     this.debug = require('debug')('scrum-planif:serverIo');
     
@@ -16,7 +16,7 @@ module.exports = function(app, server, corsOrigin) {
             origin: corsOrigin,
             methods: ["GET", "POST"], //  Access-Control-Allow-Methods => Not working
             //allowedHeaders: ["Authorization"],
-            //credentials: true // Access-Control-Allow-Credentials => Not used
+            credentials: true // Access-Control-Allow-Credentials => Used by https://admin.socket.io/#/
         }/*,
         allowRequest: (data, callback) => {
             // Only called at the (first request) handshake 
@@ -29,6 +29,10 @@ module.exports = function(app, server, corsOrigin) {
             return callback(null, true);
         }*/
     });
+    let admin_ui = require("@socket.io/admin-ui");
+    admin_ui.instrument(io, {
+        auth: authAdminSocketIo
+      });
     server.on('listening', () => {
         this.debug("IoServer is listening.");
     });

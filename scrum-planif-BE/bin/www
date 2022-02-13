@@ -16,6 +16,7 @@ var nconf = require('nconf').file({ file: './conf/config.json' });
 if (typeof nconf.get('appConf:tokenSecret') === "undefined" 
     || typeof nconf.get('appConf:refreshSecret') === "undefined"
     || typeof nconf.get('frontConf:url') === "undefined"
+    || typeof nconf.get('adminSocketIo:auth') === "undefined"
 ) {
     console.error("The configuration is incomplete.");
     process.exit(1);
@@ -43,7 +44,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-var io = require('../server-io')(app, server, nconf.get('frontConf:url'));
+var io = require('../server-io')(app, server, nconf.get('frontConf:url'), nconf.get('adminSocketIo:auth'));
 app.io = io;
 
 /**
