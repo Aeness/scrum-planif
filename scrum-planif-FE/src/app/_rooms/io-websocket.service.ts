@@ -9,14 +9,17 @@ import { AuthService } from '../auth.service/auth.service';
 import { JwtTokens } from '../auth.service/jwtTokens';
 import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Socket } from "socket.io-client";
+
 const debug = Debug("scrum-planif:clientIo");
 
 @Injectable()
 export class IoWebsocketService implements OnDestroy {
   private unsubscribe$ = new Subject();
 
-  private socket; // Socket -  SocketIOClient.Socket
+  private socket : Socket; // SocketIOClient.Socket
   private nameRoom: string;
+  private activeInfoToast: ActiveToast<any> = null;
   private activeErrorToast: ActiveToast<any> = null;
 
   private pathname = window.location.pathname;
@@ -49,16 +52,45 @@ export class IoWebsocketService implements OnDestroy {
   private _connect(token : string, onConnect? : () => void) {
     let url = environment.restAndIoBackEndUrl + '?' + this.nameRoom + "&jwt=" + token;
 
+    // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
+    debug("#[Io]# Initialize sockets for " + url);
+
     // TODO : https://socket.io/docs/v4/client-initialization/#auth
     this.socket = io(url);
 
-    // localStorage.debug='socket.io-client:*,scrum-planif:clientIo'
-    debug("#[Io]# Try to connected: " + url);
 
-    // Socket event
-    this.socket.on('connect_error', (err /*: Error*/) => {
+    // this.socket.io: Manager
+    // Manager event : open, error, close, ping, packet, reconnect_attempt, reconnect, reconnect_error, reconnect_failed
+
+    // Manager event
+    this.socket.io.on("reconnect_attempt", (attempt: number) => {
+      debug('#[Io:Manager]# reconnect_attempt ' + this.nameRoom + ' with attempt:' + attempt);
+      if (this.activeInfoToast == null && this.activeErrorToast == null) {
+
+        this.activeInfoToast = this.toastr.info('Veuillez patienter.', 'Reconnection à Scrum Planif', {
+          disableTimeOut: true
+        });
+        this.activeInfoToast
+          .onTap
+          .pipe(
+            take(1),
+            takeUntil(this.unsubscribe$))
+          .subscribe(() => {
+            this.activeInfoToast = null;
+          });;
+      }
+
+    });
+
+    // Socket event : could be on Manager event "reconnect_error"
+    this.socket.on('connect_error', (err : any /*: Error*/) => {
 
       if (err.data !== undefined && err.data.auth) {
+
+        if (this.activeInfoToast != null) {
+          this.toastr.remove(this.activeInfoToast.toastId);
+          this.activeInfoToast = null;
+        }
 
         this.toastr.error('Veuillez vous reconnecter.', null, {
           disableTimeOut: false
@@ -69,6 +101,12 @@ export class IoWebsocketService implements OnDestroy {
 
         debug('#[Io:socket]# Connection Error (%s) in %s', err.message, this.nameRoom);
         if (this.activeErrorToast == null) {
+
+          if (this.activeInfoToast != null) {
+            this.toastr.remove(this.activeInfoToast.toastId);
+            this.activeInfoToast = null;
+          }
+
           this.activeErrorToast = this.toastr.error('Veuillez patienter.', 'Impossible de joindre Scrum Planif', {
             disableTimeOut: true
           });
@@ -84,9 +122,16 @@ export class IoWebsocketService implements OnDestroy {
         }
       }
     });
+
+    // Socket event
     this.socket.on('connect',  () => {
       debug('#[Io:socket]# Connected ' + this.nameRoom + ' with id:' + this.socket.id);
       debug('#[Io:socket]# transport ' + this.socket.io.engine.transport.name);
+
+      if (this.activeInfoToast != null) {
+        this.toastr.remove(this.activeInfoToast.toastId);
+        this.activeInfoToast = null;
+      }
 
       if (this.activeErrorToast != null) {
         this.toastr.remove(this.activeErrorToast.toastId);
@@ -98,12 +143,14 @@ export class IoWebsocketService implements OnDestroy {
         onConnect();
       }
     });
+
+    // Socket event
     this.socket.on('disconnect',  (reason) => {
       // When quite the page, call before this.socket.io.on("close"
       debug('#[Io:socket]# Disconnected ' + this.nameRoom + ' ' + reason);
     });
 
-    // Manager event : open, error, close, ping, packet, reconnect_attempt, reconnect, reconnect_error, reconnect_failed
+    // Manager events
     this.socket.io.on("open", () => {
       debug('#[Io:Manager]# open ' + this.nameRoom);
     });
@@ -111,10 +158,10 @@ export class IoWebsocketService implements OnDestroy {
       debug('#[Io:Manager]# close ' + this.nameRoom + ' ' + reason);
     });
 
-    // this.socket.io: Manager
     this.socket.io.engine.on('upgrade', function(transport) {
       debug('#[Io]# transport changed to ' + transport.name);
     });
+
   }
 
   public getMessages = (message: string) => {
