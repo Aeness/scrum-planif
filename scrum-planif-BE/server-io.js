@@ -29,10 +29,12 @@ module.exports = function(app, server, corsOrigin, authAdminSocketIo) {
             return callback(null, true);
         }*/
     });
-    let admin_ui = require("@socket.io/admin-ui");
-    admin_ui.instrument(io, {
-        auth: authAdminSocketIo
-      });
+    if (authAdminSocketIo != null) {
+        let admin_ui = require("@socket.io/admin-ui");
+        admin_ui.instrument(io, {
+            auth: authAdminSocketIo
+        });
+    }
     server.on('listening', () => {
         this.debug("IoServer is listening.");
     });
