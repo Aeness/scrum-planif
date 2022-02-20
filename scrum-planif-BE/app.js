@@ -69,6 +69,25 @@ function initApp(conf) {
     app.use(express.urlencoded({ extended: false }));
     app.use(express.static(path.join(__dirname, 'public')));
 
+    let realHeader = null;
+    if (typeof conf.realHeader !== "undefined") {
+        realHeader = conf.realHeader;
+    }
+
+    // Not realy usefull : there is not real auth
+    const rateLimit = require('express-rate-limit');
+    const authLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000,   // 15 minutes
+        max: 100,                   // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+        standardHeaders: true,      // Return rate limit info in the `RateLimit-*` headers
+        legacyHeaders: false,       // Disable the `X-RateLimit-*` headers
+        // eslint-disable-next-line no-unused-vars
+        keyGenerator: (request, response) => {
+            // if load balancer
+            return request.headers[realHeader] || request.ip
+        },
+    })
+    app.use('/auth/', authLimiter)
     app.use('/auth', authRouter);
     //app.use('/planifs', planifsRouter);
 
