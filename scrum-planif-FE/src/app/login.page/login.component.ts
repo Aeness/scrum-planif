@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TokenTool } from '../auth.service/token.tool';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) {
 
     this.authForm = fb.group({
@@ -68,6 +70,10 @@ export class LoginComponent implements OnInit {
                 this.authForm.controls.name.markAsDirty();
                 this.authForm.controls.name.setErrors({'server': err.error.name});
             }
+          } else if (err.status == 429) {
+            this.toastr.error(null, 'Il y a eu trop d\'essais. Veuillez réessayer dans 5 minutes.', {
+              disableTimeOut: true
+            });
           } else {
               throw err;
           }

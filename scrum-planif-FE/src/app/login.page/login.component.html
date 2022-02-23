@@ -9,7 +9,7 @@
         <label  for="name" class="control-label"
                 [class.is-invalid]="authForm.controls.name.touched && authForm.controls.name.errors">Nom
         </label>
-        <input  name="name" size="30" type="text" class="form-control input-group-addon"
+        <input  id="name" name="name" size="30" type="text" class="form-control input-group-addon"
                 formControlName="name" placeholder="Il suffit d'un nom pour continuer."
                 [class.is-invalid]="authForm.controls.name.touched && authForm.controls.name.errors"/>
         <div *ngIf="authForm.controls.name.invalid && (authForm.controls.name.dirty || authForm.controls.name.touched)">
@@ -19,7 +19,7 @@
         </div>
     </div>
     <div>
-        <input class="btn btn-primary" name="commit" type="submit" value="{{submitLabel}}"
+        <input class="btn btn-primary" id="commitbtn" name="commit" type="submit" value="{{submitLabel}}"
                 [disabled]="!authForm.valid"/>
     </div>
 </form>
