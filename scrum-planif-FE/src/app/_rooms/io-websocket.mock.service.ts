@@ -66,6 +66,10 @@ export class IoWebsocketMockService {
               {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
               {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
               {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
+            ],
+            ScrumLife : [
+              {value:"1", active: true},{value:">1", active: true},
+              {value:"&#xf128", active: true},{value:"&#xf0f4;", active: true}
             ]
           },
           users : this.curentUsers,

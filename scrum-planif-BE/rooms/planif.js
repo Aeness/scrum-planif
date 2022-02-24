@@ -58,6 +58,7 @@ module.exports = {
                     room.cardsGames = new Map();
                     room.cardsGames.set("classic", this.getClassicCard());
                     room.cardsGames.set("TS", this.getTShirtCard());
+                    room.cardsGames.set("ScrumLife", this.getScrumLifeCard());
                     this.planifRooms.set(this.getRoomName(planif_ref), room);
                 }
 
@@ -250,6 +251,12 @@ module.exports = {
             {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
             {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
+        ]
+    },
+    getScrumLifeCard: function () {
+        return [
+            {value:"1", active: true},{value:">1", active: true},
+            {value:"&#xf128", active: true},{value:"&#xf0f4;", active: true}
         ]
     },
 

@@ -45,7 +45,7 @@ div.card {
     color: #FFF;
   }
 
-  &.card5of5, &.card6of6, &.card7of7, &.card8of8, &.card9of9,
+  &.card3of3, &.card4of4, &.card5of5, &.card6of6, &.card7of7, &.card8of8, &.card9of9,
   &.card10of10, &.card11of11, &.card12of12 {
     margin-right: 0px;
   }
@@ -55,6 +55,19 @@ div.card {
   $rotate: 7;
 
   @media (min-width: 768px) {
+
+    &.card1of3 {
+      transform: rotate(-7deg) translateY(20px) translateX(144px);
+    }
+
+    &.card2of3 {
+      transform: translateY(-4px) translateX(124px);
+    }
+
+    &.card3of3 {
+      transform: rotate(8deg) translateY(-12px) translateX(104px);
+    }
+
     &.card1of5 {
       transform: rotate(-15deg) translateY(35px) translateX(40px);
     }
@@ -88,22 +101,22 @@ div.card {
       transform: translateX(($translateGX + $translateX *1) *1px) rotate($rotate * -2.5deg) translateY(32px);
     }
 
-    &.card2of6, &.card3of8, &.card4of10 {
+    &.card1of4, &.card2of6, &.card3of8, &.card4of10 {
       position: absolute;
       transform: translateX(($translateGX + $translateX *2) *1px) rotate($rotate * -1.5deg) translateY(12px);
     }
 
-    &.card3of6, &.card4of8, &.card5of10 {
+    &.card2of4, &.card3of6, &.card4of8, &.card5of10 {
       position: absolute;
       transform: translateX(($translateGX + $translateX *3) *1px) rotate($rotate * -0.5deg);
     }
 
-    &.card4of6, &.card5of8, &.card6of10 {
+    &.card3of4, &.card4of6, &.card5of8, &.card6of10 {
       position: absolute;
       transform: translateX(($translateGX + $translateX *4) *1px) rotate($rotate * 0.5deg);
     }
 
-    &.card5of6, &.card6of8, &.card7of10 {
+    &.card4of4, &.card5of6, &.card6of8, &.card7of10 {
       position: absolute;
      transform: translateX(($translateGX + $translateX *5) *1px) rotate($rotate * 1.5deg)  translateY(12px);
     }

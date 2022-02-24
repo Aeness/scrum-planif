@@ -94,40 +94,40 @@ describe('PlanifAdminComponent', () => {
       this.ioWebsocketService.subjects.get("card_visibility_changed").next({cardIndex : cardIndex, choosenVisibility : choosenVisibility});
     })
 
-    expect(allExempleCards.length).toEqual(8+14, 'all example card');
+    expect(allExempleCards.length).toEqual(4+8+14, 'all example card');
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14);
 
 
-    allExempleCards[8+1].nativeElement.click();
+    allExempleCards[4+8+1].nativeElement.click();
     fixture.detectChanges();
 
     // <=> expect(pr.sendCardVisibility.calls.count()).toEqual(1);
     expect(mySpy).toHaveBeenCalledTimes(1);
     expect(pr.sendCardVisibility.calls.argsFor(0)).toEqual([1, false]);
-    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(8+13, 'one example card less');
+    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(4+8+13, 'one example card less');
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(13);
 
-    allExempleCards[8+5].nativeElement.click();
+    allExempleCards[4+8+5].nativeElement.click();
     fixture.detectChanges();
 
     expect(mySpy).toHaveBeenCalledTimes(1+1);
     expect(pr.sendCardVisibility.calls.argsFor(1)).toEqual([5, false]);
-    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(8+12, 'two example cards less');
+    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(4+8+12, 'two example cards less');
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(12);
 
 
-    allExempleCards[8+1].nativeElement.click();
+    allExempleCards[4+8+1].nativeElement.click();
     fixture.detectChanges();
 
     expect(mySpy).toHaveBeenCalledTimes(2+1);
     expect(pr.sendCardVisibility.calls.argsFor(2)).toEqual([1, true]);
-    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(8+13, 'one card less - 2');
+    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(4+8+13, 'one card less - 2');
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(13, 'one app-card');
   });
 
   it('change the game should change the game hand', () => {
     let allGameCards = fixture.debugElement.queryAll(By.css('app-cards-game'));
-    expect(allGameCards.length).toEqual(2);
+    expect(allGameCards.length).toEqual(3);
 
     let classicCard = fixture.debugElement.queryAll(By.css('.selected .exampleCard.selected'))
     expect(classicCard.length).toEqual(14);
@@ -143,8 +143,8 @@ describe('PlanifAdminComponent', () => {
 
     // <=> expect(pr.sendTypeGame.calls.count()).toEqual(1);
     expect(mySpy).toHaveBeenCalledTimes(1);
-    expect(pr.sendTypeGame.calls.argsFor(0)).toEqual(["TS"]);
-    expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(8);
+    expect(pr.sendTypeGame.calls.argsFor(0)).toEqual(["ScrumLife"]);
+    expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(4);
   });
 
   it('change the results visibility should change the users list', () => {
