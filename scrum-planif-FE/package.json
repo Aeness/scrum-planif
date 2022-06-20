@@ -28,7 +28,7 @@
     "core-js": "^2.6.12",
     "ini": "^2.0.0",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.3",
     "ngx-toastr": "^14.0.0",
     "rxjs": "^6.6.7",
     "socket.io-client": "^4.4.1",
