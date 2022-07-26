@@ -80,7 +80,7 @@ describe('UsersListComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('[data-icon="eye"]')).length).toEqual(1);
     expect(fixture.debugElement.queryAll(By.css('[data-icon="cog"]')).length).toEqual(0);
 
-    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "player1", role: {isAdmin: false, isPlaying: false}}});
+    service.subjects.get("user_join_planif").next({user: {ref: "ref2", name: "player1", role: {isAdmin: false, isPlaying: false}, vote: null}});
     service.subjects.get("player_join_planif").next({player: {ref: "ref2", name: "player1"}});
     fixture.detectChanges();
 

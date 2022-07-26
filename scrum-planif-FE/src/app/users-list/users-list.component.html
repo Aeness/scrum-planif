@@ -9,20 +9,20 @@
     </thead>
     <tbody>
       <tr *ngFor="let user of users | keyvalue">
-        <td *ngIf="user.value.role.isAdmin == true" class="sm"><fa-icon [icon]="faChessQueen"></fa-icon></td>
-        <td *ngIf="user.value.role.isAdmin == false" class="sm"></td>
+        <td *ngIf="user.value.role.isAdmin === true" class="sm"><fa-icon [icon]="faChessQueen"></fa-icon></td>
+        <td *ngIf="user.value.role.isAdmin === false" class="sm"></td>
         <td>{{user.value.name}}</td>
-        <td *ngIf="user.value.role.isPlaying == true && user.value.vote==null" class="vote"><fa-icon *ngIf="resultsVisibility == false" [icon]="faCog" [spin]="true"></fa-icon></td>
-        <td *ngIf="resultsVisibility == false && user.value.role.isPlaying == true && user.value.vote!=null" class="vote"><fa-icon [icon]="faCheck"></fa-icon></td>
-        <td *ngIf="resultsVisibility == true && user.value.role.isPlaying == true && user.value.vote!=null" [className]="'vote ' + (user.value.vote.startsWith('&')?'fa':'blod')" [innerHTML]="user.value.vote"></td>
-        <td *ngIf="user.value.role.isPlaying == false" class="vote grey"><fa-icon [icon]="faEye"></fa-icon></td>
+        <td *ngIf="user.value.role.isPlaying === true && user.value.vote === null" class="vote"><fa-icon *ngIf="resultsVisibility === false" [icon]="faCog" [spin]="true"></fa-icon></td>
+        <td *ngIf="resultsVisibility === false && user.value.role.isPlaying === true && user.value.vote !== null" class="vote"><fa-icon [icon]="faCheck"></fa-icon></td>
+        <td *ngIf="resultsVisibility === true && user.value.role.isPlaying === true && user.value.vote !== null" [className]="'vote ' + (user.value.vote.startsWith('&')?'fa':'blod')" [innerHTML]="user.value.vote"></td>
+        <td *ngIf="user.value.role.isPlaying === false" class="vote grey"><fa-icon [icon]="faEye"></fa-icon></td>
       </tr>
     </tbody>
   </table>
-  <div *ngIf="isAdmin == true && resultsVisibility == false" style="text-align: right;">
+  <div *ngIf="isAdmin === true && resultsVisibility === false" style="text-align: right;">
     <button id="visibilityChangeTrue" class="btn btn-primary" (click)="resultsVisibilityChange(true)">Rendre visible les résultats à tous les participants.</button>
   </div>
-  <div *ngIf="isAdmin == true && resultsVisibility == true" style="text-align: right;">
+  <div *ngIf="isAdmin === true && resultsVisibility === true" style="text-align: right;">
     <button id="visibilityChangeFalse" class="btn btn-primary" (click)="resultsVisibilityChange(false)">Cacher les résultats à tous les participants.</button>
   </div>
 </div>

@@ -7,16 +7,13 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
   templateUrl: './description.component.html',
   styleUrls: ['./description.component.scss']
 })
-export class DescriptionComponent implements OnInit {
+export class DescriptionComponent {
   public urlLink = environment.linkUrl;
   public faCopy = faCopy;
 
   @Input() planif_ref: string;
 
   constructor( ) { }
-
-  ngOnInit(): void {
-  }
 
   public copyElement(idElement) {
     let range = document.createRange();

@@ -2,19 +2,19 @@
     <div *ngIf="players.size > 0" class="players">
       <ng-container  *ngFor="let player of players | keyvalue">
 
-          <div *ngIf="player.key != authService.userConnected.ref" class="player">
+          <div *ngIf="player.key !== authService.userConnected.ref" class="player">
             <div >
               <div class="avatar">
-                <div style="height: 2.25em;" *ngIf="player.value.vote!=null">
+                <div style="height: 2.25em;" *ngIf="player.value.vote!==null">
                   <fa-icon [icon]="faSmile"></fa-icon>
                 </div>
-                <div style="height: 2.25em;"  *ngIf="player.value.vote==null">
+                <div style="height: 2.25em;"  *ngIf="player.value.vote===null">
                   <fa-icon [icon]="faCog" [spin]="true"></fa-icon>
                 </div>
                 <svg viewBox="0 0 450 300"  style="margin-top: 3px;">
                   <path id="svg_1" d="m 314.6 1 l -16.7 0 c -22.2 10.2 -46.9 16 -72.9 16 s -50.6 -5.8 -72.9 -16 l -16.7 0 c -74.2 0 -134.4 60.2 -134.4 134.4 l -0 96.6 c 0 26.5 21.5 48 48 48 l 352 0 c 26.5 0 48 -21.5 48 -48 l 0 -97 c 0 -74.2 -60.2 -134.4 -134.4 -134.4 z" fill="currentColor"/>
                 </svg>
-                <span  *ngIf="resultsVisibility==true && player.value.vote!=null" [className]="'result ' + (player.value.vote.startsWith('&')?'fa':'blod')" [innerHTML]="player.value.vote"></span>
+                <span  *ngIf="resultsVisibility===true && player.value.vote!==null" [className]="'result ' + (player.value.vote.startsWith('&')?'fa':'blod')" [innerHTML]="player.value.vote"></span>
               </div>
             </div>
             <div class="name">{{player.value.name}}</div>

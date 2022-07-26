@@ -3,12 +3,5 @@
     <h5>Le poker planning</h5>
     Vous êtes dans le poker planning accessible avec le code <span id="code" class="toCopy">{{planif_ref}}</span> <button class="copy" (click)="copyElement('code')"><fa-icon [icon]="faCopy"></fa-icon></button>
     ou via le lien <span id="link" class="toCopy">{{urlLink}}/planif/{{planif_ref}}</span> <button class="copy" (click)="copyElement('link')"><fa-icon [icon]="faCopy"></fa-icon></button>.
-    <!--
-    <form [formGroup]="planifForm" class="form-inline" (ngSubmit)="onPlanifSubmit()">
-      <label class="mb-2 mr-2" for="name">Vous pouvez préciser un nom pour ce pocker planning :</label>
-      <input type="text" class="form-control mb-2 mr-sm-2" id="name"
-          formControlName="name">
-    <button type="submit" class="btn btn-primary mb-2" [disabled]="!planifForm.valid">Entrer</button>
-    </form>-->
   </div>
 </div>

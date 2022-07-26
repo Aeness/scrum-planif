@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnDestroy, OnChanges } from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges, OnDestroy } from
   templateUrl: './card.component.html',
   styleUrls: ['./font-icon.scss', './card.component.scss']
 })
-export class CardComponent implements OnDestroy {
+export class CardComponent implements OnChanges, OnDestroy {
   @Input() value: string;
   @Input() rank: string;
   @Input() isDesactived: boolean = false;

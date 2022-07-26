@@ -1,6 +1,6 @@
 
 
-  <div *ngIf="cards" [className]="'cardGame' + (myGameTypeName == planifRoom.currentGameName?' selected':' unselected')">
+  <div *ngIf="cards" [className]="'cardGame' + (myGameTypeName === planifRoom.currentGameName?' selected':' unselected')">
     <ng-container *ngFor="let card of cards; let index = index">
       <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':' unselected')" (click)="click(index)" [innerHTML]="card.value"></div>
     </ng-container>
