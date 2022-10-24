@@ -17,6 +17,7 @@ export class IoWebsocketMockService {
     this.subjects.set("results_visibility_changed", new Subject<{choosenVisibility : boolean}>());
     this.subjects.set("card_visibility_changed", new Subject<{cardIndex: number, choosenVisibility: boolean}>());
     this.subjects.set("game_type_changed", new Subject<{cardsGameName: string}>());
+    this.subjects.set("game_added_and_selected", new Subject<{cardsGameName : string, cardsGame : Array<any>}>());
     this.subjects.set("authentication_error", new Subject());
     this.subjects.set("planif_name", new Subject<{name: string}>());
     this.subjects.set("game_subject", new Subject<{subject: string}>());

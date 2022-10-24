@@ -158,4 +158,31 @@ describe('ChooseCardsComponent', () => {
     expect(pr.sendTypeGame.calls.argsFor(0)).toEqual(["TS"]);
     expect(component.gameTypeForm.get("gameName").value).toEqual("TS");
   });
+
+  it('add cards game should change the form', () => {
+    let allGameCards = fixture.debugElement.queryAll(By.css('app-cards-game'));
+    expect(allGameCards.length).toEqual(3);
+
+    expect(fixture.debugElement.queryAll(By.css('.selected .exampleCard.selected')).length).toEqual(14);
+
+
+    let pr : any = (component as any).planifRoom;
+    let mySpy = spyOn(pr, 'sendNewGame').and.callFake(function(cardsGame : Array<any>) {
+      // this <=> PlanifRoom
+      this.ioWebsocketService.subjects.get("game_added_and_selected").next({cardsGameName : "name", cardsGame : cardsGame});
+    })
+    pr.sendNewGame([
+      {value:"XXL", active: true},
+      {value:"&#xf128", active: false},
+      {value:"&#xf534;", active: false},
+      {value:"&#xf0f4;", active: false}
+    ]);
+    fixture.detectChanges();
+
+    // <=> expect(pr.sendTypeGame.calls.count()).toEqual(1);
+    expect(mySpy).toHaveBeenCalledTimes(1);
+
+    expect(fixture.debugElement.queryAll(By.css('.selected .exampleCard.selected')).length).toEqual(1);
+    expect(fixture.debugElement.queryAll(By.css('.selected .exampleCard.unselected')).length).toEqual(3);
+  });
 });

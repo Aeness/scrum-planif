@@ -1,0 +1,84 @@
+import { Component, Input, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
+import { PlanifRoom } from '../planif.room/planif.room';
+
+@Component({
+  selector: 'app-add-game-cards',
+  templateUrl: './add-game-cards.component.html',
+  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss']
+})
+export class AddGameCardsComponent implements OnDestroy {
+  private unsubscribe$ = new Subject();
+
+  @Input() planifRoom: PlanifRoom;
+
+
+  public cardForm: FormGroup;
+  public userCardsGame : Array<any> = [];
+  public fixCardsGame : Array<any> =[
+    {value:"&#xf128", active: false},
+    {value:"&#xf534;", active: false},
+    {value:"&#xf0f4;", active: false}
+  ];
+
+  public faTimes = faTimes;
+  modalReference : NgbModalRef
+
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder
+  ) {
+
+    this.cardForm = fb.group({
+      cardValue: ['', Validators.required] //, Validators.maxLength(3)
+    });
+  }
+
+  openModal(content) {
+    this.modalReference = this.modalService.open(content, { centered:true, container: '.attachModal' });
+    this.modalReference.result.then(
+      (/*result*/) => {
+        // Closed (and validate)
+        this.planifRoom.sendNewGame(this.userCardsGame.concat(this.fixCardsGame));
+        this.userCardsGame = [];
+      },
+      (/*reason*/) => {
+        // Dismissed
+        // ModalDismissReasons.ESC or ModalDismissReasons.BACKDROP_CLICK or other
+        this.userCardsGame = [];
+      },
+    );
+  }
+
+  onCardSubmit(event) {
+    if(this.cardForm.valid) {
+      this.userCardsGame.push({value:this.cardForm.controls.cardValue.value, active: true});
+      this.cardForm.controls.cardValue.setValue(null);
+    }
+  }
+
+  click(type : "user" | "fix", index) {
+    if (type == "user") {
+      this.userCardsGame[index].active = !this.userCardsGame[index].active ;
+    } else {
+      this.fixCardsGame[index].active = !this.fixCardsGame[index].active ;
+    }
+  }
+
+  closeModal(modal) {
+    modal.close('Save click');
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
+    if (this.modalReference) {
+      this.modalReference.close();
+    }
+  }
+
+}

@@ -181,6 +181,16 @@ export class PlanifRoom implements OnDestroy {
             }
           );
 
+          this.listenNewGame().pipe(takeUntil(this.unsubscribe$)).subscribe(
+            (response: {cardsGameName : string, cardsGame : Array<any>}) => {
+              this.allCardsList$.value.set(response.cardsGameName, response.cardsGame);
+              // TODO : put this two informations together
+              this.currentCardsList$.next(response.cardsGame);
+              this.currentGameName$.next(response.cardsGameName);
+              this.currentGameName = response.cardsGameName;
+            }
+          );
+
           // TODO use AsyncSubject<boolean> ???
           onChildrenConnect();
         }
@@ -270,6 +280,14 @@ export class PlanifRoom implements OnDestroy {
 
   private listenGameType() : Observable<{cardsGameName : string}> {
       return this.ioWebsocketService.getMessages('game_type_changed');
+  }
+
+  public sendNewGame(cardsGame : Array<any>) {
+    this.ioWebsocketService.sendMessage("add_game", {cards : cardsGame});
+  }
+
+  private listenNewGame() : Observable<{cardsGameName : string, cardsGame : Array<any>}> {
+      return this.ioWebsocketService.getMessages('game_added_and_selected');
   }
 
   public sendRestartGameSubject(subject: string) {

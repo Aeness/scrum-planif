@@ -231,6 +231,24 @@ module.exports = {
                         this.sendCardVisibilityChanged(planif_ref, data.cardIndex, data.choosenVisibility);
                     }
                 });
+
+                // data : {cards : Array<any>}
+                socket.on('add_game', (data) => {
+                    debug("%s add a game", socket.id);
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
+                    let gameName = "game" + (room.cardsGames.length + 1) + socket.id;
+                    debug("game name : %s", gameName);
+                    
+                    room.cardsGames.set(gameName, data.cards);
+                    room.choosenGameType = gameName;
+                    this.sendNewGameAddedAndSelected(planif_ref, gameName, data.cards);
+                    if (room.players !== undefined) {
+                      for (let entry of room.players.entries()) {
+                        entry[1].vote = null;
+                        this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                      }
+                    }
+                });
             }
         });
     },
@@ -319,4 +337,8 @@ module.exports = {
         debug('sendGameTypeChanged to planif %s', planif_ref);
         this.app.io.to(this.getRoomName(planif_ref)).emit('game_type_changed', { cardsGameName: cardsGameName});
     },
+    sendNewGameAddedAndSelected: function(planif_ref, cardsGameName, cardsGame) {
+        debug('sendGameTypeChanged to planif %s', planif_ref);
+        this.app.io.to(this.getRoomName(planif_ref)).emit('game_added_and_selected', { cardsGameName: cardsGameName, cardsGame : cardsGame});
+    }
 }

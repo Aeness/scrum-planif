@@ -123,6 +123,26 @@ describe('HandComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(8, 'one more');
   });
 
+  it('new game should change cards game', () => {
+    let pr : any = (component as any).planifRoom;
+    let mySpy = spyOn(pr, 'sendNewGame').and.callFake(function(cardsGame : Array<any>) {
+      // this <=> PlanifRoom
+      this.ioWebsocketService.subjects.get("game_added_and_selected").next({cardsGameName : "name", cardsGame : cardsGame});
+    })
+    pr.sendNewGame([
+      {value:"XXL", active: true},
+      {value:"&#xf128", active: false},
+      {value:"&#xf534;", active: false},
+      {value:"&#xf0f4;", active: false}
+    ]);
+    fixture.detectChanges();
+
+    // <=> expect(pr.sendTypeGame.calls.count()).toEqual(1);
+    expect(mySpy).toHaveBeenCalledTimes(1);
+
+    expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(1, 'all card');
+  });
+
   it('admin could join', () => {
     component.isAdmin = true;
     fixture.detectChanges();

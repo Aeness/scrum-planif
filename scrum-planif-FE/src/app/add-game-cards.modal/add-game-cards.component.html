@@ -1,0 +1,28 @@
+<div class="attachModal">
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Créer un jeux de carte</h4>
+      <button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><fa-icon [icon]="faTimes"></fa-icon></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="cardForm" (ngSubmit)="onCardSubmit($event)">
+        <label class="mb-2 mr-2" for="subject">Carte à ajouter</label>
+        <input type="text" class="form-control mb-2 mr-sm-2" id="cardValue" style="max-width: 150px; margin: 0.5rem auto; display: inline-block;"
+            formControlName="cardValue">
+        <button id="addButton" type="submit" name="subject" class="btn btn-secondary mb-2 mr-2" [disabled]="!cardForm.valid">Ajouter la carte</button>
+      </form>
+      <div class="cardGame selected">
+        <ng-container *ngFor="let card of userCardsGame; let index = index">
+          <div [className]="'exampleCard' + (card.active?' selected':' unselected')" (click)="click('user', index)" [innerHTML]="card.value"></div>
+        </ng-container>
+        <ng-container *ngFor="let card of fixCardsGame; let index = index">
+          <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':' unselected')" (click)="click('fix', index)" [innerHTML]="card.value"></div>
+        </ng-container>
+      </div><div class="clear"><p class="text-secondary small-text">Cliquer sur une carte pour l'activer ou la désactiver.</p></div>
+    </div>
+    <div class="modal-footer">
+      <button id="sendButton" class="btn btn-primary" (click)="closeModal(modal)">Ajouter et choisir un type de jeux de carte.</button>
+    </div>
+  </ng-template>
+  <button id="openButton" class="btn btn-primary" (click)="openModal(content)">Ajouter et choisir un type de jeux de carte.</button>
+</div>

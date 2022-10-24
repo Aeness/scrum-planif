@@ -26,6 +26,8 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddGameCardsComponent } from './add-game-cards.modal/add-game-cards.component';
 
 const appRoutes: Routes = [
   {
@@ -68,7 +70,8 @@ const appRoutes: Routes = [
     ChooseCardsGameComponent,
     CardsGameComponent,
     DescriptionComponent,
-    UsersListComponent
+    UsersListComponent,
+    AddGameCardsComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +87,8 @@ const appRoutes: Routes = [
       positionClass: 'inline-right',
 
     }),
-    ToastContainerModule
+    ToastContainerModule,
+    NgbModule
   ],
   providers: [
     {
