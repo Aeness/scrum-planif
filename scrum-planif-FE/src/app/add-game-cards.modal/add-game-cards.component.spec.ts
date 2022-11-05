@@ -1,3 +1,4 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -214,6 +215,40 @@ describe('AddGameCardsComponent', () => {
     fixture.detectChanges();
 
     // See test in next
+
+  });
+
+  it('should change card', (done) => {
+    component.userCardsGame = [
+      {value:"XXS", active: true},
+      {value:"XS", active: true},
+      {value:"S", active: true}
+    ];
+    let allOpenButton = fixture.debugElement.queryAll(By.css('#openButton'));
+    allOpenButton[0].nativeElement.click();
+    fixture.detectChanges();
+
+    let modalReference : NgbModalRef = (component as any).modalReference;
+    modalReference.hidden.subscribe(
+      {
+        next : () => {
+          done();
+        }
+      }
+    )
+
+    let allExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
+    expect(allExempleCards.length).toEqual(6, 'all example card');
+
+    component.drop(({previousIndex: 0, currentIndex: 1} as CdkDragDrop<Array<any>>));
+    fixture.detectChanges();
+
+    let newExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
+    expect(newExempleCards.length).toEqual(6, 'all example card');
+    expect(newExempleCards[0].nativeElement.innerHTML).toEqual('XS', 'first card');
+
+    modalReference.dismiss();
+    fixture.detectChanges();
 
   });
 

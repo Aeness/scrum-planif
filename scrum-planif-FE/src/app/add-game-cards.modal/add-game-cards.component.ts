@@ -1,14 +1,15 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { PlanifRoom } from '../planif.room/planif.room';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-add-game-cards',
   templateUrl: './add-game-cards.component.html',
-  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss']
+  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss', './add-game-cards.component.scss']
 })
 export class AddGameCardsComponent implements OnDestroy {
   private unsubscribe$ = new Subject();
@@ -53,7 +54,7 @@ export class AddGameCardsComponent implements OnDestroy {
     );
   }
 
-  onCardSubmit(event) {
+  onCardSubmit(/*event*/) {
     if(this.cardForm.valid) {
       this.userCardsGame.push({value:this.cardForm.controls.cardValue.value, active: true});
       this.cardForm.controls.cardValue.setValue(null);
@@ -66,6 +67,10 @@ export class AddGameCardsComponent implements OnDestroy {
     } else {
       this.fixCardsGame[index].active = !this.fixCardsGame[index].active ;
     }
+  }
+
+  drop(event: CdkDragDrop<Array<any>>) {
+    moveItemInArray(this.userCardsGame, event.previousIndex, event.currentIndex);
   }
 
   closeModal(modal) {

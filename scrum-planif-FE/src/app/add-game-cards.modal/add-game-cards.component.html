@@ -11,14 +11,16 @@
             formControlName="cardValue">
         <button id="addButton" type="submit" name="subject" class="btn btn-secondary mb-2 mr-2" [disabled]="!cardForm.valid">Ajouter la carte</button>
       </form>
-      <div class="cardGame selected">
+      <div class="cardGame selected" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
         <ng-container *ngFor="let card of userCardsGame; let index = index">
-          <div [className]="'exampleCard' + (card.active?' selected':' unselected')" (click)="click('user', index)" [innerHTML]="card.value"></div>
+          <div [className]="'exampleCard' + (card.active?' selected':' unselected')" (click)="click('user', index)" [innerHTML]="card.value" cdkDrag></div>
         </ng-container>
         <ng-container *ngFor="let card of fixCardsGame; let index = index">
           <div [className]="'exampleCard' + (card.value.startsWith('&')?' fa':'') + (card.active?' selected':' unselected')" (click)="click('fix', index)" [innerHTML]="card.value"></div>
         </ng-container>
-      </div><div class="clear"><p class="text-secondary small-text">Cliquer sur une carte pour l'activer ou la désactiver.</p></div>
+      </div>
+      <div class="clear"><p class="text-secondary small-text" style="margin-bottom: 0px;">Cliquer sur une carte pour l'activer ou la désactiver.</p></div>
+      <div class="clear"><p class="text-secondary small-text">Vous pouvez réordonner les cartes que vous avez créées en utilisant le glisser/déplacer.</p></div>
     </div>
     <div class="modal-footer">
       <button id="sendButton" class="btn btn-primary" (click)="closeModal(modal)">Ajouter et choisir un type de jeux de carte.</button>

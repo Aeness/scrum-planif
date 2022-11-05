@@ -10,6 +10,7 @@ div.exampleCard {
   margin-bottom: 2px;
   text-align: center;
   padding-top: 0.7rem;
+  background-color: #FFF;
 
   cursor: pointer;
 
@@ -20,6 +21,7 @@ div.exampleCard {
 
   &.selected {
     color: #FFF;
+    background-color: $mainColor;
   }
 }
 
@@ -34,10 +36,3 @@ div.exampleCard {
     background-color: lighten($mainColor, 10%);
   }
 }
-
-.cardGame.selected {
-  div.exampleCard.selected {
-    background-color: $mainColor;
-  }
-}
-
