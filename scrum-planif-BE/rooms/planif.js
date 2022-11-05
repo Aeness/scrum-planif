@@ -30,12 +30,12 @@ module.exports = {
                         return;
                     }
                     next();
-                  });
+                });
 
-                  socket.on("error", (/*err*/) => {
+                socket.on("error", (/*err*/) => {
                     
                     this.sendAuthenticationError(socket);
-                  });
+                });
 
                 let planif_ref = socket.handshake.query.planif;
 
@@ -87,7 +87,7 @@ module.exports = {
                     
                     let reponseUsersTS = {};
                     for (let entry of room.users.entries()) {
-                      reponseUsersTS[entry[0]] = entry[1];
+                        reponseUsersTS[entry[0]] = entry[1];
                     }
                     
                     let reponsePlayerTS = {};
@@ -136,12 +136,12 @@ module.exports = {
                 });
 
                 socket.on('leave_planif', () => {
-                      debug("%s does not play in planif room %s.", socket.id, planif_ref);
-                      // TODO what happen if the room not exists ?
-                      let room = this.planifRooms.get(this.getRoomName(planif_ref));
-                      if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
-                          this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
-                      }
+                    debug("%s does not play in planif room %s.", socket.id, planif_ref);
+                    // TODO what happen if the room not exists ?
+                    let room = this.planifRooms.get(this.getRoomName(planif_ref));
+                    if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
+                        this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
+                    }
                 });
 
                 socket.on('disconnecting', () => {
@@ -149,7 +149,7 @@ module.exports = {
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room !== undefined ) {
                         if (room.players !== undefined ) {
-                        room.players.delete(socket.participant.ref);
+                            room.players.delete(socket.participant.ref);
                         }
                         if (room.users !== undefined) {
                             room.users.delete(socket.participant.ref);
@@ -178,13 +178,13 @@ module.exports = {
                     debug("%s restart_choose", socket.id);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined) {
-                      for (let entry of room.players.entries()) {
-                        entry[1].vote = null;
-                        if (room.users.has(entry[1].ref)) {
-                            room.users.get(entry[1].ref).vote = null;
+                        for (let entry of room.players.entries()) {
+                            entry[1].vote = null;
+                            if (room.users.has(entry[1].ref)) {
+                                room.users.get(entry[1].ref).vote = null;
+                            }
+                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
                         }
-                        this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
-                      }
                     }
                 });
 
@@ -216,10 +216,10 @@ module.exports = {
                     room.choosenGameType = data.choosenGameType;
                     this.sendGameTypeChanged(planif_ref, data.choosenGameType);
                     if (room.players !== undefined) {
-                      for (let entry of room.players.entries()) {
-                        entry[1].vote = null;
-                        this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
-                      }
+                        for (let entry of room.players.entries()) {
+                            entry[1].vote = null;
+                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                        }
                     }
                 });
 
@@ -245,10 +245,10 @@ module.exports = {
                     room.choosenGameType = gameName;
                     this.sendNewGameAddedAndSelected(planif_ref, gameName, data.cards);
                     if (room.players !== undefined) {
-                      for (let entry of room.players.entries()) {
-                        entry[1].vote = null;
-                        this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
-                      }
+                        for (let entry of room.players.entries()) {
+                            entry[1].vote = null;
+                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                        }
                     }
                 });
             }

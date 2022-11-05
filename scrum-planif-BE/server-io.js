@@ -64,7 +64,7 @@ module.exports = function(app, server, corsOrigin, authAdminSocketIo) {
         // TODO : socket.user = user;
         // just call next
         next();
-      });
+    });
 
     io.on('connection', (socket) => {
         const version = socket.conn.protocol;

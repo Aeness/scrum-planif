@@ -27,5 +27,5 @@ function spValidationResult() {
     return req => decorateAsValidationResult(validationResult(req));
 }
 module.exports = {
-  spValidationResult: spValidationResult() // without () return the function
+    spValidationResult: spValidationResult() // without () return the function
 };
