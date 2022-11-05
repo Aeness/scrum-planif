@@ -145,18 +145,20 @@ module.exports = {
                 });
 
                 socket.on('disconnecting', () => {
-                    debug("%s disconnecting", socket.id);
+                    debug("%s disconnecting from %s", socket.id, planif_ref);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
-                    if (room.players !== undefined ) {
-                      room.players.delete(socket.participant.ref);
-                    }
-                    if (room.users !== undefined) {
-                        room.users.delete(socket.participant.ref);
-                        this.sendUserLeavePlanif(planif_ref, socket.participant.ref);
-                    }
-                    if (room.users !== undefined && room.users.size == 0) {
-                        debug("last user leave planif room %s.", planif_ref);
-                        this.planifRooms.delete(this.getRoomName(planif_ref));
+                    if (room !== undefined ) {
+                        if (room.players !== undefined ) {
+                        room.players.delete(socket.participant.ref);
+                        }
+                        if (room.users !== undefined) {
+                            room.users.delete(socket.participant.ref);
+                            this.sendUserLeavePlanif(planif_ref, socket.participant.ref);
+                        }
+                        if (room.users !== undefined && room.users.size == 0) {
+                            debug("last user leave planif room %s.", planif_ref);
+                            this.planifRooms.delete(this.getRoomName(planif_ref));
+                        }
                     }
                 });
 
