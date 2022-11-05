@@ -49,7 +49,7 @@ router.post('/refresh', function(req, res/*, next*/) {
                 refreshTokenDecoded.name
             ));
         }
-    })
+    });
 });
 
 const createTokens = function(app, player_ref,player_name) {
@@ -80,6 +80,6 @@ const createTokens = function(app, player_ref,player_name) {
         token: token,
         refreshToken: refreshToken
     };
-}
+};
 
 module.exports = router;

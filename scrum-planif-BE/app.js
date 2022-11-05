@@ -84,14 +84,14 @@ function initApp(conf) {
         // eslint-disable-next-line no-unused-vars
         keyGenerator: (request, response) => {
             // if load balancer
-            return request.headers[realHeader] || request.ip
+            return request.headers[realHeader] || request.ip;
         },
         // eslint-disable-next-line no-unused-vars
         skip: (request, response) => { 
             return (request.method === 'OPTIONS') ;
         }
-    })
-    app.use('/auth/', authLimiter)
+    });
+    app.use('/auth/', authLimiter);
     app.use('/auth', authRouter);
     //app.use('/planifs', planifsRouter);
 

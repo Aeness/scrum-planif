@@ -11,15 +11,15 @@ function spValidationResult() {
                 (error) => {
                     // TODO use en array ?
                     if (errors[error.param]) {
-                        errors[error.param] += " " + error.msg
+                        errors[error.param] += " " + error.msg;
                     } else {
                         errors[error.param] = error.msg;
                     }
                 }
-            )
+            );
             // TODO use other statut for other location than 'body'?
             return errors;
-        }
+        };
 
         return obj;
     }

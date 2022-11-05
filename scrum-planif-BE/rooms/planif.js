@@ -140,7 +140,7 @@ module.exports = {
                     // TODO what happen if the room not exists ?
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
                     if (room.players !== undefined && room.players.delete(socket.participant.ref)) {
-                        this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref)
+                        this.sendPlayerLeavePlanif(planif_ref, socket.participant.ref);
                     }
                 });
 
@@ -183,7 +183,7 @@ module.exports = {
                             if (room.users.has(entry[1].ref)) {
                                 room.users.get(entry[1].ref).vote = null;
                             }
-                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id);
                         }
                     }
                 });
@@ -207,7 +207,7 @@ module.exports = {
                 socket.on('change_results_visibility', (data) => {
                     debug("%s choose result visibility to %s", socket.id, data.choosenVisibility);
                     this.planifRooms.get(this.getRoomName(planif_ref)).resultsVisibility = data.choosenVisibility;
-                    this.sendVisibilityChanged(planif_ref, data.choosenVisibility)
+                    this.sendVisibilityChanged(planif_ref, data.choosenVisibility);
                 });
 
                 socket.on('change_type_game', (data) => {
@@ -218,7 +218,7 @@ module.exports = {
                     if (room.players !== undefined) {
                         for (let entry of room.players.entries()) {
                             entry[1].vote = null;
-                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id);
                         }
                     }
                 });
@@ -247,7 +247,7 @@ module.exports = {
                     if (room.players !== undefined) {
                         for (let entry of room.players.entries()) {
                             entry[1].vote = null;
-                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id)
+                            this.sendPlayerRestart(planif_ref, entry[1].ref,entry[1].socked_id);
                         }
                     }
                 });
@@ -264,20 +264,20 @@ module.exports = {
             {value:"8", active: true},{value:"13", active: true},{value:"20", active: true},
             {value:"40", active: true},{value:"100", active: true},{value:"&#xf128", active: true},
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
-        ]
+        ];
     },
     getTShirtCard: function () {
         return [
             {value:"XS", active: true},{value:"S", active: true},{value:"M", active: true},
             {value:"L", active: true},{value:"XL", active: true},{value:"&#xf128", active: true},
             {value:"&#xf534;", active: true},{value:"&#xf0f4;", active: true}
-        ]
+        ];
     },
     getScrumLifeCard: function () {
         return [
             {value:"1", active: true},{value:">1", active: true},
             {value:"&#xf128", active: true},{value:"&#xf0f4;", active: true}
-        ]
+        ];
     },
 
     ///////
@@ -343,4 +343,4 @@ module.exports = {
         debug('sendGameTypeChanged to planif %s', planif_ref);
         this.app.io.to(this.getRoomName(planif_ref)).emit('game_added_and_selected', { cardsGameName: cardsGameName, cardsGame : cardsGame});
     }
-}
+};

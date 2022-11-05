@@ -76,4 +76,4 @@ module.exports = function(app, server, corsOrigin, authAdminSocketIo) {
 
     return io;
 
-}
+};
