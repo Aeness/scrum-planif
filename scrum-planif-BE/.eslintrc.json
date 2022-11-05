@@ -1,17 +1,13 @@
 {
     "env": {
         "commonjs": true,
-        "es6": true,
+        "es2021": true,
         "node": true
     },
     "extends": "eslint:recommended",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
+    "overrides": [
+    ],
     "parserOptions": {
-        "ecmaVersion": 11
-    },
-    "rules": {
+        "ecmaVersion": "latest"
     }
 }
