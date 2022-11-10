@@ -42,26 +42,27 @@ module.exports = function(app, server, corsOrigin, authAdminSocketIo) {
     io.use((socket, next) => {
         // Only called at the (re)connection
         // next(err) call this.socket.on('connect_error' on the client side
-        
-        let jwt = require('jsonwebtoken');
-        try {
-            // TODO : Move socket.handshake.query.jwt to socket.handshake.auth.jwt
-            let decoded = jwt.verify(socket.handshake.query.jwt, app.set('tokensecret'));
+        if (socket.nsp.name === '/') {
+            let jwt = require('jsonwebtoken');
+            try {
+                // TODO : Move socket.handshake.query.jwt to socket.handshake.auth.jwt
+                let decoded = jwt.verify(socket.handshake.query.jwt, app.set('tokensecret'));
 
-            if (decoded.ref === undefined || decoded.name === undefined) {
+                if (decoded.ref === undefined || decoded.name === undefined) {
+                    // inform the callback of auth failure
+                    let err = new Error("Not enough information.");
+                    err.data = {auth: true};
+                    return next(err);
+                }
+            } catch(err) {
+                this.debug("wrong jwt : %s.", err.message);
                 // inform the callback of auth failure
-                let err = new Error("Not enough information.");
                 err.data = {auth: true};
                 return next(err);
             }
-        } catch(err) {
-            this.debug("wrong jwt : %s.", err.message);
-            // inform the callback of auth failure
-            err.data = {auth: true};
-            return next(err);
+            this.debug("jwt Ok !!!!!!!");
+            // TODO : socket.user = user;
         }
-        this.debug("jwt Ok !!!!!!!");
-        // TODO : socket.user = user;
         // just call next
         next();
     });
