@@ -61,8 +61,8 @@ describe('AddGameCardsComponent', () => {
   it('should open', (done) => {
     spyOn(ngbModal, 'open').and.callThrough();
 
-    let allOpenButton = fixture.debugElement.queryAll(By.css('#openButton'));
-    allOpenButton[0].nativeElement.click();
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
 
     fixture.detectChanges();
 
@@ -86,19 +86,19 @@ describe('AddGameCardsComponent', () => {
     let modalBody = document.querySelectorAll('.modal-body');
     expect(modalBody.length).toEqual(1, 'find body popup');
 
-    let allExempleCards = document.querySelectorAll('.exampleCard');
+    let allExempleCards = document.querySelectorAll('.modal-body .exampleCard');
     expect(allExempleCards.length).toEqual(3, 'example card at the start');
 
     expect(component.userCardsGame.length).toEqual(0, 'no user card card');
-    expect(fixture.debugElement.queryAll(By.css('.exampleCard.selected')).length).toEqual(0, 'one example card selected');
+    expect(fixture.debugElement.queryAll(By.css('.modal-body .exampleCard.selected')).length).toEqual(0, 'one example card selected');
 
     modalReference.dismiss();
     fixture.detectChanges();
   });
 
   it('should add card', (done) => {
-    let allOpenButton = fixture.debugElement.queryAll(By.css('#openButton'));
-    allOpenButton[0].nativeElement.click();
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
     fixture.detectChanges();
 
     let modalReference : NgbModalRef = (component as any).modalReference;
@@ -121,7 +121,7 @@ describe('AddGameCardsComponent', () => {
     fixture.detectChanges();
 
     expect(component.userCardsGame.length).toEqual(1, 'add a card');
-    let allExempleCards = document.querySelectorAll('.exampleCard');
+    let allExempleCards = document.querySelectorAll('.modal-body .exampleCard');
     expect(allExempleCards.length).toEqual(4, 'example card');
     expect(valueInput.value).toEqual('', 'no value');
 
@@ -131,8 +131,8 @@ describe('AddGameCardsComponent', () => {
   });
 
   it('should send new game', (done) => {
-    let allOpenButton = fixture.debugElement.queryAll(By.css('#openButton'));
-    allOpenButton[0].nativeElement.click();
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
     fixture.detectChanges();
 
     let modalReference : NgbModalRef = (component as any).modalReference;
@@ -177,8 +177,8 @@ describe('AddGameCardsComponent', () => {
   });
 
   it('should select card', (done) => {
-    let allOpenButton = fixture.debugElement.queryAll(By.css('#openButton'));
-    allOpenButton[0].nativeElement.click();
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
     fixture.detectChanges();
 
     let modalReference : NgbModalRef = (component as any).modalReference;
@@ -197,12 +197,12 @@ describe('AddGameCardsComponent', () => {
       }
     )
 
-    let allExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
+    let allExempleCards = fixture.debugElement.queryAll(By.css('.modal-body .exampleCard'));
     expect(allExempleCards.length).toEqual(3, 'all example card');
     allExempleCards[2].nativeElement.click();
     fixture.detectChanges();
 
-    expect(fixture.debugElement.queryAll(By.css('.exampleCard.unselected')).length).toEqual(2, 'one example card unselected less');
+    expect(fixture.debugElement.queryAll(By.css('.modal-body .exampleCard.unselected')).length).toEqual(2, 'one example card unselected less');
 
     let pr : any = (component as any).planifRoom;
     let mySpy = spyOn(pr, 'sendNewGame').and.callFake(function(cardsGame : Array<any>) {
@@ -224,8 +224,8 @@ describe('AddGameCardsComponent', () => {
       {value:"XS", active: true},
       {value:"S", active: true}
     ];
-    let allOpenButton = fixture.debugElement.queryAll(By.css('#openButton'));
-    allOpenButton[0].nativeElement.click();
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
     fixture.detectChanges();
 
     let modalReference : NgbModalRef = (component as any).modalReference;
@@ -237,13 +237,13 @@ describe('AddGameCardsComponent', () => {
       }
     )
 
-    let allExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
+    let allExempleCards = fixture.debugElement.queryAll(By.css('.modal-body .exampleCard'));
     expect(allExempleCards.length).toEqual(6, 'all example card');
 
     component.drop(({previousIndex: 0, currentIndex: 1} as CdkDragDrop<Array<any>>));
     fixture.detectChanges();
 
-    let newExempleCards = fixture.debugElement.queryAll(By.css('.exampleCard'));
+    let newExempleCards = fixture.debugElement.queryAll(By.css('.modal-body .exampleCard'));
     expect(newExempleCards.length).toEqual(6, 'all example card');
     expect(newExempleCards[0].nativeElement.innerHTML).toEqual('XS', 'first card');
 

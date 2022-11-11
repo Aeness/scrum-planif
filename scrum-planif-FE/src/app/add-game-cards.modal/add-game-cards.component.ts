@@ -9,7 +9,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-add-game-cards',
   templateUrl: './add-game-cards.component.html',
-  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss', './add-game-cards.component.scss']
+  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss', './add-game-cards.component.scss','../choose-cards-game/choose-cards-game.component.scss']
 })
 export class AddGameCardsComponent implements OnDestroy {
   private unsubscribe$ = new Subject();

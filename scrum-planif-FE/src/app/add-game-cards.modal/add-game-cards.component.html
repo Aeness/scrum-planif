@@ -26,5 +26,20 @@
       <button id="sendButton" class="btn btn-primary" (click)="closeModal(modal)">Ajouter et choisir un type de jeux de carte.</button>
     </div>
   </ng-template>
-  <button id="openButton" class="btn btn-primary" (click)="openModal(content)">Ajouter et choisir un type de jeux de carte.</button>
+  <div id="openDiv" class="border pt-3 pb-3 pl-1 pr-1" (click)="openModal(content)">
+    <input type="radio"><label class="chooseGame">
+      <div class="cardGame unselected">
+        <div [className]="'exampleCard unselected'"><span style="position: absolute; background-color: #FFF;">Créer son propre jeux de carte personnalisé.</span></div>
+        <div [className]="'exampleCard unselected'" style="z-index: 500;"></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+        <div [className]="'exampleCard unselected'" ></div>
+      </div>
+    </label>
+  </div>
 </div>
