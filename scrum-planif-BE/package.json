@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "watch": "cross-env DEBUG=scrum-planif*,socket.io* nodemon ./bin/www",
+    "watch": "cross-env DEBUG=scrum-planif* nodemon ./bin/www",
+    "watch-all": "cross-env DEBUG=scrum-planif*,socket.io* nodemon ./bin/www",
     "lint": "eslint --quiet ."
   },
   "dependencies": {
