@@ -47,3 +47,26 @@
     border-left: 1px solid #dee2e6;
   }
 }
+
+form {
+  display: flex;
+  flex-direction: row;
+
+  & > div, & > label {
+    flex: auto;
+  }
+}
+
+.input-with-error {
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    flex: auto;
+  }
+
+}
+.invalid-feedback {
+  display: inline;
+  transform : translate(0,-5px);
+}

@@ -35,11 +35,14 @@ export class AddGameCardsComponent implements OnDestroy {
   ) {
 
     this.cardForm = fb.group({
-      cardValue: ['', Validators.required] //, Validators.maxLength(3)
+      cardValue: ['', Validators.compose([Validators.required, Validators.maxLength(3)]) ]
     });
   }
 
   openModal(content) {
+    this.cardForm.reset();
+    this.cardForm.markAsUntouched();
+
     this.modalReference = this.modalService.open(content, { centered:true, container: '.attachModal' });
     this.modalReference.result.then(
       (/*result*/) => {
@@ -58,7 +61,8 @@ export class AddGameCardsComponent implements OnDestroy {
   onCardSubmit(/*event*/) {
     if(this.cardForm.valid) {
       this.userCardsGame.push({value:this.cardForm.controls.cardValue.value, active: true});
-      this.cardForm.controls.cardValue.setValue(null);
+      this.cardForm.reset();
+      this.cardForm.markAsUntouched();
     }
   }
 

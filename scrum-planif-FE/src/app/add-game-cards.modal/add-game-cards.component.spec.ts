@@ -70,6 +70,9 @@ describe('AddGameCardsComponent', () => {
 
     expect(ngbModal.open).toHaveBeenCalled();
 
+    let addBtn: DebugElement = fixture.debugElement.query(By.css('#addButton'));
+    expect(addBtn.nativeElement.disabled).toEqual(true, 'addBtn is disabled');
+
     let modalReference : NgbModalRef = (component as any).modalReference;
     modalReference.hidden.subscribe(
       {
@@ -98,6 +101,115 @@ describe('AddGameCardsComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should reboot the form', (done) => {
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
+    fixture.detectChanges();
+
+    let modalReference : NgbModalRef = (component as any).modalReference;
+    modalReference.hidden.subscribe(
+      {
+        next : () => {
+          allOpenDiv[0].nativeElement.click();
+          fixture.detectChanges();
+
+          // modalReference is not working
+          let modalReference2 : NgbModalRef = (component as any).modalReference;
+          modalReference2.hidden.subscribe(
+            {
+              next : () => {
+                expect(component.userCardsGame.length).toEqual(0, 'no user card card');;
+                done()
+              }
+            }
+          )
+
+          valueInput = fixture.debugElement.query(By.css('#cardValue')).nativeElement
+          expect(valueInput.value).toEqual('', 'no value');
+
+          errorMessage = document.querySelectorAll('.modal-body .invalid-feedback');
+          expect(errorMessage.length).toEqual(0, 'no error displayed');
+
+          errorBorder = document.querySelectorAll('.modal-body .is-invalid');
+          expect(errorBorder.length).toEqual(0, 'no error border displayed');
+
+          modalReference2.dismiss();
+          fixture.detectChanges();
+        }
+      }
+    )
+
+    let valueInput = fixture.debugElement.query(By.css('#cardValue')).nativeElement
+    valueInput.value = "XXXL";
+    valueInput.dispatchEvent(new Event("input"));
+    fixture.detectChanges();
+
+    let errorMessage = document.querySelectorAll('.modal-body .invalid-feedback');
+    expect(errorMessage.length).toEqual(1, 'error displayed');
+
+    let errorBorder = document.querySelectorAll('.modal-body .is-invalid');
+    expect(errorBorder.length).toEqual(1, 'error border displayed');
+
+    modalReference.dismiss();
+    fixture.detectChanges();
+
+  });
+
+  it('should display error', (done) => {
+    let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
+    allOpenDiv[0].nativeElement.click();
+    fixture.detectChanges();
+
+    let modalReference : NgbModalRef = (component as any).modalReference;
+    modalReference.hidden.subscribe(
+      {
+        next : () => {
+          expect(component.userCardsGame.length).toEqual(0, 'no user card card');;
+          done()
+        }
+      }
+    )
+
+    let valueInput = fixture.debugElement.query(By.css('#cardValue')).nativeElement
+    valueInput.value = "XXXL";
+    valueInput.dispatchEvent(new Event("input"));
+    fixture.detectChanges();
+
+    let errorMessage = document.querySelectorAll('.modal-body .invalid-feedback');
+    expect(errorMessage.length).toEqual(1, 'error displayed');
+
+    let errorBorder = document.querySelectorAll('.modal-body .is-invalid');
+    expect(errorBorder.length).toEqual(1, 'error border displayed');
+
+    let addBtn: DebugElement = fixture.debugElement.query(By.css('#addButton'));
+    expect(addBtn.nativeElement.disabled).toEqual(true, 'addBtn is disabled');
+
+    valueInput.value = "XXL";
+    valueInput.dispatchEvent(new Event("input"));
+    fixture.detectChanges();
+
+    errorMessage = document.querySelectorAll('.modal-body .invalid-feedback');
+    expect(errorMessage.length).toEqual(0, 'error not displayed');
+
+    errorBorder = document.querySelectorAll('.modal-body .is-invalid');
+    expect(errorBorder.length).toEqual(0, 'error border not displayed');
+
+
+    valueInput.value = "";
+    valueInput.dispatchEvent(new Event("input"));
+    fixture.detectChanges();
+
+    errorMessage = document.querySelectorAll('.modal-body .invalid-feedback');
+    expect(errorMessage.length).toEqual(0, 'error not displayed 2');
+
+    errorBorder = document.querySelectorAll('.modal-body .is-invalid');
+    expect(errorBorder.length).toEqual(0, 'error border not displayed 2');
+
+    modalReference.dismiss();
+    fixture.detectChanges();
+
+  });
+
   it('should add card', (done) => {
     let allOpenDiv = fixture.debugElement.queryAll(By.css('#openDiv'));
     allOpenDiv[0].nativeElement.click();
@@ -119,6 +231,7 @@ describe('AddGameCardsComponent', () => {
     fixture.detectChanges();
 
     let addBtn: DebugElement = fixture.debugElement.query(By.css('#addButton'));
+    expect(addBtn.nativeElement.disabled).toEqual(false, 'addBtn OK');
     addBtn.nativeElement.click();
     fixture.detectChanges();
 
