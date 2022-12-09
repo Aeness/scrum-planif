@@ -238,7 +238,7 @@ module.exports = {
                 socket.on('add_game', (data) => {
                     debug("%s add a game", socket.id);
                     let room = this.planifRooms.get(this.getRoomName(planif_ref));
-                    let gameName = "game" + (room.cardsGames.length + 1) + socket.id;
+                    let gameName = "game" + (room.cardsGames.size + 1) + socket.id;
                     debug("game name : %s", gameName);
                     
                     room.cardsGames.set(gameName, data.cards);
