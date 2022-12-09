@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -26,6 +26,7 @@ export class AddGameCardsComponent implements OnDestroy {
   ];
 
   public faTimes = faTimes;
+  public faInfoCircle = faInfoCircle;
   modalReference : NgbModalRef
 
   constructor(

@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -16,6 +17,7 @@ export class CardsGameComponent implements OnInit, OnDestroy {
 
   public cards : Array<{value: string, active: boolean}>;
   public currentGameName : string;
+  public faInfoCircle = faInfoCircle;
 
   constructor() { }
 

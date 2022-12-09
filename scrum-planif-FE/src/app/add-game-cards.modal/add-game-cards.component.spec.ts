@@ -3,6 +3,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbActiveModal, NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -21,6 +22,7 @@ describe('AddGameCardsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ AddGameCardsComponent ],
       imports: [
+        FontAwesomeModule,
         ReactiveFormsModule,
         FormsModule,
         ToastrModule.forRoot()

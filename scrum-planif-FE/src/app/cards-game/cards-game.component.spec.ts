@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
@@ -14,7 +15,10 @@ describe('CardsGameComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ ToastrModule.forRoot() ],
+      imports: [
+        FontAwesomeModule,
+        ToastrModule.forRoot()
+      ],
       declarations: [ CardsGameComponent ],
       providers: [
         ToastrService, // for PlanifRoom
