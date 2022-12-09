@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { AddGameCardsComponent } from '../add-game-cards.modal/add-game-cards.component';
 import { CardsGameComponent } from '../cards-game/cards-game.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
@@ -16,8 +18,11 @@ describe('ChooseCardsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChooseCardsGameComponent, CardsGameComponent ],
-      imports: [ReactiveFormsModule, FormsModule, ToastrModule.forRoot()],
+      declarations: [ ChooseCardsGameComponent, CardsGameComponent, AddGameCardsComponent ],
+      imports: [
+        ReactiveFormsModule, FormsModule, ToastrModule.forRoot(),
+        FontAwesomeModule // for app-add-game-cards
+      ],
       providers: [
         FormBuilder,
         ToastrService, // for PlanifRoom
@@ -56,7 +61,7 @@ describe('ChooseCardsComponent', () => {
       this.ioWebsocketService.subjects.get("card_visibility_changed").next({cardIndex : cardIndex, choosenVisibility : choosenVisibility});
     })
 
-    expect(allExempleCards.length).toEqual(4+8+14, 'all example card');
+    expect(allExempleCards.length).toEqual(4+8+14+10, 'all example card');
 
     allExempleCards[4+8+1].nativeElement.click();
     fixture.detectChanges();

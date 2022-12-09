@@ -19,6 +19,7 @@ import { DescriptionComponent } from '../description/description.component';
 import { UsersListComponent } from '../users-list/users-list.component';
 import { PlayersListComponent } from '../players-list/players-list.component';
 import { ToastrModule } from 'ngx-toastr';
+import { AddGameCardsComponent } from '../add-game-cards.modal/add-game-cards.component';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -33,6 +34,7 @@ describe('PlanifAdminComponent', () => {
         DescriptionComponent,
         ChooseCardsGameComponent,
         CardsGameComponent,
+        AddGameCardsComponent,
         PlayersListComponent,
         HandComponent,
         CardComponent,
@@ -94,7 +96,7 @@ describe('PlanifAdminComponent', () => {
       this.ioWebsocketService.subjects.get("card_visibility_changed").next({cardIndex : cardIndex, choosenVisibility : choosenVisibility});
     })
 
-    expect(allExempleCards.length).toEqual(4+8+14, 'all example card');
+    expect(allExempleCards.length).toEqual(4+8+14+10, 'all example card');
     expect(fixture.debugElement.queryAll(By.css('app-card')).length).toEqual(14);
 
 
