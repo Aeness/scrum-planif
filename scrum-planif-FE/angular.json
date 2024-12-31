@@ -127,8 +127,9 @@
       }
     }
   },
-  "defaultProject": "scrum-planif",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

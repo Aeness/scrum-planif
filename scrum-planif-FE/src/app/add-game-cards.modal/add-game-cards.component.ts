@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
@@ -17,7 +17,7 @@ export class AddGameCardsComponent implements OnDestroy {
   @Input() planifRoom: PlanifRoom;
 
 
-  public cardForm: FormGroup;
+  public cardForm: UntypedFormGroup;
   public userCardsGame : Array<any> = [];
   public fixCardsGame : Array<any> =[
     {value:"&#xf128", active: false},
@@ -31,7 +31,7 @@ export class AddGameCardsComponent implements OnDestroy {
 
   constructor(
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
 
     this.cardForm = fb.group({

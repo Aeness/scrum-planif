@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../auth.service/auth.service';
 
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { LoginComponent } from './login.component';
 import { DebugElement } from '@angular/core';
@@ -20,7 +20,7 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, BrowserAnimationsModule, ToastrModule.forRoot()],
-      providers: [ FormBuilder, ToastrService, AuthService ]
+      providers: [ UntypedFormBuilder, ToastrService, AuthService ]
     })
     .compileComponents();
   });

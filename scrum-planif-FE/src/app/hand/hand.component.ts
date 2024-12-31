@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CardComponent } from '../card/card.component';
@@ -19,11 +19,11 @@ export class HandComponent implements OnInit, OnDestroy {
 
   public me;
 
-  public iVoteTop = new FormControl(false);
-  public iVoteBottom = new FormControl(false);
+  public iVoteTop = new UntypedFormControl(false);
+  public iVoteBottom = new UntypedFormControl(false);
 
-  public iSeeTop = new FormControl(false);
-  public iSeeBottom = new FormControl(false);
+  public iSeeTop = new UntypedFormControl(false);
+  public iSeeBottom = new UntypedFormControl(false);
 
   public values : string[] = [];
   public allValues : {value: string, active: boolean}[] = [];
@@ -32,7 +32,7 @@ export class HandComponent implements OnInit, OnDestroy {
 
   private choosenValue : string;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: UntypedFormBuilder) { }
 
   ngOnInit() {
     this.planifRoom.listenRestartMyChoise().pipe(takeUntil(this.unsubscribe$)).subscribe(

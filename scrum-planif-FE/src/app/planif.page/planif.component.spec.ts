@@ -11,7 +11,7 @@ import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { PlanifComponent } from './planif.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DescriptionComponent } from '../description/description.component';
@@ -36,7 +36,7 @@ describe('PlanifComponent', () => {
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
-        FormBuilder, // For HandComponent
+        UntypedFormBuilder, // For HandComponent
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})} // for PlayersListComponent
       ]
     })

@@ -7,7 +7,7 @@ import { HandComponent } from './hand.component';
 import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { CardComponent } from '../card/card.component';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 
@@ -24,7 +24,7 @@ describe('HandComponent', () => {
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, ToastrModule.forRoot()],
       providers: [
-        FormBuilder,
+        UntypedFormBuilder,
         ToastrService, // for PlanifRoom
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]

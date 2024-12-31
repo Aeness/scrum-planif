@@ -10,7 +10,7 @@ import { IoWebsocketMockService } from '../_rooms/io-websocket.mock.service';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { PlanifAdminComponent } from './planif-admin.component';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CardComponent } from '../card/card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ChooseCardsGameComponent } from '../choose-cards-game/choose-cards-game.component';
@@ -42,7 +42,7 @@ describe('PlanifAdminComponent', () => {
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, ToastrModule.forRoot()],
       providers: [
-        FormBuilder,
+        UntypedFormBuilder,
         {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})} // For PlayersListComponent
       ]
     })

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PlanifComponent } from '../planif.page/planif.component';
 import { PlanifRoom } from '../planif.room/planif.room';
 import { faEdit, faRedo } from '@fortawesome/free-solid-svg-icons';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { takeUntil } from 'rxjs/operators';
@@ -14,9 +14,9 @@ import { takeUntil } from 'rxjs/operators';
   providers:  [ IoWebsocketService, PlanifRoom ] // IoWebsocketService is for PlanifRoom
 })
 export class PlanifAdminComponent extends PlanifComponent {
-  public planifForm: FormGroup;
-  public subjectForm: FormGroup;
-  public gameForm: FormGroup;
+  public planifForm: UntypedFormGroup;
+  public subjectForm: UntypedFormGroup;
+  public gameForm: UntypedFormGroup;
 
   public faEdit = faEdit;
   public faRedo = faRedo;
@@ -25,7 +25,7 @@ export class PlanifAdminComponent extends PlanifComponent {
   constructor(
     protected route: ActivatedRoute,
     protected planifRoom: PlanifRoom,
-    private fb: FormBuilder) {
+    private fb: UntypedFormBuilder) {
 
     super(route, planifRoom)
     this.planifForm = fb.group({

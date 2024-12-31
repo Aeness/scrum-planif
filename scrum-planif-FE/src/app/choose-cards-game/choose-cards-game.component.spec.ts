@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
@@ -24,7 +24,7 @@ describe('ChooseCardsComponent', () => {
         FontAwesomeModule // for app-add-game-cards
       ],
       providers: [
-        FormBuilder,
+        UntypedFormBuilder,
         ToastrService, // for PlanifRoom
         {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
       ]

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-index',
@@ -9,12 +9,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class IndexComponent {
   ref_link = Math.random().toString(36).substr(2, 9);
 
-  planifForm: FormGroup;
+  planifForm: UntypedFormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
 
     this.planifForm = fb.group({

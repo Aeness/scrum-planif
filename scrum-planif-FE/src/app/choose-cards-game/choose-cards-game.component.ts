@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlanifRoom } from '../planif.room/planif.room';
@@ -14,11 +14,11 @@ export class ChooseCardsGameComponent implements OnInit, OnDestroy {
 
   @Input() planifRoom: PlanifRoom;
 
-  public gameTypeForm: FormGroup;
+  public gameTypeForm: UntypedFormGroup;
 
   public gamesType : Map<string, Array<{value: string, active: boolean}>>;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.gameTypeForm = this.fb.group({

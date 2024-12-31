@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service/auth.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { TokenTool } from '../auth.service/token.tool';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,13 +15,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
   submitLabel: string;
 
-  authForm: FormGroup;
+  authForm: UntypedFormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private toastr: ToastrService
   ) {
 
