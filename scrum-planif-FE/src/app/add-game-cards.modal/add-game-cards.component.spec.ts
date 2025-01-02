@@ -12,7 +12,7 @@ import { IoWebsocketService } from '../_rooms/io-websocket.service';
 
 import { AddGameCardsComponent } from './add-game-cards.component';
 
-fdescribe('AddGameCardsComponent', () => {
+describe('AddGameCardsComponent', () => {
   let component: AddGameCardsComponent;
   let fixture: ComponentFixture<AddGameCardsComponent>;
   let ioWebsocketService;
