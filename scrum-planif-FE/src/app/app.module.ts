@@ -23,7 +23,7 @@ import { ChooseCardsGameComponent } from './choose-cards-game/choose-cards-game.
 import { CardsGameComponent } from './cards-game/cards-game.component';
 import { DescriptionComponent } from './description/description.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -88,7 +88,6 @@ const appRoutes: Routes = [
       positionClass: 'inline-right',
 
     }),
-    ToastContainerModule,
     ModalModule,
     DragDropModule
   ],
