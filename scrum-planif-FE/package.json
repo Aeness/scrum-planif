@@ -30,7 +30,7 @@
     "ini": "^2.0.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.29.4",
-    "ngx-bootstrap": "^9.0.0",
+    "ngx-bootstrap": "^10.3.0",
     "ngx-toastr": "^16.2.0",
     "rxjs": "^6.6.7",
     "socket.io-client": "^4.5.4",
