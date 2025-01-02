@@ -1,7 +1,7 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, TemplateRef } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { faInfoCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject } from 'rxjs';
 import { PlanifRoom } from '../planif.room/planif.room';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -9,7 +9,8 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-add-game-cards',
   templateUrl: './add-game-cards.component.html',
-  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss', './add-game-cards.component.scss','../choose-cards-game/choose-cards-game.component.scss']
+  styleUrls: ['../card/font-icon.scss', '../cards-game/cards-game.component.scss', './add-game-cards.component.scss','../choose-cards-game/choose-cards-game.component.scss'],
+  providers:  [ BsModalService ]
 })
 export class AddGameCardsComponent implements OnDestroy {
   private unsubscribe$ = new Subject();
@@ -27,35 +28,42 @@ export class AddGameCardsComponent implements OnDestroy {
 
   public faTimes = faTimes;
   public faInfoCircle = faInfoCircle;
-  modalReference : NgbModalRef
+  modalReference : BsModalRef
 
   constructor(
-    private modalService: NgbModal,
+    private modalService: BsModalService,
     private fb: UntypedFormBuilder
   ) {
 
     this.cardForm = fb.group({
       cardValue: ['', Validators.compose([Validators.required, Validators.maxLength(3)]) ]
     });
+    modalService.onShow.subscribe(() => {console.log("modalService.onShow")});
   }
 
-  openModal(content) {
+  openModal(template: TemplateRef<void>) {
     this.cardForm.reset();
     this.cardForm.markAsUntouched();
 
-    this.modalReference = this.modalService.open(content, { centered:true, container: '.attachModal' });
-    this.modalReference.result.then(
-      (/*result*/) => {
-        // Closed (and validate)
-        this.planifRoom.sendNewGame(this.userCardsGame.concat(this.fixCardsGame));
-        this.userCardsGame = [];
-      },
-      (/*reason*/) => {
-        // Dismissed
-        // ModalDismissReasons.ESC or ModalDismissReasons.BACKDROP_CLICK or other
-        this.userCardsGame = [];
-      },
-    );
+
+    this.modalReference = this.modalService.show(template, { class: 'modal-dialog-centered' });
+    this.modalReference.onHide.subscribe((/*modalDismissReasons: string*/) => {
+      // modalDismissReasons : esc, backdrop-click or other (object...)
+      this.userCardsGame = [];
+      console.log("modalReference.onHide");
+    })
+  }
+
+  sendGame(): void {
+    // Closed (and validate)
+    this.modalService.setDismissReason('Save click');
+    this.planifRoom.sendNewGame(this.userCardsGame.concat(this.fixCardsGame));
+    this.modalReference.hide();
+  }
+
+  closeWithoutSend(reason: string): void {
+    this.modalService.setDismissReason(reason);
+    this.modalReference.hide();
   }
 
   onCardSubmit(/*event*/) {
@@ -78,16 +86,12 @@ export class AddGameCardsComponent implements OnDestroy {
     moveItemInArray(this.userCardsGame, event.previousIndex, event.currentIndex);
   }
 
-  closeModal(modal) {
-    modal.close('Save click');
-  }
-
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
     if (this.modalReference) {
-      this.modalReference.close();
+      this.modalReference.hide();
     }
   }
 

@@ -1,8 +1,8 @@
 <div class="attachModal">
-  <ng-template #content let-modal>
+  <ng-template #content>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Créer un jeux de carte</h4>
-      <button type="button" aria-label="Close" (click)="modal.dismiss('Cross click')"><fa-icon [icon]="faTimes"></fa-icon></button>
+      <button type="button" aria-label="Close" (click)="closeWithoutSend('Cross click')"><fa-icon [icon]="faTimes"></fa-icon></button>
     </div>
     <div class="modal-body">
       <div class="my-alert text-secondary mb-2" role="alert">
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button id="sendButton" class="btn btn-primary" (click)="closeModal(modal)">Ajouter ce jeux de carte.</button>
+      <button id="sendButton" class="btn btn-primary" (click)="sendGame()">Ajouter ce jeux de carte.</button>
     </div>
   </ng-template>
   <div id="openDiv" class="border pt-3 pb-3 pl-1 pr-1" (click)="openModal(content)">

@@ -26,7 +26,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { AddGameCardsComponent } from './add-game-cards.modal/add-game-cards.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -89,7 +89,7 @@ const appRoutes: Routes = [
 
     }),
     ToastContainerModule,
-    NgbModule,
+    ModalModule,
     DragDropModule
   ],
   providers: [
