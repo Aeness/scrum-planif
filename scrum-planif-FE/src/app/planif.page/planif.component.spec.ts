@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -17,6 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DescriptionComponent } from '../description/description.component';
 import { UsersListComponent } from '../users-list/users-list.component';
 import { ToastrModule } from 'ngx-toastr';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PlanifComponent', () => {
   let component: PlanifComponent;
@@ -26,20 +27,23 @@ describe('PlanifComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [
+    declarations: [
         PlanifComponent,
         DescriptionComponent,
         PlayersListComponent,
         HandComponent,
         CardComponent,
         UsersListComponent
-      ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FontAwesomeModule, ToastrModule.forRoot()],
-      providers: [
+    ],
+    imports: [RouterTestingModule, ReactiveFormsModule, FontAwesomeModule, ToastrModule.forRoot()],
+    providers: [
         UntypedFormBuilder, // For HandComponent
-        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Toto"})} // for PlayersListComponent
-      ]
-    })
+        { provide: AuthService, useValue: new AuthServiceMock({ ref: "ref", name: "Toto" }) } // for PlayersListComponent
+        ,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     // https://angular.io/guide/testing-components-scenarios#override-component-providers
     .overrideComponent(
       PlanifComponent,

@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,6 +20,7 @@ import { UsersListComponent } from '../users-list/users-list.component';
 import { PlayersListComponent } from '../players-list/players-list.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AddGameCardsComponent } from '../add-game-cards.modal/add-game-cards.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PlanifAdminComponent', () => {
   let component: PlanifAdminComponent;
@@ -29,7 +30,7 @@ describe('PlanifAdminComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [
+    declarations: [
         PlanifAdminComponent,
         DescriptionComponent,
         ChooseCardsGameComponent,
@@ -39,13 +40,16 @@ describe('PlanifAdminComponent', () => {
         HandComponent,
         CardComponent,
         UsersListComponent
-      ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, ToastrModule.forRoot()],
-      providers: [
+    ],
+    imports: [RouterTestingModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, ToastrModule.forRoot()],
+    providers: [
         UntypedFormBuilder,
-        {provide: AuthService, useValue: new AuthServiceMock({ref: "ref", name: "Admin"})} // For PlayersListComponent
-      ]
-    })
+        { provide: AuthService, useValue: new AuthServiceMock({ ref: "ref", name: "Admin" }) } // For PlayersListComponent
+        ,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     // https://angular.io/guide/testing-components-scenarios#override-component-providers
     .overrideComponent(
       PlanifAdminComponent,

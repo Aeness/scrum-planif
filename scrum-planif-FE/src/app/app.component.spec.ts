@@ -1,21 +1,22 @@
 import { RouterTestingModule } from "@angular/router/testing";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth.service/auth.service';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ToastrModule, ToastrService } from "ngx-toastr";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('AppComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, FontAwesomeModule, ToastrModule.forRoot()],
-      declarations: [
+    declarations: [
         AppComponent
-      ],
-      providers: [ToastrService, AuthService],
-    }).compileComponents();
+    ],
+    imports: [RouterTestingModule, FontAwesomeModule, ToastrModule.forRoot()],
+    providers: [ToastrService, AuthService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
   });
 
   it('should create the app', () => {

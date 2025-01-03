@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { IndexComponent } from './index.page/index.component';
 import { CardComponent } from './card/card.component';
 import { PlanifComponent } from './planif.page/planif.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './_interceptors/auth.interceptor';
 import { canActivateJwt } from './_guards/auth.guard';
 import { AuthService } from './auth.service/auth.service';
@@ -57,48 +57,39 @@ const appRoutes: Routes = [
   },
 ]
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    LogoutComponent,
-    IndexComponent,
-    CardComponent,
-    PlanifComponent,
-    PlanifAdminComponent,
-    HandComponent,
-    PlayersListComponent,
-    ChooseCardsGameComponent,
-    CardsGameComponent,
-    DescriptionComponent,
-    UsersListComponent,
-    AddGameCardsComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: environment.routerEnableTracing } // <-- debugging purposes only
-    ),
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      positionClass: 'inline-right',
-
-    }),
-    ModalModule,
-    DragDropModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    AuthService
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        LoginComponent,
+        LogoutComponent,
+        IndexComponent,
+        CardComponent,
+        PlanifComponent,
+        PlanifAdminComponent,
+        HandComponent,
+        PlayersListComponent,
+        ChooseCardsGameComponent,
+        CardsGameComponent,
+        DescriptionComponent,
+        UsersListComponent,
+        AddGameCardsComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        RouterModule.forRoot(appRoutes, { enableTracing: environment.routerEnableTracing } // <-- debugging purposes only
+        ),
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot({
+            positionClass: 'inline-right',
+        }),
+        ModalModule,
+        DragDropModule], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        },
+        AuthService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

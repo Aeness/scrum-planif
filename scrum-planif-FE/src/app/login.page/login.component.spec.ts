@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,6 +10,7 @@ import { LoginComponent } from './login.component';
 import { DebugElement } from '@angular/core';
 import { throwError } from 'rxjs'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -18,10 +19,10 @@ describe('LoginComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, BrowserAnimationsModule, ToastrModule.forRoot()],
-      providers: [ UntypedFormBuilder, ToastrService, AuthService ]
-    })
+    declarations: [LoginComponent],
+    imports: [RouterTestingModule, ReactiveFormsModule, BrowserAnimationsModule, ToastrModule.forRoot()],
+    providers: [UntypedFormBuilder, ToastrService, AuthService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
   });
 

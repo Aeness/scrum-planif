@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,6 +9,7 @@ import { IoWebsocketService } from '../_rooms/io-websocket.service';
 import { CardComponent } from '../card/card.component';
 import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
 describe('HandComponent', () => {
@@ -18,17 +19,20 @@ describe('HandComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [
+    declarations: [
         HandComponent,
         CardComponent
-      ],
-      imports: [RouterTestingModule, HttpClientTestingModule, ReactiveFormsModule, FormsModule, ToastrModule.forRoot()],
-      providers: [
+    ],
+    imports: [RouterTestingModule, ReactiveFormsModule, FormsModule, ToastrModule.forRoot()],
+    providers: [
         UntypedFormBuilder,
         ToastrService, // for PlanifRoom
-        {provide: IoWebsocketService, useClass: IoWebsocketMockService} // for PlanifRoom
-      ]
-    })
+        { provide: IoWebsocketService, useClass: IoWebsocketMockService } // for PlanifRoom
+        ,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
   });
 
