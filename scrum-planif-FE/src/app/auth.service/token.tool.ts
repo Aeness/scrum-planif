@@ -14,7 +14,7 @@ export class TokenTool {
 
     static decodeToken(token : string) : Payload {
       if (token !== null) {
-        return jwtDecode(token);
+        return jwtDecode<Payload>(token);
       } else {
         return null;
       }
