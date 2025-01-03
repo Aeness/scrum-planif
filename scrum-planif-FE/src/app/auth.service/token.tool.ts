@@ -1,4 +1,4 @@
-import * as jwt_decode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { Payload } from './payload';
 
 export class TokenTool {
@@ -14,7 +14,7 @@ export class TokenTool {
 
     static decodeToken(token : string) : Payload {
       if (token !== null) {
-        return jwt_decode(token);
+        return jwtDecode(token);
       } else {
         return null;
       }
