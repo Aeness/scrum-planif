@@ -1,6 +1,5 @@
 import { inject } from "@angular/core";
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateFn } from '@angular/router';
-import * as moment from 'moment';
 import { AuthService } from '../auth.service/auth.service';
 import { of as observableOf } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -11,7 +10,6 @@ export const canActivateJwt: CanActivateFn = (route: ActivatedRouteSnapshot, sta
         const router = inject(Router);
         const authService = inject(AuthService);
         if (authService.hasUserConnected) {
-            const currentDate = moment();
             if(!TokenTool.tokenIsOk(authService.userToken)) {
                 return authService.refresh(authService.userRefreshToken).pipe<boolean,boolean>(
                     map<JwtTokens, boolean>((authResult: JwtTokens) => {
